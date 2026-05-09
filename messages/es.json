@@ -1,0 +1,196 @@
+{
+  "nav": {
+    "dashboard": "Panel",
+    "campaigns": "Campañas",
+    "reservations": "Reservas",
+    "wallet": "Wallet",
+    "staff": "Personal",
+    "logout": "Cerrar sesión",
+    "language": "Idioma"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Plataforma de Incentivos",
+      "title": "Capta clientes. Gana recompensas.",
+      "subtitle": "Conectamos negocios con promotores anónimos que traen clientes reales. Sin revelar identidades, con incentivos reales.",
+      "cta_empresa": "Soy una empresa",
+      "cta_captador": "Quiero ganar incentivos",
+      "trusted": "Confiado por negocios de hostelería, retail y servicios"
+    },
+    "how": {
+      "title": "¿Cómo funciona?",
+      "step1": { "title": "Empresa crea campaña", "desc": "Define el incentivo y el tipo de conversión que quieres (reservas, visitas, compras)." },
+      "step2": { "title": "Captador se une", "desc": "Un promotor anónimo se une a tu campaña y genera un QR único para sus referidos." },
+      "step3": { "title": "Cliente consume", "desc": "El cliente muestra el QR al llegar. El staff lo escanea y valida la conversión." },
+      "step4": { "title": "Incentivo acreditado", "desc": "El captador recibe su recompensa automáticamente en su wallet." }
+    },
+    "types": {
+      "title": "Para cualquier tipo de negocio",
+      "hotel": "Hoteles y alojamientos",
+      "restaurant": "Restaurantes y bares",
+      "retail": "Comercios y tiendas",
+      "services": "Servicios y experiencias"
+    }
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "email": "Email",
+    "password": "Contraseña",
+    "name": "Nombre completo",
+    "phone": "Teléfono",
+    "no_account": "¿No tienes cuenta?",
+    "have_account": "¿Ya tienes cuenta?",
+    "register_captador": "Registro como Captador",
+    "register_empresa": "Registro como Empresa",
+    "business_name": "Nombre del negocio",
+    "business_type": "Tipo de negocio",
+    "business_address": "Dirección",
+    "logging_in": "Iniciando sesión...",
+    "registering": "Creando cuenta...",
+    "or_register_as": "¿Eres una empresa?",
+    "captador_desc": "Únete como captador para ganar incentivos referindo clientes a negocios.",
+    "empresa_desc": "Crea campañas de captación y paga por resultados reales.",
+    "errors": {
+      "invalid_credentials": "Email o contraseña incorrectos",
+      "email_taken": "Este email ya está registrado",
+      "required": "Este campo es obligatorio"
+    }
+  },
+  "captador": {
+    "dashboard": {
+      "title": "Mi Panel",
+      "active_campaigns": "Campañas activas",
+      "my_reservations": "Mis reservas",
+      "balance": "Saldo disponible",
+      "confirmed": "Reservas confirmadas",
+      "recent": "Actividad reciente"
+    },
+    "campaigns": {
+      "title": "Campañas disponibles",
+      "empty": "No hay campañas activas en este momento",
+      "incentive": "Incentivo",
+      "per_reservation": "por reserva confirmada",
+      "reserve": "Hacer reserva",
+      "expires": "Vence",
+      "no_expiry": "Sin fecha límite",
+      "fixed": "Fijo",
+      "percentage": "Porcentaje",
+      "bono": "Bono"
+    },
+    "reservations": {
+      "title": "Mis reservas",
+      "new": "Nueva reserva",
+      "client_name": "Nombre del cliente",
+      "client_email": "Email del cliente",
+      "client_phone": "Teléfono del cliente",
+      "date": "Fecha",
+      "time": "Hora",
+      "guests": "Nº de personas",
+      "notes": "Notas (opcional)",
+      "submit": "Crear reserva",
+      "submitting": "Creando...",
+      "download_qr": "Descargar QR",
+      "status_pending": "Pendiente",
+      "status_confirmed": "Confirmada",
+      "status_cancelled": "Cancelada",
+      "status_no_show": "No presentado",
+      "qr_sent": "QR enviado al cliente por email y WhatsApp",
+      "campaign": "Campaña",
+      "created": "Creada"
+    },
+    "wallet": {
+      "title": "Mi Wallet",
+      "balance": "Saldo disponible",
+      "withdraw": "Solicitar retiro",
+      "withdraw_amount": "Importe a retirar",
+      "withdraw_method": "Método de cobro",
+      "stripe_transfer": "Transferencia bancaria (Stripe)",
+      "bono": "Canjear bono",
+      "history": "Historial de transacciones",
+      "no_transactions": "Sin transacciones aún",
+      "credit": "Ingreso",
+      "debit": "Retiro",
+      "connect_stripe": "Conectar cuenta bancaria",
+      "stripe_connected": "Cuenta bancaria conectada",
+      "insufficient_balance": "Saldo insuficiente"
+    }
+  },
+  "empresa": {
+    "dashboard": {
+      "title": "Panel Empresa",
+      "total_campaigns": "Campañas totales",
+      "active_campaigns": "Campañas activas",
+      "total_reservations": "Reservas totales",
+      "confirmed_reservations": "Confirmadas",
+      "total_incentives": "Incentivos pagados",
+      "recent_activity": "Actividad reciente"
+    },
+    "campaigns": {
+      "title": "Mis campañas",
+      "new": "Nueva campaña",
+      "create": "Crear campaña",
+      "edit": "Editar campaña",
+      "campaign_title": "Título de la campaña",
+      "description": "Descripción",
+      "incentive_type": "Tipo de incentivo",
+      "incentive_value": "Valor del incentivo (€)",
+      "bonus_description": "Descripción del bono",
+      "start_date": "Fecha de inicio",
+      "end_date": "Fecha de fin (opcional)",
+      "max_reservations": "Máximo de reservas (opcional)",
+      "status_active": "Activa",
+      "status_paused": "Pausada",
+      "status_ended": "Finalizada",
+      "pause": "Pausar",
+      "activate": "Activar",
+      "empty": "No tienes campañas aún",
+      "reservations_count": "reservas"
+    },
+    "reservations": {
+      "title": "Reservas",
+      "client": "Cliente",
+      "campaign": "Campaña",
+      "date": "Fecha",
+      "guests": "Personas",
+      "status": "Estado",
+      "incentive": "Incentivo",
+      "empty": "No hay reservas aún"
+    },
+    "staff": {
+      "title": "Gestión de personal",
+      "add": "Añadir personal",
+      "name": "Nombre",
+      "email": "Email",
+      "invite": "Enviar invitación",
+      "empty": "No hay personal registrado",
+      "desc": "El personal puede escanear los QR de los clientes para confirmar reservas."
+    }
+  },
+  "scan": {
+    "title": "Validar reserva",
+    "scanning": "Verificando...",
+    "success": "¡Reserva confirmada!",
+    "already_scanned": "Esta reserva ya fue validada",
+    "invalid": "QR no válido o caducado",
+    "client": "Cliente",
+    "date": "Fecha",
+    "time": "Hora",
+    "guests": "Personas",
+    "confirm_button": "Confirmar llegada",
+    "confirmed_at": "Confirmada el"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "confirm": "Confirmar",
+    "success": "¡Éxito!",
+    "error": "Error",
+    "search": "Buscar..."
+  }
+}

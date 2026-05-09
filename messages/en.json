@@ -1,0 +1,196 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "campaigns": "Campaigns",
+    "reservations": "Reservations",
+    "wallet": "Wallet",
+    "staff": "Staff",
+    "logout": "Log out",
+    "language": "Language"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Incentives Platform",
+      "title": "Refer clients. Earn rewards.",
+      "subtitle": "We connect businesses with anonymous promoters who bring real customers. No identity revealed, real incentives.",
+      "cta_empresa": "I'm a business",
+      "cta_captador": "I want to earn incentives",
+      "trusted": "Trusted by hospitality, retail and service businesses"
+    },
+    "how": {
+      "title": "How does it work?",
+      "step1": { "title": "Business creates campaign", "desc": "Define the incentive and the type of conversion you want (bookings, visits, purchases)." },
+      "step2": { "title": "Referrer joins", "desc": "An anonymous promoter joins your campaign and generates a unique QR for their referrals." },
+      "step3": { "title": "Client arrives", "desc": "The client shows the QR on arrival. Staff scans it to validate the conversion." },
+      "step4": { "title": "Incentive credited", "desc": "The referrer receives their reward automatically in their wallet." }
+    },
+    "types": {
+      "title": "For any type of business",
+      "hotel": "Hotels & accommodation",
+      "restaurant": "Restaurants & bars",
+      "retail": "Retail & shops",
+      "services": "Services & experiences"
+    }
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "phone": "Phone",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "register_captador": "Register as Referrer",
+    "register_empresa": "Register as Business",
+    "business_name": "Business name",
+    "business_type": "Business type",
+    "business_address": "Address",
+    "logging_in": "Logging in...",
+    "registering": "Creating account...",
+    "or_register_as": "Are you a business?",
+    "captador_desc": "Join as a referrer to earn incentives by referring clients to businesses.",
+    "empresa_desc": "Create referral campaigns and pay for real results.",
+    "errors": {
+      "invalid_credentials": "Invalid email or password",
+      "email_taken": "This email is already registered",
+      "required": "This field is required"
+    }
+  },
+  "captador": {
+    "dashboard": {
+      "title": "My Dashboard",
+      "active_campaigns": "Active campaigns",
+      "my_reservations": "My reservations",
+      "balance": "Available balance",
+      "confirmed": "Confirmed reservations",
+      "recent": "Recent activity"
+    },
+    "campaigns": {
+      "title": "Available campaigns",
+      "empty": "No active campaigns at this time",
+      "incentive": "Incentive",
+      "per_reservation": "per confirmed reservation",
+      "reserve": "Make reservation",
+      "expires": "Expires",
+      "no_expiry": "No expiry date",
+      "fixed": "Fixed",
+      "percentage": "Percentage",
+      "bono": "Voucher"
+    },
+    "reservations": {
+      "title": "My reservations",
+      "new": "New reservation",
+      "client_name": "Client name",
+      "client_email": "Client email",
+      "client_phone": "Client phone",
+      "date": "Date",
+      "time": "Time",
+      "guests": "Number of guests",
+      "notes": "Notes (optional)",
+      "submit": "Create reservation",
+      "submitting": "Creating...",
+      "download_qr": "Download QR",
+      "status_pending": "Pending",
+      "status_confirmed": "Confirmed",
+      "status_cancelled": "Cancelled",
+      "status_no_show": "No show",
+      "qr_sent": "QR sent to client by email and WhatsApp",
+      "campaign": "Campaign",
+      "created": "Created"
+    },
+    "wallet": {
+      "title": "My Wallet",
+      "balance": "Available balance",
+      "withdraw": "Request withdrawal",
+      "withdraw_amount": "Amount to withdraw",
+      "withdraw_method": "Payment method",
+      "stripe_transfer": "Bank transfer (Stripe)",
+      "bono": "Redeem voucher",
+      "history": "Transaction history",
+      "no_transactions": "No transactions yet",
+      "credit": "Credit",
+      "debit": "Withdrawal",
+      "connect_stripe": "Connect bank account",
+      "stripe_connected": "Bank account connected",
+      "insufficient_balance": "Insufficient balance"
+    }
+  },
+  "empresa": {
+    "dashboard": {
+      "title": "Business Dashboard",
+      "total_campaigns": "Total campaigns",
+      "active_campaigns": "Active campaigns",
+      "total_reservations": "Total reservations",
+      "confirmed_reservations": "Confirmed",
+      "total_incentives": "Incentives paid",
+      "recent_activity": "Recent activity"
+    },
+    "campaigns": {
+      "title": "My campaigns",
+      "new": "New campaign",
+      "create": "Create campaign",
+      "edit": "Edit campaign",
+      "campaign_title": "Campaign title",
+      "description": "Description",
+      "incentive_type": "Incentive type",
+      "incentive_value": "Incentive value (€)",
+      "bonus_description": "Voucher description",
+      "start_date": "Start date",
+      "end_date": "End date (optional)",
+      "max_reservations": "Max reservations (optional)",
+      "status_active": "Active",
+      "status_paused": "Paused",
+      "status_ended": "Ended",
+      "pause": "Pause",
+      "activate": "Activate",
+      "empty": "You have no campaigns yet",
+      "reservations_count": "reservations"
+    },
+    "reservations": {
+      "title": "Reservations",
+      "client": "Client",
+      "campaign": "Campaign",
+      "date": "Date",
+      "guests": "Guests",
+      "status": "Status",
+      "incentive": "Incentive",
+      "empty": "No reservations yet"
+    },
+    "staff": {
+      "title": "Staff management",
+      "add": "Add staff",
+      "name": "Name",
+      "email": "Email",
+      "invite": "Send invitation",
+      "empty": "No staff registered",
+      "desc": "Staff can scan client QR codes to confirm reservations."
+    }
+  },
+  "scan": {
+    "title": "Validate reservation",
+    "scanning": "Verifying...",
+    "success": "Reservation confirmed!",
+    "already_scanned": "This reservation has already been validated",
+    "invalid": "Invalid or expired QR",
+    "client": "Client",
+    "date": "Date",
+    "time": "Time",
+    "guests": "Guests",
+    "confirm_button": "Confirm arrival",
+    "confirmed_at": "Confirmed at"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm",
+    "success": "Success!",
+    "error": "Error",
+    "search": "Search..."
+  }
+}

@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPRESA
+  CAPTADOR
+  STAFF
+}
+
+enum CampaignStatus {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+enum IncentiveType {
+  FIXED
+  PERCENTAGE
+  BONO
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  NO_SHOW
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  name            String
+  role            Role      @default(CAPTADOR)
+  phone           String?
+  language        String    @default("es")
+  stripeAccountId String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  business     Business?
+  reservations Reservation[] @relation("CaptadorReservations")
+  staffScans   StaffScan[]
+  wallet       Wallet?
+}
+
+model Business {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  description String?
+  address     String?
+  logoUrl     String?
+  userId      String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaigns Campaign[]
+  staff     BusinessStaff[]
+}
+
+model BusinessStaff {
+  id         String   @id @default(cuid())
+  businessId String
+  email      String
+  name       String
+  createdAt  DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+}
+
+model Campaign {
+  id               String         @id @default(cuid())
+  title            String
+  description      String?
+  businessId       String
+  incentiveType    IncentiveType
+  incentiveValue   Float
+  bonusDescription String?
+  status           CampaignStatus @default(ACTIVE)
+  startDate        DateTime
+  endDate          DateTime?
+  maxReservations  Int?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  business     Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+}
+
+model Reservation {
+  id            String            @id @default(cuid())
+  campaignId    String
+  captadorId    String
+  clientName    String
+  clientEmail   String
+  clientPhone   String
+  date          DateTime
+  time          String
+  guests        Int
+  notes         String?
+  qrToken       String            @unique @default(cuid())
+  qrScannedAt   DateTime?
+  status        ReservationStatus @default(PENDING)
+  incentivePaid Boolean           @default(false)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  campaign    Campaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  captador    User        @relation("CaptadorReservations", fields: [captadorId], references: [id])
+  staffScan   StaffScan?
+  transaction Transaction?
+}
+
+model StaffScan {
+  id            String      @id @default(cuid())
+  reservationId String      @unique
+  staffId       String
+  scannedAt     DateTime    @default(now())
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  staff       User        @relation(fields: [staffId], references: [id])
+}
+
+model Wallet {
+  id        String        @id @default(cuid())
+  userId    String        @unique
+  balance   Float         @default(0)
+  updatedAt DateTime      @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+}
+
+model Transaction {
+  id            String          @id @default(cuid())
+  walletId      String
+  amount        Float
+  type          TransactionType
+  description   String
+  reservationId String?         @unique
+  createdAt     DateTime        @default(now())
+
+  wallet      Wallet       @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  reservation Reservation? @relation(fields: [reservationId], references: [id])
+}
