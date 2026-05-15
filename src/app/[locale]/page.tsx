@@ -42,22 +42,22 @@ export default async function LandingPage() {
 
       {/* Header */}
       <header className="relative z-10 border-b border-white/5 glass-subtle">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
               <QrCode className="h-5 w-5 text-purple-400" />
             </div>
             <span className="font-bold text-lg text-white">Incentivos</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <Link href={`/${locale}/login`}>
+            <Link href={`/${locale}/login`} className="hidden sm:block">
               <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/10">
                 Acceder
               </Button>
             </Link>
             <Link href={`/${locale}/register/captador`}>
-              <Button size="sm" className="bg-purple-600 hover:bg-purple-500 text-white glow-purple border-0">
+              <Button size="sm" className="bg-purple-600 hover:bg-purple-500 text-white glow-purple border-0 text-xs sm:text-sm px-3 sm:px-4">
                 Comenzar gratis
               </Button>
             </Link>
