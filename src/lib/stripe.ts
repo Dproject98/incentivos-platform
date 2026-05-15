@@ -1,11 +1,15 @@
 import Stripe from "stripe"
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  apiVersion: "2024-06-20" as any,
-})
+// Lazy initialization — avoids crashing build when STRIPE_SECRET_KEY is missing.
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    apiVersion: "2024-06-20" as any,
+  })
+}
 
 export async function createConnectedAccount(email: string) {
+  const stripe = getStripe()
   return stripe.accounts.create({
     type: "express",
     email,
@@ -16,6 +20,7 @@ export async function createConnectedAccount(email: string) {
 }
 
 export async function createAccountLink(accountId: string) {
+  const stripe = getStripe()
   return stripe.accountLinks.create({
     account: accountId,
     refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/es/captador/wallet`,
@@ -29,6 +34,7 @@ export async function createPayout(
   stripeAccountId: string,
   description: string
 ) {
+  const stripe = getStripe()
   return stripe.transfers.create({
     amount: Math.round(amount * 100),
     currency: "eur",

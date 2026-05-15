@@ -1,9 +1,12 @@
 import twilio from "twilio"
 
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-)
+// Lazy initialization — instantiated at call time, not module load time.
+function getTwilioClient() {
+  return twilio(
+    process.env.TWILIO_ACCOUNT_SID,
+    process.env.TWILIO_AUTH_TOKEN
+  )
+}
 
 interface ReservationWhatsAppData {
   clientName: string
@@ -28,6 +31,7 @@ export async function sendReservationWhatsApp(data: ReservationWhatsAppData) {
     ? data.clientPhone
     : `+${data.clientPhone}`
 
+  const client = getTwilioClient()
   await client.messages.create({
     body,
     from: process.env.TWILIO_WHATSAPP_FROM,

@@ -1,7 +1,11 @@
 import { Resend } from "resend"
 import { generateQRDataURL } from "./qr"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy initialization — instantiated at call time, not module load time,
+// so missing env vars don't crash the build during page data collection.
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 interface ReservationEmailData {
   clientName: string
@@ -53,6 +57,7 @@ export async function sendReservationEmail(data: ReservationEmailData) {
     </div>
   `
 
+  const resend = getResend()
   await resend.emails.send({
     from: "Incentivos Platform <reservas@incentivos.app>",
     to: data.clientEmail,
