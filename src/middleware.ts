@@ -1,8 +1,11 @@
 import createMiddleware from "next-intl/middleware"
-import { auth } from "@/lib/auth"
+import NextAuth from "next-auth"
+import { authConfig } from "@/lib/auth.config"
 import { routing } from "@/i18n/routing"
 import { NextResponse } from "next/server"
 
+// Use edge-safe auth config (no bcryptjs/prisma) for middleware
+const { auth } = NextAuth(authConfig)
 const intlMiddleware = createMiddleware(routing)
 
 const protectedPrefixes = ["/es/captador", "/en/captador", "/es/empresa", "/en/empresa"]
