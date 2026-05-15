@@ -32,7 +32,7 @@ export function SidebarEmpresa() {
         <div className="h-9 w-9 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center">
           <QrCode className="h-5 w-5 text-cyan-400" />
         </div>
-        <span className="font-bold text-lg text-white">Incentivos</span>
+        <span className="font-bold text-lg text-white">Incentis</span>
       </div>
 
       <nav className="flex-1 flex flex-col gap-1">

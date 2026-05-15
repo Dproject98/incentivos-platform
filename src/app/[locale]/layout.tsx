@@ -10,7 +10,7 @@ import "../globals.css"
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 export const metadata: Metadata = {
-  title: "Incentivos Platform",
+  title: "Incentis",
   description: "Plataforma de incentivos anónimos para captación de clientes",
 }
 

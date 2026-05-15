@@ -72,7 +72,7 @@ export default function RegisterEmpresaPage() {
           <div className="h-10 w-10 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center">
             <QrCode className="h-6 w-6 text-cyan-400" />
           </div>
-          <span className="font-bold text-2xl text-white">Incentivos</span>
+          <span className="font-bold text-2xl text-white">Incentis</span>
         </div>
 
         <div className="glass rounded-3xl p-8 border border-white/10">

@@ -33,7 +33,7 @@ export function SidebarCaptador() {
         <div className="h-9 w-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
           <QrCode className="h-5 w-5 text-purple-400" />
         </div>
-        <span className="font-bold text-lg text-white">Incentivos</span>
+        <span className="font-bold text-lg text-white">Incentis</span>
       </div>
 
       {/* Nav */}

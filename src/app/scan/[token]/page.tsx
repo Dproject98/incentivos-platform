@@ -55,7 +55,7 @@ export default function ScanPage() {
         <div className="h-9 w-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
           <QrCode className="h-5 w-5 text-purple-400" />
         </div>
-        <span className="font-bold text-lg text-white">Incentivos Platform</span>
+        <span className="font-bold text-lg text-white">Incentis</span>
       </div>
 
       <div
@@ -181,7 +181,7 @@ export default function ScanPage() {
         )}
       </div>
 
-      <p className="mt-6 text-xs text-slate-600">Plataforma de incentivos anónimos · Incentivos Platform</p>
+      <p className="mt-6 text-xs text-slate-600">Plataforma de incentivos anónimos · Incentis</p>
     </div>
   )
 }

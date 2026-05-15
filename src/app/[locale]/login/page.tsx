@@ -58,7 +58,7 @@ export default function LoginPage() {
           <div className="h-10 w-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
             <QrCode className="h-6 w-6 text-purple-400" />
           </div>
-          <span className="font-bold text-2xl text-white">Incentivos</span>
+          <span className="font-bold text-2xl text-white">Incentis</span>
         </div>
 
         {/* Card */}
