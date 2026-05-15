@@ -47,7 +47,7 @@ export default async function LandingPage() {
             <div className="h-9 w-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
               <QrCode className="h-5 w-5 text-purple-400" />
             </div>
-            <span className="font-bold text-lg text-white">Incentivos</span>
+            <span className="font-bold text-lg text-white">Incentis</span>
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -234,7 +234,7 @@ export default async function LandingPage() {
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 py-8 text-center text-sm text-slate-600">
-        © {new Date().getFullYear()} Incentivos Platform · Todos los derechos reservados
+        © {new Date().getFullYear()} Incentis · Todos los derechos reservados
       </footer>
     </div>
   )
