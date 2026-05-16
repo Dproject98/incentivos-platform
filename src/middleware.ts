@@ -9,7 +9,7 @@ import { NextResponse, type NextRequest } from "next/server"
 
 const intlMiddleware = createMiddleware(routing)
 
-const protectedPrefixes = ["/es/captador", "/en/captador", "/es/empresa", "/en/empresa"]
+const protectedPrefixes = ["/es/captador", "/en/captador", "/es/empresa", "/en/empresa", "/es/staff", "/en/staff"]
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl

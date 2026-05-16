@@ -37,6 +37,7 @@ export default function LoginPage() {
 
     if (role === "EMPRESA") router.push(`/${locale}/empresa/dashboard`)
     else if (role === "CAPTADOR") router.push(`/${locale}/captador/dashboard`)
+    else if (role === "STAFF") router.push(`/${locale}/staff`)
     else router.push(`/${locale}`)
   }
 

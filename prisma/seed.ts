@@ -80,6 +80,10 @@ async function main() {
   })
   console.log("✅ Staff:", staff.email)
 
+  // --- BUSINESS STAFF LINK ---
+  // BusinessStaff links by email (no userId). Create it once campaign/business exists.
+  // We do this after business is found below.
+
   // --- CAMPAIGN ---
   const business = await prisma.business.findUnique({ where: { userId: empresa.id } })
   if (business) {
@@ -100,6 +104,21 @@ async function main() {
       },
     })
     console.log("✅ Campaign:", campaign.title)
+
+    // Link staff user to the business via BusinessStaff (matched by email)
+    const existingStaffLink = await prisma.businessStaff.findFirst({
+      where: { businessId: business.id, email: staff.email },
+    })
+    if (!existingStaffLink) {
+      await prisma.businessStaff.create({
+        data: {
+          businessId: business.id,
+          email: staff.email,
+          name: staff.name ?? "María García",
+        },
+      })
+      console.log("✅ BusinessStaff link creado para", staff.email)
+    }
   }
 
   console.log("\n🎉 Seed completado!\n")
