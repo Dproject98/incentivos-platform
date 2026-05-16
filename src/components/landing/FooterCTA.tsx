@@ -52,9 +52,7 @@ export function FooterCTA({ locale }: { locale: string }) {
                 Captación de clientes verificada. Solo pagas por resultado.
               </p>
               <p className="text-[12px] mt-4" style={{ color: "#4A6B7A" }}>
-                SPREAD GRACE, S.L.<br />
-                C/ Mallorca, 308<br />
-                08037 Barcelona, España
+                Barcelona, España
               </p>
             </div>
 
@@ -94,7 +92,7 @@ export function FooterCTA({ locale }: { locale: string }) {
 
           <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t gap-4" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
             <p className="text-[12px]" style={{ color: "#4A6B7A" }}>
-              © {new Date().getFullYear()} Incentis · SPREAD GRACE, S.L. · Todos los derechos reservados
+              © {new Date().getFullYear()} Incentis · Todos los derechos reservados
             </p>
             <div className="flex items-center gap-4">
               {["Verificado Stripe", "RGPD"].map((b) => (
