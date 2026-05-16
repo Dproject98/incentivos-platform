@@ -9,6 +9,7 @@ const createSchema = z.object({
   incentiveType: z.enum(["FIXED", "PERCENTAGE", "BONO"]),
   incentiveValue: z.number().positive(),
   bonusDescription: z.string().optional(),
+  bonusMinValue: z.number().positive().optional(),
   startDate: z.string(),
   endDate: z.string().optional(),
   maxReservations: z.number().int().positive().optional(),

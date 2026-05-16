@@ -25,6 +25,7 @@ export default function NuevaCampanaPage() {
     incentiveType: "FIXED",
     incentiveValue: "",
     bonusDescription: "",
+    bonusMinValue: "",
     startDate: new Date().toISOString().split("T")[0],
     endDate: "",
     maxReservations: "",
@@ -43,6 +44,7 @@ export default function NuevaCampanaPage() {
         maxReservations: form.maxReservations ? Number(form.maxReservations) : undefined,
         endDate: form.endDate || undefined,
         bonusDescription: form.bonusDescription || undefined,
+        bonusMinValue: form.bonusMinValue ? Number(form.bonusMinValue) : undefined,
       }),
     })
     if (!res.ok) { toast.error("Error al crear la campaña"); setLoading(false); return }
@@ -151,18 +153,38 @@ export default function NuevaCampanaPage() {
               />
             </div>
           ) : (
-            <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("bonus_description")}</label>
-              <input
-                required
-                value={form.bonusDescription}
-                onChange={(e) => setForm({ ...form, bonusDescription: e.target.value })}
-                placeholder="Ej: Cena para 2 personas"
-                className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
-                style={inputStyle}
-                onFocus={focusBorder}
-                onBlur={blurBorder}
-              />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("bonus_description")}</label>
+                <input
+                  required
+                  value={form.bonusDescription}
+                  onChange={(e) => setForm({ ...form, bonusDescription: e.target.value })}
+                  placeholder="Ej: Cena degustación para 2"
+                  className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                  style={inputStyle}
+                  onFocus={focusBorder}
+                  onBlur={blurBorder}
+                />
+              </div>
+              <div>
+                <label className="block text-[13px] font-medium mb-1" style={{ color: "#0F1F1A" }}>
+                  Valor mínimo de canje (€)
+                </label>
+                <p className="text-[12px] mb-1.5" style={{ color: "#88B5A2" }}>
+                  Saldo mínimo que debe tener el captador en su wallet para solicitar este bono
+                </p>
+                <input
+                  type="number" min={1} step={0.5} required
+                  value={form.bonusMinValue}
+                  onChange={(e) => setForm({ ...form, bonusMinValue: e.target.value })}
+                  placeholder="Ej: 30"
+                  className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                  style={inputStyle}
+                  onFocus={focusBorder}
+                  onBlur={blurBorder}
+                />
+              </div>
             </div>
           )}
 

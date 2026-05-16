@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl"
 import { signOut } from "next-auth/react"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { IncentisLogo } from "@/components/IncentisLogo"
-import { LayoutDashboard, Megaphone, CalendarCheck, Users, LogOut } from "lucide-react"
+import { LayoutDashboard, Megaphone, CalendarCheck, Users, Gift, LogOut } from "lucide-react"
 
 export function SidebarEmpresa() {
   const t = useTranslations("nav")
@@ -18,6 +18,7 @@ export function SidebarEmpresa() {
     { href: `/${locale}/empresa/campanas`,  label: t("campaigns"),    icon: Megaphone },
     { href: `/${locale}/empresa/reservas`,  label: t("reservations"), icon: CalendarCheck },
     { href: `/${locale}/empresa/staff`,     label: t("staff"),        icon: Users },
+    { href: `/${locale}/empresa/canjes`,    label: "Canjes",          icon: Gift  },
   ]
 
   return (
