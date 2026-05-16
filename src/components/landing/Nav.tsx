@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { IncentisLogo } from "@/components/IncentisLogo"
 
 const links = [
   { label: "Producto",        href: "#producto" },
@@ -32,14 +33,8 @@ export function Nav({ locale }: { locale: string }) {
     >
       <div className="max-w-[1200px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href={`/${locale}`} className="flex items-center gap-1.5 shrink-0">
-          <span className="text-amber-DEFAULT text-xl leading-none" style={{ color: "#D88B2E" }}>✦</span>
-          <span
-            className="font-display font-semibold text-[17px] tracking-[-0.04em]"
-            style={{ color: "#0F1F1A", fontFamily: "var(--font-display)" }}
-          >
-            incentis
-          </span>
+        <Link href={`/${locale}`} className="flex items-center shrink-0">
+          <IncentisLogo size="sm" />
         </Link>
 
         {/* Desktop nav */}

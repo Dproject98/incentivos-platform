@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { IncentisLogo } from "@/components/IncentisLogo"
 
 export function FooterCTA({ locale }: { locale: string }) {
   return (
@@ -44,9 +45,8 @@ export function FooterCTA({ locale }: { locale: string }) {
           <div className="grid md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-1.5 mb-4">
-                <span className="text-[18px] leading-none" style={{ color: "#D88B2E" }}>✦</span>
-                <span className="font-display font-semibold text-[16px] tracking-[-0.04em]" style={{ color: "#F2EBDC", fontFamily: "var(--font-display)" }}>incentis</span>
+              <div className="mb-4">
+                <IncentisLogo size="sm" light />
               </div>
               <p className="text-[13px] leading-relaxed" style={{ color: "#88B5A2" }}>
                 Captación de clientes verificada. Solo pagas por resultado.

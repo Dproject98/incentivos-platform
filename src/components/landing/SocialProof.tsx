@@ -1,9 +1,3 @@
-const metrics = [
-  { value: "€284.000", label: "pagados a captadores" },
-  { value: "63",       label: "empresas activas" },
-  { value: "91%",      label: "tasa de conversión verificada" },
-]
-
 const testimonials = [
   {
     quote: "Llevábamos 2 años con publicidad digital sin saber si funcionaba. Con Incentis pagamos €800 en incentivos y facturamos €9.200 en reservas nuevas ese mes.",
@@ -21,7 +15,21 @@ const testimonials = [
   },
 ]
 
-export function SocialProof() {
+interface SocialProofProps {
+  totalPaid: number
+  empresasCount: number
+  conversionRate: number
+}
+
+export function SocialProof({ totalPaid, empresasCount, conversionRate }: SocialProofProps) {
+  const formatEur = (n: number) => "€" + Math.round(n).toLocaleString("es-ES")
+
+  const metrics = [
+    { value: formatEur(totalPaid), label: "pagados a captadores" },
+    { value: String(empresasCount), label: "empresas activas" },
+    { value: conversionRate + "%", label: "tasa de conversión verificada" },
+  ]
+
   return (
     <section id="casos" className="py-24 px-6 md:px-12" style={{ background: "#E8DFCD" }}>
       <div className="max-w-[1200px] mx-auto">

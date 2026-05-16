@@ -6,12 +6,8 @@ import { signIn } from "next-auth/react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { SpaceBackground } from "@/components/3d/SpaceBackground"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import { QrCode, Shield, Euro, Zap, Mail, Lock, User, Phone } from "lucide-react"
+import { IncentisLogo } from "@/components/IncentisLogo"
 
 export default function RegisterCaptadorPage() {
   const t = useTranslations("auth")
@@ -41,78 +37,96 @@ export default function RegisterCaptadorPage() {
   }
 
   const perks = [
-    { icon: Shield, label: "100% anónimo", color: "text-green-400" },
-    { icon: QrCode,  label: "QR automático", color: "text-cyan-400" },
-    { icon: Euro,    label: "Incentivos reales", color: "text-yellow-400" },
+    { label: "100% anónimo",      symbol: "✦" },
+    { label: "QR automático",     symbol: "◈" },
+    { label: "Incentivos reales", symbol: "€" },
+  ]
+
+  const fields = [
+    { key: "name",     type: "text",     placeholder: "Tu nombre completo",   label: t("name"),     required: true },
+    { key: "email",    type: "email",    placeholder: "tu@email.com",         label: t("email"),    required: true },
+    { key: "phone",    type: "tel",      placeholder: "+34 600 000 000",      label: t("phone"),    required: false },
+    { key: "password", type: "password", placeholder: "Mínimo 6 caracteres", label: t("password"), required: true },
   ]
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4">
-      <SpaceBackground minimal />
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
       <div className="absolute top-4 right-4 z-20"><LanguageSwitcher /></div>
 
-      <div className="relative z-10 w-full max-w-md">
-        <div className="flex items-center justify-center gap-2.5 mb-6">
-          <div className="h-10 w-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-            <QrCode className="h-6 w-6 text-purple-400" />
-          </div>
-          <span className="font-bold text-2xl text-white">Incentis</span>
-        </div>
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <Link href={`/${locale}`} className="flex justify-center mb-8">
+          <IncentisLogo size="md" />
+        </Link>
 
         {/* Perks */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          {perks.map((p) => {
-            const Icon = p.icon
-            return (
-              <div key={p.label} className="glass rounded-xl p-3 text-center border border-white/5">
-                <Icon className={`h-5 w-5 ${p.color} mx-auto mb-1`} />
-                <span className="text-xs text-slate-400">{p.label}</span>
-              </div>
-            )
-          })}
+          {perks.map((p) => (
+            <div
+              key={p.label}
+              className="rounded-xl px-3 py-3 text-center"
+              style={{ background: "rgba(31,107,77,0.07)", border: "1px solid rgba(31,107,77,0.15)" }}
+            >
+              <span className="block text-[16px] mb-1" style={{ color: "#D88B2E" }}>{p.symbol}</span>
+              <span className="text-[11px] font-medium" style={{ color: "#1F6B4D" }}>{p.label}</span>
+            </div>
+          ))}
         </div>
 
-        <div className="glass rounded-3xl p-8 border border-white/10">
-          <h1 className="text-2xl font-bold text-white mb-1">{t("register_captador")}</h1>
-          <p className="text-slate-400 text-sm mb-8">{t("captador_desc")}</p>
+        {/* Card */}
+        <div className="rounded-2xl p-8" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+          <h1
+            className="font-semibold mb-1"
+            style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}
+          >
+            {t("register_captador")}
+          </h1>
+          <p className="text-[14px] mb-7" style={{ color: "#88B5A2" }}>{t("captador_desc")}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {[
-              { field: "name",     icon: User,  type: "text",     placeholder: "Tu nombre completo",    label: t("name") },
-              { field: "email",    icon: Mail,  type: "email",    placeholder: "tu@email.com",          label: t("email") },
-              { field: "phone",    icon: Phone, type: "tel",      placeholder: "+34 600 000 000",       label: t("phone") },
-              { field: "password", icon: Lock,  type: "password", placeholder: "Mínimo 6 caracteres",  label: t("password") },
-            ].map(({ field, icon: Icon, type, placeholder, label }) => (
-              <div key={field} className="space-y-1.5">
-                <Label className="text-slate-300 text-sm">{label}</Label>
-                <div className="relative">
-                  <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                  <Input
-                    type={type}
-                    value={form[field as keyof typeof form]}
-                    onChange={(e) => setForm({ ...form, [field]: e.target.value })}
-                    required={field !== "phone"}
-                    placeholder={placeholder}
-                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-purple-500/50"
-                  />
-                </div>
+            {fields.map(({ key, type, placeholder, label, required }) => (
+              <div key={key}>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                  {label}
+                </label>
+                <input
+                  type={type}
+                  value={form[key as keyof typeof form]}
+                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  required={required}
+                  placeholder={placeholder}
+                  className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                  style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.15)", color: "#0F1F1A" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+                />
               </div>
             ))}
 
-            <Button
+            <button
               type="submit"
-              className="w-full h-11 mt-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white border-0 font-semibold"
               disabled={loading}
+              className="w-full py-3 rounded-full text-[15px] font-semibold mt-2 transition-opacity disabled:opacity-60 hover:opacity-90"
+              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
             >
-              {loading ? t("registering") : <span className="flex items-center gap-2"><Zap className="h-4 w-4" />{t("register")}</span>}
-            </Button>
+              {loading ? t("registering") : t("register")}
+            </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-6 text-center text-[13px]" style={{ color: "#88B5A2" }}>
             {t("have_account")}{" "}
-            <Link href={`/${locale}/login`} className="text-purple-400 hover:text-purple-300">{t("login")}</Link>
-          </div>
+            <Link href={`/${locale}/login`} className="font-medium" style={{ color: "#1F6B4D" }}>
+              {t("login")}
+            </Link>
+          </p>
         </div>
+
+        <p className="mt-5 text-center text-[12px]" style={{ color: "#88B5A2" }}>
+          ¿Eres empresa?{" "}
+          <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            Registra tu negocio
+          </Link>
+        </p>
       </div>
     </div>
   )

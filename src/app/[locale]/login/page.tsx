@@ -6,12 +6,8 @@ import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { SpaceBackground } from "@/components/3d/SpaceBackground"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import { QrCode, Lock, Mail, Zap } from "lucide-react"
+import { IncentisLogo } from "@/components/IncentisLogo"
 
 export default function LoginPage() {
   const t = useTranslations("auth")
@@ -44,86 +40,110 @@ export default function LoginPage() {
     else router.push(`/${locale}`)
   }
 
+  const inputStyle = {
+    background: "#F2EBDC",
+    border: "1px solid rgba(15,31,26,0.15)",
+    color: "#0F1F1A",
+  }
+
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4">
-      <SpaceBackground minimal />
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
+      <div className="absolute top-4 right-4 z-20"><LanguageSwitcher /></div>
 
-      <div className="absolute top-4 right-4 z-20">
-        <LanguageSwitcher />
-      </div>
-
-      <div className="relative z-10 w-full max-w-md">
+      <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="h-10 w-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-            <QrCode className="h-6 w-6 text-purple-400" />
-          </div>
-          <span className="font-bold text-2xl text-white">Incentis</span>
-        </div>
+        <Link href={`/${locale}`} className="flex justify-center mb-8">
+          <IncentisLogo size="md" />
+        </Link>
 
         {/* Card */}
-        <div className="glass rounded-3xl p-8 border border-white/10">
-          <h1 className="text-2xl font-bold text-white mb-1">{t("login")}</h1>
-          <p className="text-slate-400 text-sm mb-8">
+        <div className="rounded-2xl p-8" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+          <h1
+            className="font-semibold mb-1"
+            style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}
+          >
+            {t("login")}
+          </h1>
+          <p className="text-[14px] mb-7" style={{ color: "#88B5A2" }}>
             {t("no_account")}{" "}
-            <Link href={`/${locale}/register/captador`} className="text-purple-400 hover:text-purple-300 transition-colors">
+            <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#1F6B4D" }}>
               {t("register")}
             </Link>
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <Label className="text-slate-300 text-sm">{t("email")}</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-purple-500/50 focus:ring-purple-500/20"
-                  placeholder="tu@email.com"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                {t("email")}
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                placeholder="tu@email.com"
+                className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                style={inputStyle}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+              />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-slate-300 text-sm">{t("password")}</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-purple-500/50"
-                  placeholder="••••••••"
-                />
-              </div>
+            <div>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                {t("password")}
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                placeholder="••••••••"
+                className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                style={inputStyle}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+              />
             </div>
 
-            <Button
+            <button
               type="submit"
-              className="w-full h-11 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white border-0 font-semibold transition-all hover:scale-[1.02]"
               disabled={loading}
+              className="w-full py-3 rounded-full text-[15px] font-semibold mt-2 transition-opacity disabled:opacity-60 hover:opacity-90"
+              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
             >
               {loading ? (
-                <span className="flex items-center gap-2"><span className="animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full" />{t("logging_in")}</span>
-              ) : (
-                <span className="flex items-center gap-2"><Zap className="h-4 w-4" />{t("login")}</span>
-              )}
-            </Button>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  {t("logging_in")}
+                </span>
+              ) : t("login")}
+            </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-white/5 text-center text-sm text-slate-500">
+          <div
+            className="mt-6 pt-6 border-t text-center text-[13px]"
+            style={{ borderColor: "rgba(15,31,26,0.08)", color: "#88B5A2" }}
+          >
             {t("or_register_as")}{" "}
-            <Link href={`/${locale}/register/empresa`} className="text-cyan-400 hover:text-cyan-300 transition-colors">
+            <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#1F6B4D" }}>
               {t("register_empresa")}
             </Link>
           </div>
         </div>
+
+        <p className="mt-5 text-center text-[12px]" style={{ color: "#88B5A2" }}>
+          ¿Primera vez?{" "}
+          <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            Crear cuenta captador
+          </Link>
+          {" · "}
+          <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            Registrar empresa
+          </Link>
+        </p>
       </div>
     </div>
   )
