@@ -34,7 +34,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${inter.variable} ${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased font-sans bg-background text-foreground">
+      <body className="antialiased font-sans" style={{ background: "#F2EBDC" }}>
         <NextIntlClientProvider messages={messages}>
           {children}
           <Toaster richColors position="top-right" />

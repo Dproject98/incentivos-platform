@@ -15,7 +15,7 @@ export default async function LandingPage() {
   const locale = await getLocale()
 
   return (
-    <div style={{ background: "#F2EBDC", color: "#0F1F1A", fontFamily: "var(--font-body)" }}>
+    <div style={{ background: "#F2EBDC", color: "#0F1F1A", fontFamily: "var(--font-body)", minHeight: "100vh" }}>
       <Nav locale={locale} />
       <main>
         <Hero locale={locale} />
