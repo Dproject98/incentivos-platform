@@ -1,7 +1,6 @@
 import { getLocale } from "next-intl/server"
 import { Nav } from "@/components/landing/Nav"
 import { Hero } from "@/components/landing/Hero"
-import { TrustBar } from "@/components/landing/TrustBar"
 import { HowItWorks } from "@/components/landing/HowItWorks"
 import { Features } from "@/components/landing/Features"
 import { RoiCalculator } from "@/components/landing/RoiCalculator"
@@ -19,7 +18,6 @@ export default async function LandingPage() {
       <Nav locale={locale} />
       <main>
         <Hero locale={locale} />
-        <TrustBar />
         <HowItWorks />
         <Features />
         <RoiCalculator />
