@@ -2,7 +2,7 @@ import { auth, signOut } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import { getLocale } from "next-intl/server"
-import { QrCode, CheckCircle, Clock, LogOut, Smartphone } from "lucide-react"
+import { CheckCircle, Clock, LogOut, Smartphone, Lock } from "lucide-react"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { IncentisLogo } from "@/components/IncentisLogo"
@@ -45,7 +45,6 @@ export default async function StaffPage() {
 
   const business = staffRecord?.business ?? null
 
-  // Flatten reservations from all campaigns, sorted by updatedAt desc
   const recentReservations = business
     ? business.campaigns
         .flatMap((c) => c.reservations)
@@ -118,20 +117,66 @@ export default async function StaffPage() {
           </p>
         </div>
 
-        {/* Validaciones hoy */}
-        <div className="rounded-2xl p-5" style={{ background: "#1F6B4D" }}>
-          <p
-            className="text-[10px] uppercase tracking-[0.12em] font-mono mb-2"
-            style={{ color: "rgba(242,235,220,0.60)", fontFamily: "var(--font-mono)" }}
+        {/* PIN card — most prominent element */}
+        <div
+          className="rounded-2xl p-5 flex items-center gap-4"
+          style={{ background: "#1F6B4D" }}
+        >
+          <div
+            className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: "rgba(242,235,220,0.12)", border: "1px solid rgba(242,235,220,0.20)" }}
           >
-            Validaciones hoy
-          </p>
-          <div className="flex items-end gap-3">
-            <span className="text-[48px] font-bold leading-none" style={{ color: "#F2EBDC" }}>
+            <Lock className="h-6 w-6" style={{ color: "#F2EBDC" }} />
+          </div>
+          <div className="flex-1">
+            <p
+              className="text-[10px] uppercase tracking-[0.12em] font-mono mb-1"
+              style={{ color: "rgba(242,235,220,0.60)", fontFamily: "var(--font-mono)" }}
+            >
+              Tu PIN de validación
+            </p>
+            {staffRecord?.pin ? (
+              <div className="flex items-center gap-3">
+                <div className="flex gap-2">
+                  {staffRecord.pin.split("").map((digit, i) => (
+                    <div
+                      key={i}
+                      className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-[20px]"
+                      style={{ background: "rgba(242,235,220,0.15)", color: "#F2EBDC" }}
+                    >
+                      {digit}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[12px]" style={{ color: "rgba(242,235,220,0.60)" }}>
+                  Introdúcelo al escanear el QR
+                </p>
+              </div>
+            ) : (
+              <p className="text-[13px]" style={{ color: "rgba(242,235,220,0.70)" }}>
+                PIN no asignado — contacta con tu empresa
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Validaciones hoy */}
+        <div
+          className="rounded-2xl p-5 flex items-center justify-between"
+          style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+        >
+          <div>
+            <p
+              className="text-[10px] uppercase tracking-[0.12em] font-mono"
+              style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}
+            >
+              Validaciones hoy
+            </p>
+            <span className="text-[40px] font-bold leading-tight" style={{ color: "#0F1F1A" }}>
               {confirmedToday}
             </span>
-            <CheckCircle className="h-6 w-6 mb-2" style={{ color: "#D88B2E" }} />
           </div>
+          <CheckCircle className="h-8 w-8" style={{ color: "#1F6B4D" }} />
         </div>
 
         {/* Instrucciones */}
@@ -146,33 +191,15 @@ export default async function StaffPage() {
             <Smartphone className="h-5 w-5" style={{ color: "#1F6B4D" }} />
           </div>
           <div>
-            <p className="font-medium text-[14px] mb-1" style={{ color: "#0F1F1A" }}>Cómo validar reservas</p>
-            <ol className="text-[13px] space-y-1" style={{ color: "#2A3B34" }}>
+            <p className="font-medium text-[14px] mb-1.5" style={{ color: "#0F1F1A" }}>Cómo validar una reserva</p>
+            <ol className="text-[13px] space-y-1.5" style={{ color: "#2A3B34" }}>
               <li>1. El cliente muestra el código QR en su teléfono</li>
               <li>2. Escanéalo con la cámara de tu dispositivo</li>
-              <li>3. Pulsa <strong>"Confirmar llegada"</strong> en la pantalla</li>
+              <li>3. Introduce tu <strong>PIN de 4 dígitos</strong> en la pantalla</li>
+              <li>4. La reserva queda confirmada automáticamente</li>
             </ol>
             <p className="text-[12px] mt-2" style={{ color: "#88B5A2" }}>
-              El incentivo se acredita automáticamente al captador.
-            </p>
-          </div>
-        </div>
-
-        {/* QR badge */}
-        <div
-          className="rounded-2xl p-5 flex items-center gap-4"
-          style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
-        >
-          <div
-            className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)" }}
-          >
-            <QrCode className="h-5 w-5" style={{ color: "#1F6B4D" }} />
-          </div>
-          <div className="flex-1">
-            <p className="font-medium text-[14px]" style={{ color: "#0F1F1A" }}>Escanea con la cámara</p>
-            <p className="text-[12px]" style={{ color: "#88B5A2" }}>
-              Apunta al QR del cliente — se abrirá automáticamente
+              El incentivo se acredita al captador al instante.
             </p>
           </div>
         </div>

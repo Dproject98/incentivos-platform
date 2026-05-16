@@ -79,9 +79,11 @@ model BusinessStaff {
   businessId String
   email      String
   name       String
+  pin        String?  @unique // 4-digit unique PIN for QR validation
   createdAt  DateTime @default(now())
 
-  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  business   Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  staffScans StaffScan[]
 }
 
 model Campaign {
@@ -128,13 +130,15 @@ model Reservation {
 }
 
 model StaffScan {
-  id            String      @id @default(cuid())
-  reservationId String      @unique
-  staffId       String
-  scannedAt     DateTime    @default(now())
+  id              String   @id @default(cuid())
+  reservationId   String   @unique
+  staffId         String?  // legacy: User.id (kept for backward compat)
+  businessStaffId String?  // PIN-based flow: BusinessStaff.id
+  scannedAt       DateTime @default(now())
 
-  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
-  staff       User        @relation(fields: [staffId], references: [id])
+  reservation   Reservation    @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  staff         User?          @relation(fields: [staffId], references: [id])
+  businessStaff BusinessStaff? @relation(fields: [businessStaffId], references: [id])
 }
 
 model Wallet {

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { auth } from "@/lib/auth"
 
 export async function GET(
   req: NextRequest,
@@ -28,6 +27,7 @@ export async function GET(
     status: reservation.status,
     qrScannedAt: reservation.qrScannedAt,
     businessName: reservation.campaign.business.name,
+    businessId: reservation.campaign.businessId,
   })
 }
 
@@ -35,16 +35,20 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ) {
-  const session = await auth()
-  if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 })
-
   const { token } = await params
+  const body = await req.json().catch(() => ({}))
+  const pin: string | undefined = body?.pin
 
+  if (!pin) {
+    return NextResponse.json({ error: "pin_required" }, { status: 400 })
+  }
+
+  // Find reservation
   const reservation = await prisma.reservation.findUnique({
     where: { qrToken: token },
     include: {
       campaign: {
-        include: { business: { select: { name: true } } },
+        include: { business: { select: { name: true, id: true } } },
       },
       captador: { include: { wallet: true } },
     },
@@ -55,12 +59,28 @@ export async function POST(
   }
 
   if (reservation.status === "CONFIRMED") {
-    return NextResponse.json({ error: "already_scanned", reservation }, { status: 409 })
+    return NextResponse.json({ error: "already_scanned" }, { status: 409 })
   }
 
-  const incentiveAmount = reservation.campaign.incentiveType === "BONO"
-    ? 0
-    : reservation.campaign.incentiveValue
+  // Validate PIN — find the staff member with this PIN
+  const staffMember = await prisma.businessStaff.findUnique({
+    where: { pin },
+  })
+
+  if (!staffMember) {
+    return NextResponse.json({ error: "wrong_pin" }, { status: 403 })
+  }
+
+  // Verify the staff belongs to the same business as the campaign
+  if (staffMember.businessId !== reservation.campaign.businessId) {
+    return NextResponse.json({ error: "wrong_pin" }, { status: 403 })
+  }
+
+  // All checks pass — confirm the reservation
+  const incentiveAmount =
+    reservation.campaign.incentiveType === "BONO"
+      ? 0
+      : reservation.campaign.incentiveValue
 
   await prisma.$transaction(async (tx) => {
     await tx.reservation.update({
@@ -70,7 +90,7 @@ export async function POST(
         qrScannedAt: new Date(),
         incentivePaid: true,
         staffScan: {
-          create: { staffId: session.user.id },
+          create: { businessStaffId: staffMember.id },
         },
       },
     })
@@ -93,5 +113,5 @@ export async function POST(
     }
   })
 
-  return NextResponse.json({ success: true, incentiveAmount })
+  return NextResponse.json({ success: true, incentiveAmount, staffName: staffMember.name })
 }
