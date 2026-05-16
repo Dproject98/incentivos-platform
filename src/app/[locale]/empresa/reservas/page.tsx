@@ -23,41 +23,45 @@ export default async function EmpresaReservasPage() {
     orderBy: { createdAt: "desc" },
   })
 
-  const statusConfig: Record<string, { label: string; cls: string }> = {
-    PENDING:   { label: t("status_pending"),   cls: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30" },
-    CONFIRMED: { label: t("status_confirmed"), cls: "bg-green-500/15 text-green-300 border-green-500/30" },
-    CANCELLED: { label: t("status_cancelled"), cls: "bg-red-500/15 text-red-300 border-red-500/30" },
-    NO_SHOW:   { label: t("status_no_show"),   cls: "bg-slate-500/15 text-slate-400 border-slate-500/30" },
+  const statusStyle: Record<string, { bg: string; color: string; border: string; label: string }> = {
+    PENDING:   { label: t("status_pending"),   bg: "rgba(216,139,46,0.10)", color: "#B5710D", border: "rgba(216,139,46,0.25)" },
+    CONFIRMED: { label: t("status_confirmed"), bg: "rgba(31,107,77,0.10)",  color: "#1F6B4D", border: "rgba(31,107,77,0.20)" },
+    CANCELLED: { label: t("status_cancelled"), bg: "rgba(220,38,38,0.08)",  color: "#dc2626", border: "rgba(220,38,38,0.15)" },
+    NO_SHOW:   { label: t("status_no_show"),   bg: "rgba(15,31,26,0.06)",   color: "#2A3B34", border: "rgba(15,31,26,0.12)" },
   }
 
   return (
     <div className="space-y-8 max-w-5xl">
       <div>
-        <h1 className="text-3xl font-bold text-white">{t("title")}</h1>
-        <p className="text-slate-400 mt-1">{reservations.length} reservas en total</p>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+          {t("title")}
+        </h1>
+        <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{reservations.length} reservas en total</p>
       </div>
 
       {reservations.length === 0 ? (
-        <div className="glass rounded-2xl p-16 border border-white/5 text-center">
-          <CalendarCheck className="h-12 w-12 text-slate-600 mx-auto mb-4" />
-          <p className="text-slate-500">{t("empty")}</p>
+        <div className="rounded-2xl p-16 text-center" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+          <CalendarCheck className="h-10 w-10 mx-auto mb-4" style={{ color: "#88B5A2" }} />
+          <p style={{ color: "#88B5A2" }}>{t("empty")}</p>
         </div>
       ) : (
-        <div className="glass rounded-2xl border border-white/10 overflow-hidden">
+        <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
           {/* Header */}
-          <div className="grid grid-cols-[1fr_1fr_140px_60px_100px_80px] gap-4 px-5 py-3 border-b border-white/5 text-xs text-slate-500 uppercase tracking-wider">
-            <span>{t("client")}</span>
-            <span>{t("campaign")}</span>
-            <span>{t("date")}</span>
-            <span>{t("guests")}</span>
-            <span>{t("status")}</span>
-            <span>{t("incentive")}</span>
+          <div
+            className="grid gap-4 px-5 py-3"
+            style={{ gridTemplateColumns: "1fr 1fr 140px 60px 110px 80px", borderBottom: "1px solid rgba(15,31,26,0.06)" }}
+          >
+            {[t("client"), t("campaign"), t("date"), t("guests"), t("status"), t("incentive")].map((h) => (
+              <span key={h} className="text-[10px] uppercase tracking-[0.1em] font-mono" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+                {h}
+              </span>
+            ))}
           </div>
 
           {/* Rows */}
           <div>
             {reservations.map((r, i) => {
-              const sc = statusConfig[r.status] ?? statusConfig.PENDING
+              const ss = statusStyle[r.status] ?? statusStyle.PENDING
               const incentive = r.status === "CONFIRMED"
                 ? r.campaign.incentiveType === "BONO" ? "Bono" : `${r.campaign.incentiveValue}€`
                 : "—"
@@ -65,24 +69,34 @@ export default async function EmpresaReservasPage() {
               return (
                 <div
                   key={r.id}
-                  className={`grid grid-cols-[1fr_1fr_140px_60px_100px_80px] gap-4 px-5 py-4 text-sm ${
-                    i < reservations.length - 1 ? "border-b border-white/5" : ""
-                  } hover:bg-white/3 transition-colors`}
+                  className="grid gap-4 px-5 py-4 transition-colors hover:bg-[#F8F5EE]"
+                  style={{
+                    gridTemplateColumns: "1fr 1fr 140px 60px 110px 80px",
+                    borderTop: i > 0 ? "1px solid rgba(15,31,26,0.05)" : "none",
+                  }}
                 >
                   <div>
-                    <p className="text-white font-medium">{r.clientName}</p>
-                    <p className="text-xs text-slate-600 mt-0.5">{r.clientEmail}</p>
+                    <p className="font-medium text-[14px]" style={{ color: "#0F1F1A" }}>{r.clientName}</p>
+                    <p className="text-[12px] mt-0.5" style={{ color: "#88B5A2" }}>{r.clientEmail}</p>
                   </div>
-                  <p className="text-slate-400 self-center">{r.campaign.title}</p>
+                  <p className="self-center text-[13px]" style={{ color: "#2A3B34" }}>{r.campaign.title}</p>
                   <div className="self-center">
-                    <p className="text-slate-300">{format(new Date(r.date), "dd MMM yyyy", { locale: dateLocale })}</p>
-                    <p className="text-xs text-slate-600">{r.time}</p>
+                    <p className="text-[13px]" style={{ color: "#0F1F1A" }}>{format(new Date(r.date), "dd MMM yyyy", { locale: dateLocale })}</p>
+                    <p className="text-[12px]" style={{ color: "#88B5A2" }}>{r.time}</p>
                   </div>
-                  <p className="text-slate-400 self-center">{r.guests}</p>
+                  <p className="self-center text-[13px]" style={{ color: "#2A3B34" }}>{r.guests}</p>
                   <div className="self-center">
-                    <span className={`text-xs px-2.5 py-1 rounded-full border ${sc.cls}`}>{sc.label}</span>
+                    <span
+                      className="text-[11px] px-2.5 py-1 rounded-full font-medium"
+                      style={{ background: ss.bg, color: ss.color, border: `1px solid ${ss.border}` }}
+                    >
+                      {ss.label}
+                    </span>
                   </div>
-                  <p className={`self-center font-medium text-sm ${r.status === "CONFIRMED" ? "text-pink-400" : "text-slate-600"}`}>
+                  <p
+                    className="self-center font-semibold text-[13px]"
+                    style={{ color: r.status === "CONFIRMED" ? "#D88B2E" : "#88B5A2" }}
+                  >
                     {incentive}
                   </p>
                 </div>

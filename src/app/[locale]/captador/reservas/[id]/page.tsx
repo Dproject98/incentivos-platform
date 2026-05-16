@@ -29,11 +29,11 @@ export default async function ReservaDetailPage({
 
   const qrDataUrl = await generateQRDataURL(reservation.qrToken)
 
-  const statusConfig: Record<string, { label: string; cls: string }> = {
-    PENDING:   { label: t("status_pending"),   cls: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30" },
-    CONFIRMED: { label: t("status_confirmed"), cls: "bg-green-500/15 text-green-300 border-green-500/30" },
-    CANCELLED: { label: t("status_cancelled"), cls: "bg-red-500/15 text-red-300 border-red-500/30" },
-    NO_SHOW:   { label: t("status_no_show"),   cls: "bg-slate-500/15 text-slate-400 border-slate-500/30" },
+  const statusConfig: Record<string, { label: string; bg: string; color: string; border: string }> = {
+    PENDING:   { label: t("status_pending"),   bg: "rgba(216,139,46,0.10)", color: "#B5710D", border: "rgba(216,139,46,0.25)" },
+    CONFIRMED: { label: t("status_confirmed"), bg: "rgba(31,107,77,0.10)",  color: "#1F6B4D", border: "rgba(31,107,77,0.20)" },
+    CANCELLED: { label: t("status_cancelled"), bg: "rgba(220,38,38,0.08)",  color: "#dc2626", border: "rgba(220,38,38,0.15)" },
+    NO_SHOW:   { label: t("status_no_show"),   bg: "rgba(15,31,26,0.06)",   color: "#2A3B34", border: "rgba(15,31,26,0.12)" },
   }
 
   const sc = statusConfig[reservation.status] ?? statusConfig.PENDING
@@ -43,90 +43,116 @@ export default async function ReservaDetailPage({
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link href={`/${locale}/captador/reservas`}>
-          <button className="h-9 w-9 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
-            <ArrowLeft className="h-4 w-4 text-slate-400" />
+          <button
+            className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80"
+            style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)" }}
+          >
+            <ArrowLeft className="h-4 w-4" style={{ color: "#0F1F1A" }} />
           </button>
         </Link>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-white truncate">{reservation.clientName}</h1>
-            <span className={`text-xs px-2.5 py-1 rounded-full border flex-shrink-0 ${sc.cls}`}>{sc.label}</span>
+            <h1 className="font-semibold text-[20px] truncate" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", letterSpacing: "-0.03em" }}>
+              {reservation.clientName}
+            </h1>
+            <span
+              className="text-[11px] px-2.5 py-1 rounded-full font-medium shrink-0"
+              style={{ background: sc.bg, color: sc.color, border: `1px solid ${sc.border}` }}
+            >
+              {sc.label}
+            </span>
           </div>
-          <p className="text-sm text-slate-500">{reservation.campaign.business.name} · {reservation.campaign.title}</p>
+          <p className="text-[13px]" style={{ color: "#88B5A2" }}>
+            {reservation.campaign.business.name} · {reservation.campaign.title}
+          </p>
         </div>
       </div>
 
       {/* Details */}
-      <div className="glass rounded-2xl border border-white/10 p-5">
-        <h2 className="text-xs text-slate-500 uppercase tracking-widest mb-4">Detalles de la reserva</h2>
-        <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+          Detalles de la reserva
+        </p>
+        <div className="grid grid-cols-2 gap-4 text-[13px]">
           <div className="flex items-start gap-2">
-            <Calendar className="h-4 w-4 text-purple-400 mt-0.5 flex-shrink-0" />
+            <Calendar className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "#1F6B4D" }} />
             <div>
-              <p className="text-slate-500">{t("date")}</p>
-              <p className="text-white font-medium">{format(new Date(reservation.date), "dd MMM yyyy", { locale: dateLocale })}</p>
+              <p style={{ color: "#88B5A2" }}>{t("date")}</p>
+              <p className="font-medium" style={{ color: "#0F1F1A" }}>
+                {format(new Date(reservation.date), "dd MMM yyyy", { locale: dateLocale })}
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <Clock className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+            <Clock className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "#1F6B4D" }} />
             <div>
-              <p className="text-slate-500">{t("time")}</p>
-              <p className="text-white font-medium">{reservation.time}</p>
+              <p style={{ color: "#88B5A2" }}>{t("time")}</p>
+              <p className="font-medium" style={{ color: "#0F1F1A" }}>{reservation.time}</p>
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <Users className="h-4 w-4 text-pink-400 mt-0.5 flex-shrink-0" />
+            <Users className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "#D88B2E" }} />
             <div>
-              <p className="text-slate-500">{t("guests")}</p>
-              <p className="text-white font-medium">{reservation.guests} personas</p>
+              <p style={{ color: "#88B5A2" }}>{t("guests")}</p>
+              <p className="font-medium" style={{ color: "#0F1F1A" }}>{reservation.guests} personas</p>
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <Calendar className="h-4 w-4 text-slate-500 mt-0.5 flex-shrink-0" />
+            <Calendar className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "#88B5A2" }} />
             <div>
-              <p className="text-slate-500">{t("created")}</p>
-              <p className="text-white font-medium">{format(new Date(reservation.createdAt), "dd MMM yyyy", { locale: dateLocale })}</p>
+              <p style={{ color: "#88B5A2" }}>{t("created")}</p>
+              <p className="font-medium" style={{ color: "#0F1F1A" }}>
+                {format(new Date(reservation.createdAt), "dd MMM yyyy", { locale: dateLocale })}
+              </p>
             </div>
           </div>
         </div>
         {reservation.notes && (
-          <div className="mt-4 pt-4 border-t border-white/5 flex items-start gap-2 text-sm">
-            <FileText className="h-4 w-4 text-slate-500 mt-0.5 flex-shrink-0" />
+          <div className="mt-4 pt-4 flex items-start gap-2 text-[13px]" style={{ borderTop: "1px solid rgba(15,31,26,0.06)" }}>
+            <FileText className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "#88B5A2" }} />
             <div>
-              <p className="text-slate-500">{t("notes")}</p>
-              <p className="text-white mt-1">{reservation.notes}</p>
+              <p style={{ color: "#88B5A2" }}>{t("notes")}</p>
+              <p className="mt-1" style={{ color: "#0F1F1A" }}>{reservation.notes}</p>
             </div>
           </div>
         )}
       </div>
 
       {/* QR Code */}
-      <div className="glass rounded-2xl border border-white/10 p-5">
+      <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-xs text-slate-500 uppercase tracking-widest">Código QR</h2>
+          <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+            Código QR
+          </p>
           {reservation.status === "CONFIRMED" && (
-            <span className="flex items-center gap-1.5 text-green-400 text-sm font-medium">
+            <span className="flex items-center gap-1.5 text-[13px] font-medium" style={{ color: "#1F6B4D" }}>
               <CheckCircle className="h-4 w-4" /> Validado
             </span>
           )}
         </div>
 
         <div className="flex flex-col items-center gap-5">
-          <div className="p-3 bg-white rounded-2xl">
+          <div className="p-3 bg-white rounded-2xl" style={{ border: "1px solid rgba(15,31,26,0.08)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={qrDataUrl} alt="QR Code" className="w-48 h-48 block" />
           </div>
 
-          <div className="flex items-center gap-5 text-xs text-slate-500">
-            <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-purple-400" /> Enviado por email</span>
-            <span className="flex items-center gap-1.5"><MessageCircle className="h-3.5 w-3.5 text-green-400" /> Por WhatsApp</span>
+          <div className="flex items-center gap-5 text-[12px]" style={{ color: "#88B5A2" }}>
+            <span className="flex items-center gap-1.5">
+              <Mail className="h-3.5 w-3.5" style={{ color: "#1F6B4D" }} /> Enviado por email
+            </span>
+            <span className="flex items-center gap-1.5">
+              <MessageCircle className="h-3.5 w-3.5" style={{ color: "#1F6B4D" }} /> Por WhatsApp
+            </span>
           </div>
 
           <a
             href={`/api/reservations/${reservation.id}/qr`}
             download={`qr-${reservation.id}.png`}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-medium transition-opacity hover:opacity-80"
+            style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)", color: "#0F1F1A" }}
           >
-            <Download className="h-4 w-4 text-cyan-400" />
+            <Download className="h-4 w-4" style={{ color: "#88B5A2" }} />
             {t("download_qr")}
           </a>
         </div>

@@ -33,7 +33,12 @@ export function CampaignActions({ campaignId, status }: Props) {
   return (
     <button
       onClick={toggle}
-      className="flex items-center justify-center gap-1.5 w-full h-9 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 text-sm font-medium transition-colors"
+      className="flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-[13px] font-medium transition-all hover:opacity-80"
+      style={{
+        background: status === "ACTIVE" ? "rgba(216,139,46,0.10)" : "rgba(31,107,77,0.10)",
+        color: status === "ACTIVE" ? "#B5710D" : "#1F6B4D",
+        border: `1px solid ${status === "ACTIVE" ? "rgba(216,139,46,0.25)" : "rgba(31,107,77,0.20)"}`,
+      }}
     >
       {status === "ACTIVE" ? (
         <><Pause className="h-3.5 w-3.5" />{t("pause")}</>

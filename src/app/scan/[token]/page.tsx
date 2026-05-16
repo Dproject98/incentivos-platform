@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { CheckCircle, XCircle, Clock, Users, Calendar, Clock3, QrCode, Shield } from "lucide-react"
+import { CheckCircle, XCircle, Clock, Users, Calendar, Clock3, Shield } from "lucide-react"
+import { IncentisLogo } from "@/components/IncentisLogo"
 
 interface ReservationData {
   id: string
@@ -48,37 +49,40 @@ export default function ScanPage() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-4"
-      style={{ background: "linear-gradient(135deg, #0a0e27 0%, #0f1640 50%, #0a0e27 100%)" }}
+      style={{ background: "#F2EBDC" }}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2 mb-8">
-        <div className="h-9 w-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-          <QrCode className="h-5 w-5 text-purple-400" />
-        </div>
-        <span className="font-bold text-lg text-white">Incentis</span>
+      <div className="mb-8">
+        <IncentisLogo size="md" />
       </div>
 
       <div
-        className="w-full max-w-sm rounded-3xl border border-white/10 p-6"
-        style={{ background: "rgba(26, 31, 58, 0.85)", backdropFilter: "blur(20px)" }}
+        className="w-full max-w-sm rounded-3xl p-6"
+        style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}
       >
         {/* Loading */}
         {state === "loading" && (
           <div className="flex flex-col items-center gap-4 py-8">
-            <div className="h-10 w-10 rounded-full border-2 border-purple-500/30 border-t-purple-400 animate-spin" />
-            <p className="text-slate-400 text-sm">Verificando reserva...</p>
+            <div
+              className="h-10 w-10 rounded-full border-2 animate-spin"
+              style={{ borderColor: "rgba(31,107,77,0.20)", borderTopColor: "#1F6B4D" }}
+            />
+            <p className="text-[13px]" style={{ color: "#88B5A2" }}>Verificando reserva...</p>
           </div>
         )}
 
         {/* Invalid */}
         {state === "invalid" && (
           <div className="flex flex-col items-center gap-4 py-8 text-center">
-            <div className="h-16 w-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-              <XCircle className="h-8 w-8 text-red-400" />
+            <div
+              className="h-16 w-16 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.15)" }}
+            >
+              <XCircle className="h-8 w-8" style={{ color: "#dc2626" }} />
             </div>
             <div>
-              <p className="font-semibold text-white">QR no válido</p>
-              <p className="text-sm text-slate-500 mt-1">Este código QR no es válido o ha caducado.</p>
+              <p className="font-semibold text-[16px]" style={{ color: "#0F1F1A" }}>QR no válido</p>
+              <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>Este código QR no es válido o ha caducado.</p>
             </div>
           </div>
         )}
@@ -87,20 +91,25 @@ export default function ScanPage() {
         {(state === "ready" || state === "confirming") && reservation && (
           <>
             <div className="text-center mb-5">
-              <p className="text-sm text-slate-500 uppercase tracking-widest">Validar reserva</p>
-              <p className="text-white font-semibold mt-1">{reservation.businessName}</p>
+              <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+                Validar reserva
+              </p>
+              <p className="font-semibold text-[15px] mt-1" style={{ color: "#0F1F1A" }}>{reservation.businessName}</p>
             </div>
 
             <div
               className="rounded-2xl p-4 mb-5 space-y-4"
-              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
+              style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.08)" }}
             >
               {/* Client avatar */}
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-bold flex-shrink-0">
+                <div
+                  className="h-10 w-10 rounded-full flex items-center justify-center font-bold text-[14px] shrink-0"
+                  style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}
+                >
                   {reservation.clientName.charAt(0).toUpperCase()}
                 </div>
-                <p className="font-semibold text-white">{reservation.clientName}</p>
+                <p className="font-semibold text-[15px]" style={{ color: "#0F1F1A" }}>{reservation.clientName}</p>
               </div>
 
               {/* Details grid */}
@@ -113,10 +122,10 @@ export default function ScanPage() {
                   <div
                     key={value}
                     className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl"
-                    style={{ background: "rgba(255,255,255,0.05)" }}
+                    style={{ background: "rgba(15,31,26,0.04)" }}
                   >
-                    <Icon className="h-4 w-4 text-slate-500" />
-                    <span className="text-xs text-slate-300">{value}</span>
+                    <Icon className="h-4 w-4" style={{ color: "#88B5A2" }} />
+                    <span className="text-[12px] font-medium" style={{ color: "#0F1F1A" }}>{value}</span>
                   </div>
                 ))}
               </div>
@@ -125,11 +134,15 @@ export default function ScanPage() {
             <button
               onClick={handleConfirm}
               disabled={state === "confirming"}
-              className="w-full h-12 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:opacity-60 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 flex items-center justify-center gap-2"
+              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
             >
               {state === "confirming" ? (
                 <>
-                  <div className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  <div
+                    className="h-4 w-4 rounded-full border-2 animate-spin"
+                    style={{ borderColor: "rgba(242,235,220,0.30)", borderTopColor: "#F2EBDC" }}
+                  />
                   Confirmando...
                 </>
               ) : (
@@ -145,18 +158,23 @@ export default function ScanPage() {
         {/* Confirmed */}
         {state === "confirmed" && reservation && (
           <div className="flex flex-col items-center gap-5 py-6 text-center">
-            <div className="h-20 w-20 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-              <CheckCircle className="h-10 w-10 text-green-400" />
+            <div
+              className="h-20 w-20 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}
+            >
+              <CheckCircle className="h-10 w-10" style={{ color: "#1F6B4D" }} />
             </div>
             <div>
-              <p className="text-xl font-bold text-white">¡Reserva confirmada!</p>
-              <p className="text-slate-400 text-sm mt-1">{reservation.clientName}</p>
+              <p className="text-[20px] font-bold" style={{ color: "#0F1F1A", fontFamily: "var(--font-display)" }}>
+                ¡Reserva confirmada!
+              </p>
+              <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{reservation.clientName}</p>
             </div>
             <div
-              className="w-full rounded-xl p-3 flex items-center gap-2 text-sm text-green-300"
-              style={{ background: "rgba(34, 197, 94, 0.08)", border: "1px solid rgba(34, 197, 94, 0.15)" }}
+              className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
+              style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)", color: "#1F6B4D" }}
             >
-              <Shield className="h-4 w-4 flex-shrink-0" />
+              <Shield className="h-4 w-4 shrink-0" />
               El incentivo ha sido acreditado automáticamente al captador.
             </div>
           </div>
@@ -165,12 +183,15 @@ export default function ScanPage() {
         {/* Already scanned */}
         {state === "already_scanned" && reservation && (
           <div className="flex flex-col items-center gap-4 py-6 text-center">
-            <div className="h-16 w-16 rounded-full bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
-              <Clock className="h-8 w-8 text-yellow-400" />
+            <div
+              className="h-16 w-16 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(216,139,46,0.10)", border: "1px solid rgba(216,139,46,0.25)" }}
+            >
+              <Clock className="h-8 w-8" style={{ color: "#B5710D" }} />
             </div>
             <div>
-              <p className="font-semibold text-white">Ya validada</p>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="font-semibold text-[16px]" style={{ color: "#0F1F1A" }}>Ya validada</p>
+              <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>
                 Esta reserva ya fue confirmada el{" "}
                 {reservation.qrScannedAt
                   ? new Date(reservation.qrScannedAt).toLocaleString("es-ES")
@@ -181,7 +202,7 @@ export default function ScanPage() {
         )}
       </div>
 
-      <p className="mt-6 text-xs text-slate-600">Plataforma de incentivos anónimos · Incentis</p>
+      <p className="mt-6 text-[11px]" style={{ color: "#88B5A2" }}>Plataforma de incentivos anónimos · Incentis</p>
     </div>
   )
 }

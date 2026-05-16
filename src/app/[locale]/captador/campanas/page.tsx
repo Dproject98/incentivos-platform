@@ -25,28 +25,30 @@ export default async function CampanasPage() {
     orderBy: { createdAt: "desc" },
   }) as Campaign[]
 
-  const incentiveConfig = {
-    FIXED:      { icon: Euro,       color: "text-green-400",  bg: "bg-green-500/10 border-green-500/20",   label: "Fijo" },
-    PERCENTAGE: { icon: TrendingUp, color: "text-blue-400",   bg: "bg-blue-500/10 border-blue-500/20",     label: "%" },
-    BONO:       { icon: Gift,       color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20", label: "Bono" },
+  const incentiveConfig: Record<string, { icon: typeof Euro; color: string; bg: string; border: string; label: string }> = {
+    FIXED:      { icon: Euro,       color: "#1F6B4D", bg: "rgba(31,107,77,0.08)",   border: "rgba(31,107,77,0.20)",   label: "Fijo" },
+    PERCENTAGE: { icon: TrendingUp, color: "#B5710D", bg: "rgba(216,139,46,0.10)",  border: "rgba(216,139,46,0.25)",  label: "%" },
+    BONO:       { icon: Gift,       color: "#1F6B4D", bg: "rgba(31,107,77,0.08)",   border: "rgba(31,107,77,0.20)",   label: "Bono" },
   }
 
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-3xl font-bold text-white">{t("title")}</h1>
-        <p className="text-slate-400 mt-1">{campaigns.length} campañas activas disponibles</p>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+          {t("title")}
+        </h1>
+        <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{campaigns.length} campañas activas disponibles</p>
       </div>
 
       {campaigns.length === 0 ? (
-        <div className="glass rounded-2xl p-16 border border-white/5 text-center">
-          <Megaphone className="h-12 w-12 text-slate-600 mx-auto mb-4" />
-          <p className="text-slate-500">{t("empty")}</p>
+        <div className="rounded-2xl p-16 text-center" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "#88B5A2" }} />
+          <p style={{ color: "#88B5A2" }}>{t("empty")}</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {campaigns.map((campaign) => {
-            const cfg = incentiveConfig[campaign.incentiveType]
+            const cfg = incentiveConfig[campaign.incentiveType] ?? incentiveConfig.FIXED
             const Icon = cfg.icon
             const incentiveText = campaign.incentiveType === "BONO"
               ? campaign.bonusDescription
@@ -55,35 +57,45 @@ export default async function CampanasPage() {
               : `${campaign.incentiveValue}€ ${t("per_reservation")}`
 
             return (
-              <div key={campaign.id} className="glass rounded-2xl border border-white/10 hover:border-purple-500/30 transition-all hover:shadow-glow-purple flex flex-col">
+              <div
+                key={campaign.id}
+                className="rounded-2xl flex flex-col transition-shadow hover:shadow-sm"
+                style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+              >
                 <div className="p-5 flex-1">
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div>
-                      <h3 className="font-semibold text-white">{campaign.title}</h3>
-                      <p className="text-sm text-slate-400 mt-0.5">{campaign.business.name}</p>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#0F1F1A" }}>{campaign.title}</h3>
+                      <p className="text-[13px] mt-0.5" style={{ color: "#88B5A2" }}>{campaign.business.name}</p>
                     </div>
-                    <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${cfg.bg} ${cfg.color}`}>
+                    <span
+                      className="text-[11px] px-2.5 py-1 rounded-full font-medium shrink-0"
+                      style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}
+                    >
                       {cfg.label}
                     </span>
                   </div>
 
                   {campaign.description && (
-                    <p className="text-sm text-slate-500 mb-4 line-clamp-2">{campaign.description}</p>
+                    <p className="text-[13px] mb-4 line-clamp-2" style={{ color: "#88B5A2" }}>{campaign.description}</p>
                   )}
 
-                  <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-semibold ${cfg.bg} ${cfg.color}`}>
+                  <div
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-semibold"
+                    style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}
+                  >
                     <Icon className="h-4 w-4" />
                     {incentiveText}
                   </div>
 
-                  <div className="mt-4 space-y-1.5 text-xs text-slate-500">
+                  <div className="mt-4 space-y-1.5">
                     {campaign.business.address && (
-                      <div className="flex items-center gap-1.5">
-                        <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+                      <div className="flex items-center gap-1.5 text-[12px]" style={{ color: "#88B5A2" }}>
+                        <MapPin className="h-3.5 w-3.5 shrink-0" />
                         {campaign.business.address}
                       </div>
                     )}
-                    <div className="text-slate-600">
+                    <div className="text-[12px]" style={{ color: "#88B5A2" }}>
                       {campaign.endDate
                         ? `${t("expires")}: ${format(new Date(campaign.endDate), "dd MMM yyyy", { locale: dateLocale })}`
                         : t("no_expiry")}
@@ -91,10 +103,11 @@ export default async function CampanasPage() {
                   </div>
                 </div>
 
-                <div className="p-4 border-t border-white/5">
+                <div className="p-4" style={{ borderTop: "1px solid rgba(15,31,26,0.06)" }}>
                   <Link
                     href={`/${locale}/captador/reservas/nueva/${campaign.id}`}
-                    className="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-sm font-semibold transition-all"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-full text-[14px] font-semibold transition-opacity hover:opacity-90"
+                    style={{ background: "#1F6B4D", color: "#F2EBDC" }}
                   >
                     {t("reserve")}
                     <ArrowRight className="h-4 w-4" />

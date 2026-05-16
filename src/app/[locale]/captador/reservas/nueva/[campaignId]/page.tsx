@@ -4,10 +4,6 @@ import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft, Mail, MessageCircle, Download, User, AtSign, Phone, Calendar, Clock, Users, FileText, Euro, Gift, TrendingUp, Zap } from "lucide-react"
 import Link from "next/link"
 
@@ -19,6 +15,17 @@ interface Campaign {
   bonusDescription: string | null
   business: { name: string }
 }
+
+const inputStyle = {
+  background: "#F2EBDC",
+  border: "1px solid rgba(15,31,26,0.15)",
+  color: "#0F1F1A",
+}
+
+const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  (e.currentTarget.style.borderColor = "#1F6B4D")
+const blurBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")
 
 export default function NuevaReservaPage() {
   const t = useTranslations("captador.reservations")
@@ -66,133 +73,156 @@ export default function NuevaReservaPage() {
     : null
 
   const IncentiveIcon = campaign
-    ? { FIXED: Euro, PERCENTAGE: TrendingUp, BONO: Gift }[campaign.incentiveType] ?? Euro
+    ? ({ FIXED: Euro, PERCENTAGE: TrendingUp, BONO: Gift } as Record<string, typeof Euro>)[campaign.incentiveType] ?? Euro
     : Euro
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
         <Link href={`/${locale}/captador/campanas`}>
-          <button className="h-9 w-9 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
-            <ArrowLeft className="h-4 w-4 text-slate-400" />
+          <button
+            className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80"
+            style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)" }}
+          >
+            <ArrowLeft className="h-4 w-4" style={{ color: "#0F1F1A" }} />
           </button>
         </Link>
-        <h1 className="text-2xl font-bold text-white">{t("new")}</h1>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}>
+          {t("new")}
+        </h1>
       </div>
 
       {/* Campaign banner */}
       {campaign && (
-        <div className="glass rounded-2xl p-4 border border-purple-500/20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-semibold text-white">{campaign.title}</p>
-              <p className="text-sm text-slate-400">{campaign.business.name}</p>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm font-medium">
-              <IncentiveIcon className="h-4 w-4" />
-              {incentiveText}
-            </div>
+        <div
+          className="rounded-2xl p-4 flex items-center justify-between gap-3"
+          style={{ background: "rgba(31,107,77,0.06)", border: "1px solid rgba(31,107,77,0.15)" }}
+        >
+          <div>
+            <p className="font-semibold text-[14px]" style={{ color: "#0F1F1A" }}>{campaign.title}</p>
+            <p className="text-[13px]" style={{ color: "#88B5A2" }}>{campaign.business.name}</p>
+          </div>
+          <div
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-[13px] font-medium shrink-0"
+            style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D", border: "1px solid rgba(31,107,77,0.20)" }}
+          >
+            <IncentiveIcon className="h-4 w-4" />
+            {incentiveText}
           </div>
         </div>
       )}
 
       {/* QR delivery info */}
-      <div className="flex items-center gap-4 text-xs text-slate-500">
-        <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-purple-400" /> QR enviado por email</span>
-        <span className="flex items-center gap-1.5"><MessageCircle className="h-3.5 w-3.5 text-green-400" /> QR por WhatsApp</span>
-        <span className="flex items-center gap-1.5"><Download className="h-3.5 w-3.5 text-cyan-400" /> Descargable</span>
+      <div className="flex items-center gap-4 text-[12px]" style={{ color: "#88B5A2" }}>
+        <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" style={{ color: "#1F6B4D" }} /> QR por email</span>
+        <span className="flex items-center gap-1.5"><MessageCircle className="h-3.5 w-3.5" style={{ color: "#1F6B4D" }} /> QR por WhatsApp</span>
+        <span className="flex items-center gap-1.5"><Download className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} /> Descargable</span>
       </div>
 
       {/* Form */}
-      <div className="glass rounded-2xl border border-white/10 p-6">
-        <h2 className="text-sm text-slate-400 uppercase tracking-widest mb-5">Datos del cliente</h2>
+      <div className="rounded-2xl p-6" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-5" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+          Datos del cliente
+        </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           {[
-            { field: "clientName",  icon: User,    type: "text",  placeholder: "Nombre completo",    label: t("client_name"),  required: true },
-            { field: "clientEmail", icon: AtSign,  type: "email", placeholder: "email@cliente.com",  label: t("client_email"), required: true },
-            { field: "clientPhone", icon: Phone,   type: "tel",   placeholder: "+34 600 000 000",     label: t("client_phone"), required: true },
+            { field: "clientName",  icon: User,   type: "text",  placeholder: "Nombre completo",   label: t("client_name"),  required: true },
+            { field: "clientEmail", icon: AtSign, type: "email", placeholder: "email@cliente.com", label: t("client_email"), required: true },
+            { field: "clientPhone", icon: Phone,  type: "tel",   placeholder: "+34 600 000 000",   label: t("client_phone"), required: true },
           ].map(({ field, icon: Icon, type, placeholder, label, required }) => (
-            <div key={field} className="space-y-1.5">
-              <Label className="text-slate-300 text-sm">{label}</Label>
+            <div key={field}>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{label}</label>
               <div className="relative">
-                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <Input
+                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "#88B5A2" }} />
+                <input
                   type={type}
                   required={required}
                   placeholder={placeholder}
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-purple-500/50"
+                  className="w-full rounded-xl pl-10 pr-4 py-2.5 text-[14px] outline-none transition-colors"
+                  style={inputStyle}
                   value={form[field as keyof typeof form] as string}
                   onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+                  onFocus={focusBorder}
+                  onBlur={blurBorder}
                 />
               </div>
             </div>
           ))}
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <Label className="text-slate-300 text-sm">{t("date")}</Label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <Input
-                  type="date"
-                  required
-                  min={new Date().toISOString().split("T")[0]}
-                  className="pl-10 bg-white/5 border-white/10 text-white focus:border-purple-500/50"
-                  value={form.date}
-                  onChange={(e) => setForm({ ...form, date: e.target.value })}
-                />
-              </div>
+            <div>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("date")}</span>
+              </label>
+              <input
+                type="date"
+                required
+                min={new Date().toISOString().split("T")[0]}
+                className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                style={inputStyle}
+                value={form.date}
+                onChange={(e) => setForm({ ...form, date: e.target.value })}
+                onFocus={focusBorder}
+                onBlur={blurBorder}
+              />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-slate-300 text-sm">{t("time")}</Label>
-              <div className="relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <Input
-                  type="time"
-                  required
-                  className="pl-10 bg-white/5 border-white/10 text-white focus:border-purple-500/50"
-                  value={form.time}
-                  onChange={(e) => setForm({ ...form, time: e.target.value })}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <Label className="text-slate-300 text-sm">{t("guests")}</Label>
-            <div className="relative">
-              <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-              <Input
-                type="number" min={1} max={50} required
-                className="pl-10 bg-white/5 border-white/10 text-white focus:border-purple-500/50"
-                value={form.guests}
-                onChange={(e) => setForm({ ...form, guests: Number(e.target.value) })}
+            <div>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("time")}</span>
+              </label>
+              <input
+                type="time"
+                required
+                className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                style={inputStyle}
+                value={form.time}
+                onChange={(e) => setForm({ ...form, time: e.target.value })}
+                onFocus={focusBorder}
+                onBlur={blurBorder}
               />
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <Label className="text-slate-300 text-sm">{t("notes")}</Label>
-            <div className="relative">
-              <FileText className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-              <Textarea
-                rows={3}
-                className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 focus:border-purple-500/50 resize-none"
-                value={form.notes}
-                onChange={(e) => setForm({ ...form, notes: e.target.value })}
-              />
-            </div>
+          <div>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+              <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("guests")}</span>
+            </label>
+            <input
+              type="number" min={1} max={50} required
+              className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+              style={inputStyle}
+              value={form.guests}
+              onChange={(e) => setForm({ ...form, guests: Number(e.target.value) })}
+              onFocus={focusBorder}
+              onBlur={blurBorder}
+            />
           </div>
 
-          <Button
+          <div>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+              <span className="flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("notes")}</span>
+            </label>
+            <textarea
+              rows={3}
+              className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors resize-none"
+              style={inputStyle}
+              value={form.notes}
+              onChange={(e) => setForm({ ...form, notes: e.target.value })}
+              onFocus={focusBorder}
+              onBlur={blurBorder}
+            />
+          </div>
+
+          <button
             type="submit"
-            className="w-full h-11 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white border-0 font-semibold"
             disabled={loading}
+            className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 flex items-center justify-center gap-2"
+            style={{ background: "#1F6B4D", color: "#F2EBDC" }}
           >
             {loading ? t("submitting") : (
-              <span className="flex items-center gap-2"><Zap className="h-4 w-4" />{t("submit")}</span>
+              <><Zap className="h-4 w-4" />{t("submit")}</>
             )}
-          </Button>
+          </button>
         </form>
       </div>
     </div>

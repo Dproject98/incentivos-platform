@@ -21,47 +21,62 @@ export default async function EmpresaStaffPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">{t("title")}</h1>
-        <p className="text-slate-400 mt-1">Personal autorizado para validar QR</p>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+          {t("title")}
+        </h1>
+        <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>Personal autorizado para validar QR</p>
       </div>
 
       {/* Info banner */}
-      <div className="glass rounded-2xl p-4 border border-cyan-500/20 flex items-start gap-3">
-        <div className="h-9 w-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
-          <Smartphone className="h-4 w-4 text-cyan-400" />
+      <div
+        className="rounded-2xl p-4 flex items-start gap-3"
+        style={{ background: "rgba(31,107,77,0.06)", border: "1px solid rgba(31,107,77,0.15)" }}
+      >
+        <div
+          className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}
+        >
+          <Smartphone className="h-4 w-4" style={{ color: "#1F6B4D" }} />
         </div>
         <div>
-          <p className="text-sm text-slate-300 font-medium">Cómo funciona</p>
-          <p className="text-sm text-slate-500 mt-1">{t("desc")}</p>
+          <p className="text-[14px] font-medium" style={{ color: "#0F1F1A" }}>Cómo funciona</p>
+          <p className="text-[13px] mt-1" style={{ color: "#2A3B34" }}>{t("desc")}</p>
         </div>
       </div>
 
-      {/* Add staff form */}
+      {/* Add staff */}
       <AddStaffForm />
 
       {/* Staff list */}
-      <div className="glass rounded-2xl border border-white/10 p-5">
-        <h2 className="text-xs text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+      <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4 flex items-center gap-2" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
           <Users className="h-3.5 w-3.5" />
           Personal registrado ({business.staff.length})
-        </h2>
+        </p>
 
         {business.staff.length === 0 ? (
-          <p className="text-slate-600 text-sm">{t("empty")}</p>
+          <p className="text-[13px]" style={{ color: "#88B5A2" }}>{t("empty")}</p>
         ) : (
           <div className="space-y-2">
             {business.staff.map((s) => (
-              <div key={s.id} className="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-white/3">
+              <div
+                key={s.id}
+                className="flex items-center justify-between p-3 rounded-xl"
+                style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.08)" }}
+              >
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-bold text-sm">
+                  <div
+                    className="h-9 w-9 rounded-full flex items-center justify-center font-semibold text-[13px] shrink-0"
+                    style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}
+                  >
                     {s.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="text-white text-sm font-medium">{s.name}</p>
-                    <p className="text-xs text-slate-500">{s.email}</p>
+                    <p className="font-medium text-[14px]" style={{ color: "#0F1F1A" }}>{s.name}</p>
+                    <p className="text-[12px]" style={{ color: "#88B5A2" }}>{s.email}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-green-400">
+                <div className="flex items-center gap-1.5 text-[12px]" style={{ color: "#1F6B4D" }}>
                   <QrCode className="h-3.5 w-3.5" />
                   Activo
                 </div>
