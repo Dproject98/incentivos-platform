@@ -77,10 +77,8 @@ export async function POST(
   }
 
   // All checks pass — confirm the reservation
-  const incentiveAmount =
-    reservation.campaign.incentiveType === "BONO"
-      ? 0
-      : reservation.campaign.incentiveValue
+  const hasCash = reservation.campaign.incentiveTypes.some((t: string) => t === "FIXED" || t === "PERCENTAGE")
+  const incentiveAmount = hasCash ? reservation.campaign.incentiveValue : 0
 
   await prisma.$transaction(async (tx) => {
     await tx.reservation.update({

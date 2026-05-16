@@ -6,7 +6,7 @@ import { z } from "zod"
 const createSchema = z.object({
   title: z.string().min(3),
   description: z.string().optional(),
-  incentiveType: z.enum(["FIXED", "PERCENTAGE", "BONO"]),
+  incentiveTypes: z.array(z.enum(["FIXED", "PERCENTAGE", "BONO"])).min(1),
   incentiveValue: z.number().min(0),
   bonusDescription: z.string().optional(),
   bonusMinValue: z.number().positive().optional(),

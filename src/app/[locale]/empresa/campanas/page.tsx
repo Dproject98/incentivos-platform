@@ -88,11 +88,11 @@ export default async function EmpresaCampanasPage() {
                     <div className="flex items-center justify-between text-[13px]">
                       <span style={{ color: "#88B5A2" }}>Incentivo</span>
                       <span className="font-semibold" style={{ color: "#D88B2E" }}>
-                        {campaign.incentiveType === "BONO"
-                          ? campaign.bonusDescription
-                          : campaign.incentiveType === "PERCENTAGE"
-                          ? `${campaign.incentiveValue}%`
-                          : `${campaign.incentiveValue}€`}
+                        {[
+                          campaign.incentiveTypes.includes("FIXED") ? `${campaign.incentiveValue}€` : null,
+                          campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.incentiveValue}%` : null,
+                          campaign.incentiveTypes.includes("BONO") ? (campaign.bonusDescription ?? "Bono") : null,
+                        ].filter(Boolean).join(" + ")}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-[13px]">

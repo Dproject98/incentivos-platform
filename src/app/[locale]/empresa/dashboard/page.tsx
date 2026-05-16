@@ -26,7 +26,7 @@ export default async function EmpresaDashboard() {
     }),
     prisma.reservation.findMany({
       where: { campaign: { businessId: business.id } },
-      include: { campaign: { select: { title: true, incentiveType: true, incentiveValue: true } } },
+      include: { campaign: { select: { title: true, incentiveTypes: true, incentiveValue: true } } },
       orderBy: { createdAt: "desc" },
       take: 6,
     }),
@@ -166,7 +166,7 @@ export default async function EmpresaDashboard() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
-                    {r.status === "CONFIRMED" && r.campaign.incentiveType !== "BONO" && (
+                    {r.status === "CONFIRMED" && r.campaign.incentiveTypes.some((t: string) => t === "FIXED" || t === "PERCENTAGE") && (
                       <span className="text-[12px] font-semibold" style={{ color: "#D88B2E" }}>{r.campaign.incentiveValue}€</span>
                     )}
                     <span

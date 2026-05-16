@@ -19,7 +19,7 @@ export async function POST(
   const reservation = await prisma.reservation.findUnique({
     where: { id },
     include: {
-      campaign: { select: { businessId: true, incentiveType: true, incentiveValue: true, business: { select: { name: true } } } },
+      campaign: { select: { businessId: true, incentiveTypes: true, incentiveValue: true, business: { select: { name: true } } } },
       captador: { include: { wallet: true } },
     },
   })
@@ -32,8 +32,8 @@ export async function POST(
     return NextResponse.json({ error: "already_confirmed" }, { status: 409 })
   }
 
-  const incentiveAmount =
-    reservation.campaign.incentiveType === "BONO" ? 0 : reservation.campaign.incentiveValue
+  const hasCash = reservation.campaign.incentiveTypes.some((t) => t === "FIXED" || t === "PERCENTAGE")
+  const incentiveAmount = hasCash ? reservation.campaign.incentiveValue : 0
 
   await prisma.$transaction(async (tx) => {
     await tx.reservation.update({

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     include: { business: { select: { name: true } } },
   })
 
-  if (!campaign || campaign.incentiveType !== "BONO" || campaign.status !== "ACTIVE") {
+  if (!campaign || !campaign.incentiveTypes.includes("BONO") || campaign.status !== "ACTIVE") {
     return NextResponse.json({ error: "campaign_not_found" }, { status: 404 })
   }
 

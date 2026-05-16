@@ -20,7 +20,7 @@ export default async function EmpresaReservasPage() {
 
   const reservations = await prisma.reservation.findMany({
     where: { campaign: { businessId: business.id } },
-    include: { campaign: { select: { title: true, incentiveType: true, incentiveValue: true } } },
+    include: { campaign: { select: { title: true, incentiveTypes: true, incentiveValue: true } } },
     orderBy: { createdAt: "desc" },
   })
 
@@ -66,7 +66,11 @@ export default async function EmpresaReservasPage() {
             {reservations.map((r, i) => {
               const ss = statusStyle[r.status] ?? statusStyle.PENDING
               const incentive = r.status === "CONFIRMED"
-                ? r.campaign.incentiveType === "BONO" ? "Bono" : `${r.campaign.incentiveValue}€`
+                ? [
+                    r.campaign.incentiveTypes.includes("FIXED") ? `${r.campaign.incentiveValue}€` : null,
+                    r.campaign.incentiveTypes.includes("PERCENTAGE") ? `${r.campaign.incentiveValue}%` : null,
+                    r.campaign.incentiveTypes.includes("BONO") ? "Bono" : null,
+                  ].filter(Boolean).join(" + ")
                 : "—"
 
               return (

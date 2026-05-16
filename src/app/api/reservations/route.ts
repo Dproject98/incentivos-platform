@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     const reservations = await prisma.reservation.findMany({
       where: { campaign: { businessId: business.id } },
       include: {
-        campaign: { select: { title: true, incentiveType: true, incentiveValue: true } },
+        campaign: { select: { title: true, incentiveTypes: true, incentiveValue: true } },
         captador: { select: { name: true } },
       },
       orderBy: { createdAt: "desc" },

@@ -22,12 +22,6 @@ enum CampaignStatus {
   ENDED
 }
 
-enum IncentiveType {
-  FIXED
-  PERCENTAGE
-  BONO
-}
-
 enum ReservationStatus {
   PENDING
   CONFIRMED
@@ -97,7 +91,7 @@ model Campaign {
   title            String
   description      String?
   businessId       String
-  incentiveType    IncentiveType
+  incentiveTypes   String[]
   incentiveValue   Float
   bonusDescription String?
   bonusMinValue    Float?          // min wallet balance required to redeem this bono

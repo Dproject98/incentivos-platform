@@ -48,13 +48,15 @@ export default async function CampanasPage() {
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {campaigns.map((campaign) => {
-            const cfg = incentiveConfig[campaign.incentiveType] ?? incentiveConfig.FIXED
+            // Use the first non-BONO type for the badge style, fallback to BONO, then FIXED
+            const primaryType = campaign.incentiveTypes.find((t: string) => t !== "BONO") ?? campaign.incentiveTypes[0] ?? "FIXED"
+            const cfg = incentiveConfig[primaryType] ?? incentiveConfig.FIXED
             const Icon = cfg.icon
-            const incentiveText = campaign.incentiveType === "BONO"
-              ? campaign.bonusDescription
-              : campaign.incentiveType === "PERCENTAGE"
-              ? `${campaign.incentiveValue}% ${t("per_reservation")}`
-              : `${campaign.incentiveValue}€ ${t("per_reservation")}`
+            const incentiveText = [
+              campaign.incentiveTypes.includes("FIXED") ? `${campaign.incentiveValue}€ ${t("per_reservation")}` : null,
+              campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.incentiveValue}% ${t("per_reservation")}` : null,
+              campaign.incentiveTypes.includes("BONO") ? (campaign.bonusDescription ?? "Bono") : null,
+            ].filter(Boolean).join(" + ")
 
             return (
               <div

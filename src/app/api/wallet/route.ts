@@ -28,7 +28,7 @@ export async function GET() {
 
   // Available BONO campaigns (active, with minValue set)
   const availableBonos = await prisma.campaign.findMany({
-    where: { status: "ACTIVE", incentiveType: "BONO", bonusMinValue: { not: null } },
+    where: { status: "ACTIVE", incentiveTypes: { has: "BONO" }, bonusMinValue: { not: null } },
     select: {
       id: true,
       title: true,

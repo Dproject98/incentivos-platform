@@ -22,7 +22,7 @@ export default function NuevaCampanaPage() {
   const [form, setForm] = useState({
     title: "",
     description: "",
-    incentiveType: "FIXED",
+    incentiveTypes: ["FIXED"] as string[],
     incentiveValue: "",
     bonusDescription: "",
     bonusMinValue: "",
@@ -30,6 +30,28 @@ export default function NuevaCampanaPage() {
     endDate: "",
     maxReservations: "",
   })
+
+  const toggleType = (value: string) => {
+    setForm((prev) => {
+      const current = prev.incentiveTypes
+      if (value === "BONO") {
+        // BONO toggles independently
+        return {
+          ...prev,
+          incentiveTypes: current.includes("BONO")
+            ? current.filter((t) => t !== "BONO")
+            : [...current, "BONO"],
+        }
+      } else {
+        // FIXED and PERCENTAGE are mutually exclusive; keep BONO if present
+        const hasBono = current.includes("BONO")
+        const isAlreadySelected = current.includes(value)
+        if (isAlreadySelected && current.filter((t) => t !== "BONO").length === 1) return prev // prevent deselecting all cash types
+        const newCash = isAlreadySelected ? current.filter((t) => t !== value && t !== "BONO") : [value]
+        return { ...prev, incentiveTypes: hasBono ? [...newCash, "BONO"] : newCash }
+      }
+    })
+  }
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,9 +61,12 @@ export default function NuevaCampanaPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...form,
-        incentiveValue: Number(form.incentiveValue),
+        title: form.title,
+        description: form.description || undefined,
+        incentiveTypes: form.incentiveTypes,
+        incentiveValue: form.incentiveTypes.some((t) => t === "FIXED" || t === "PERCENTAGE") ? Number(form.incentiveValue) : 0,
         maxReservations: form.maxReservations ? Number(form.maxReservations) : undefined,
+        startDate: form.startDate,
         endDate: form.endDate || undefined,
         bonusDescription: form.bonusDescription || undefined,
         bonusMinValue: form.bonusMinValue ? Number(form.bonusMinValue) : undefined,
@@ -120,18 +145,19 @@ export default function NuevaCampanaPage() {
             </div>
           </div>
 
-          {/* Incentive type */}
+          {/* Incentive type — multi-select */}
           <div>
-            <label className="block text-[13px] font-medium mb-2" style={{ color: "#0F1F1A" }}>{t("incentive_type")}</label>
+            <label className="block text-[13px] font-medium mb-1" style={{ color: "#0F1F1A" }}>{t("incentive_type")}</label>
+            <p className="text-[12px] mb-2" style={{ color: "#88B5A2" }}>Puedes combinar varios tipos de compensación</p>
             <div className="grid grid-cols-3 gap-2">
               {incentiveTypes.map(({ value, icon: Icon, label }) => {
-                const active = form.incentiveType === value
+                const active = form.incentiveTypes.includes(value)
                 return (
                   <button
                     key={value}
                     type="button"
-                    onClick={() => setForm({ ...form, incentiveType: value })}
-                    className="p-3 rounded-xl text-left transition-all"
+                    onClick={() => toggleType(value)}
+                    className="p-3 rounded-xl text-left transition-all relative"
                     style={{
                       background: active ? "rgba(31,107,77,0.08)" : "#F2EBDC",
                       border: active ? "1px solid rgba(31,107,77,0.25)" : "1px solid rgba(15,31,26,0.12)",
@@ -140,18 +166,25 @@ export default function NuevaCampanaPage() {
                   >
                     <Icon className="h-4 w-4 mb-1.5" style={{ color: active ? "#1F6B4D" : "#88B5A2" }} />
                     <span className="text-[12px] font-medium">{label}</span>
+                    {active && (
+                      <span className="absolute top-2 right-2 h-2 w-2 rounded-full" style={{ background: "#1F6B4D" }} />
+                    )}
                   </button>
                 )
               })}
             </div>
           </div>
 
-          {/* Incentive value / bonus */}
-          {form.incentiveType !== "BONO" ? (
+          {/* Incentive value — shown if FIXED or PERCENTAGE selected */}
+          {form.incentiveTypes.some((t) => t === "FIXED" || t === "PERCENTAGE") && (
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("incentive_value")}</label>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                {form.incentiveTypes.includes("PERCENTAGE") && !form.incentiveTypes.includes("FIXED")
+                  ? "Porcentaje del ticket (%)"
+                  : t("incentive_value")}
+              </label>
               <input
-                type="number" min={0.1} step={0.1} required
+                type="number" min={0.1} step="any" required
                 value={form.incentiveValue}
                 onChange={(e) => setForm({ ...form, incentiveValue: e.target.value })}
                 className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
@@ -160,8 +193,12 @@ export default function NuevaCampanaPage() {
                 onBlur={blurBorder}
               />
             </div>
-          ) : (
-            <div className="space-y-4">
+          )}
+
+          {/* Bono fields — shown if BONO selected */}
+          {form.incentiveTypes.includes("BONO") && (
+            <div className="space-y-4 rounded-xl p-4" style={{ background: "rgba(31,107,77,0.04)", border: "1px solid rgba(31,107,77,0.12)" }}>
+              <p className="text-[11px] uppercase tracking-[0.1em] font-mono" style={{ color: "#1F6B4D" }}>Configuración del bono</p>
               <div>
                 <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("bonus_description")}</label>
                 <input

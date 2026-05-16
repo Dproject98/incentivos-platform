@@ -10,7 +10,7 @@ import Link from "next/link"
 interface Campaign {
   id: string
   title: string
-  incentiveType: string
+  incentiveTypes: string[]
   incentiveValue: number
   bonusDescription: string | null
   business: { name: string }
@@ -65,16 +65,16 @@ export default function NuevaReservaPage() {
   }
 
   const incentiveText = campaign
-    ? campaign.incentiveType === "BONO"
-      ? campaign.bonusDescription
-      : campaign.incentiveType === "PERCENTAGE"
-      ? `${campaign.incentiveValue}% por reserva confirmada`
-      : `${campaign.incentiveValue}€ por reserva confirmada`
+    ? [
+        campaign.incentiveTypes.includes("FIXED") ? `${campaign.incentiveValue}€ por reserva confirmada` : null,
+        campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.incentiveValue}% por reserva confirmada` : null,
+        campaign.incentiveTypes.includes("BONO") ? (campaign.bonusDescription ?? "Bono") : null,
+      ].filter(Boolean).join(" + ")
     : null
 
-  const IncentiveIcon = campaign
-    ? ({ FIXED: Euro, PERCENTAGE: TrendingUp, BONO: Gift } as Record<string, typeof Euro>)[campaign.incentiveType] ?? Euro
-    : Euro
+  const iconMap: Record<string, typeof Euro> = { FIXED: Euro, PERCENTAGE: TrendingUp, BONO: Gift }
+  const primaryType = campaign?.incentiveTypes.find((t) => t !== "BONO") ?? campaign?.incentiveTypes[0] ?? "FIXED"
+  const IncentiveIcon = iconMap[primaryType] ?? Euro
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
