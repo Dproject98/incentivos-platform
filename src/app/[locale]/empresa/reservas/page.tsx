@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from "next-intl/server"
 import { CalendarCheck } from "lucide-react"
 import { format } from "date-fns"
 import { es, enUS } from "date-fns/locale"
+import { ReservationActions } from "./reservation-actions"
 
 export default async function EmpresaReservasPage() {
   const session = await auth()
@@ -30,8 +31,10 @@ export default async function EmpresaReservasPage() {
     NO_SHOW:   { label: t("status_no_show"),   bg: "rgba(15,31,26,0.06)",   color: "#2A3B34", border: "rgba(15,31,26,0.12)" },
   }
 
+  const cols = "1fr 1fr 130px 50px 110px 80px 110px"
+
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-6xl">
       <div>
         <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
           {t("title")}
@@ -49,9 +52,9 @@ export default async function EmpresaReservasPage() {
           {/* Header */}
           <div
             className="grid gap-4 px-5 py-3"
-            style={{ gridTemplateColumns: "1fr 1fr 140px 60px 110px 80px", borderBottom: "1px solid rgba(15,31,26,0.06)" }}
+            style={{ gridTemplateColumns: cols, borderBottom: "1px solid rgba(15,31,26,0.06)" }}
           >
-            {[t("client"), t("campaign"), t("date"), t("guests"), t("status"), t("incentive")].map((h) => (
+            {[t("client"), t("campaign"), t("date"), t("guests"), t("status"), t("incentive"), "Acción"].map((h) => (
               <span key={h} className="text-[10px] uppercase tracking-[0.1em] font-mono" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
                 {h}
               </span>
@@ -71,7 +74,7 @@ export default async function EmpresaReservasPage() {
                   key={r.id}
                   className="grid gap-4 px-5 py-4 transition-colors hover:bg-[#F8F5EE]"
                   style={{
-                    gridTemplateColumns: "1fr 1fr 140px 60px 110px 80px",
+                    gridTemplateColumns: cols,
                     borderTop: i > 0 ? "1px solid rgba(15,31,26,0.05)" : "none",
                   }}
                 >
@@ -93,12 +96,12 @@ export default async function EmpresaReservasPage() {
                       {ss.label}
                     </span>
                   </div>
-                  <p
-                    className="self-center font-semibold text-[13px]"
-                    style={{ color: r.status === "CONFIRMED" ? "#D88B2E" : "#88B5A2" }}
-                  >
+                  <p className="self-center font-semibold text-[13px]" style={{ color: r.status === "CONFIRMED" ? "#D88B2E" : "#88B5A2" }}>
                     {incentive}
                   </p>
+                  <div className="self-center">
+                    <ReservationActions reservationId={r.id} status={r.status} />
+                  </div>
                 </div>
               )
             })}
