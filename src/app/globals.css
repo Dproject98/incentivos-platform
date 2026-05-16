@@ -66,6 +66,26 @@
   }
 }
 
+/* ─── Forest Trust Design Tokens ─────────────────────────────── */
+:root {
+  --ft-ink:          #0F1F1A;
+  --ft-ink-2:        #2A3B34;
+  --ft-paper:        #F2EBDC;
+  --ft-paper-2:      #E8DFCD;
+  --ft-line:         rgba(15,31,26,0.10);
+  --ft-primary:      #1F6B4D;
+  --ft-primary-deep: #0B2E22;
+  --ft-primary-soft: #C7DDD0;
+  --ft-accent:       #D88B2E;
+  --ft-accent-soft:  #EFC78A;
+  --ft-accent-deep:  #7A4810;
+  --ft-bronze:       #A8743A;
+  --ft-silver:       #C9C2B0;
+  --ft-gold:         #D88B2E;
+  --ft-platinum:     #4A6B7A;
+  --ft-sage:         #88B5A2;
+}
+
 @layer utilities {
   /* Glassmorphism */
   .glass {

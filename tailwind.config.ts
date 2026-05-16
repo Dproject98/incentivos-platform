@@ -11,7 +11,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans:    ["var(--font-sans)", ...fontFamily.sans],
+        display: ["var(--font-display)", ...fontFamily.sans],
+        body:    ["var(--font-body)", ...fontFamily.sans],
+        mono:    ["var(--font-mono)", ...fontFamily.mono],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -47,6 +50,12 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /* Forest Trust palette */
+        ink:    { DEFAULT: "#0F1F1A", 2: "#2A3B34" },
+        paper:  { DEFAULT: "#F2EBDC", 2: "#E8DFCD" },
+        forest: { DEFAULT: "#1F6B4D", deep: "#0B2E22", soft: "#C7DDD0" },
+        amber:  { DEFAULT: "#D88B2E", soft: "#EFC78A", deep: "#7A4810" },
+        sage:   { DEFAULT: "#88B5A2" },
         /* Brand colors */
         purple: { DEFAULT: "#7c3aed", light: "#9d65f5", dark: "#5b21b6" },
         pink:   { DEFAULT: "#ec4899", light: "#f472b6", dark: "#be185d" },
