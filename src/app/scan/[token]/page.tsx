@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useParams } from "next/navigation"
-import { CheckCircle, XCircle, Clock, Users, Calendar, Clock3, Shield, Delete } from "lucide-react"
+import {
+  CheckCircle, XCircle, Clock, Users, Calendar, Clock3,
+  Shield, QrCode, ChevronRight, X,
+} from "lucide-react"
 import { IncentisLogo } from "@/components/IncentisLogo"
 
 interface ReservationData {
@@ -16,7 +19,14 @@ interface ReservationData {
   businessName: string
 }
 
-type PageState = "loading" | "ready" | "confirming" | "confirmed" | "already_scanned" | "invalid"
+type PageState =
+  | "loading"
+  | "ready"        // show reservation info + Verify button
+  | "pin_entry"    // show PIN input
+  | "confirming"   // waiting for API
+  | "confirmed"
+  | "already_scanned"
+  | "invalid"
 
 export default function ScanPage() {
   const params = useParams()
@@ -27,14 +37,11 @@ export default function ScanPage() {
   const [pin, setPin] = useState(["", "", "", ""])
   const [pinError, setPinError] = useState(false)
   const [staffName, setStaffName] = useState<string | null>(null)
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([null, null, null, null])
 
   useEffect(() => {
     fetch(`/api/scan/${token}`)
-      .then((r) => {
-        if (!r.ok) { setState("invalid"); return null }
-        return r.json()
-      })
+      .then((r) => { if (!r.ok) { setState("invalid"); return null } return r.json() })
       .then((data) => {
         if (!data) return
         setReservation(data)
@@ -43,20 +50,25 @@ export default function ScanPage() {
       .catch(() => setState("invalid"))
   }, [token])
 
+  // Focus first PIN box when entering PIN state
+  useEffect(() => {
+    if (state === "pin_entry") {
+      setTimeout(() => inputRefs.current[0]?.focus(), 80)
+    }
+  }, [state])
+
   const pinValue = pin.join("")
 
-  const handlePinDigit = (index: number, value: string) => {
+  const handleDigitInput = (index: number, value: string) => {
     if (!/^\d?$/.test(value)) return
     const next = [...pin]
     next[index] = value
     setPin(next)
     setPinError(false)
-    if (value && index < 3) {
-      inputRefs.current[index + 1]?.focus()
-    }
+    if (value && index < 3) inputRefs.current[index + 1]?.focus()
   }
 
-  const handlePinKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace" && !pin[index] && index > 0) {
       inputRefs.current[index - 1]?.focus()
     }
@@ -72,15 +84,13 @@ export default function ScanPage() {
     if (idx < 3) inputRefs.current[idx + 1]?.focus()
   }
 
-  const handleDelete = () => {
-    const lastFilled = [...pin].reverse().findIndex((d) => d !== "")
-    if (lastFilled === -1) return
-    const idx = 3 - lastFilled
+  const handleBackspace = () => {
+    const lastIdx = [...pin].map((d, i) => (d ? i : -1)).filter((i) => i >= 0).pop() ?? -1
+    if (lastIdx < 0) return
     const next = [...pin]
-    next[idx] = ""
+    next[lastIdx] = ""
     setPin(next)
     setPinError(false)
-    inputRefs.current[idx]?.focus()
   }
 
   const handleConfirm = async () => {
@@ -101,7 +111,7 @@ export default function ScanPage() {
       if (err.error === "wrong_pin") {
         setPinError(true)
         setPin(["", "", "", ""])
-        setState("ready")
+        setState("pin_entry")
         setTimeout(() => inputRefs.current[0]?.focus(), 50)
         return
       }
@@ -114,28 +124,44 @@ export default function ScanPage() {
     setState("confirmed")
   }
 
-  // Auto-submit when all 4 digits are filled
+  // Auto-submit when 4 digits filled
   useEffect(() => {
-    if (state === "ready" && pinValue.length === 4) {
+    if (state === "pin_entry" && pinValue.length === 4) {
       handleConfirm()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pinValue, state])
+  }, [pinValue])
 
+  // ── Helpers ──────────────────────────────────────────────
+  const DetailGrid = ({ r }: { r: ReservationData }) => (
+    <div className="grid grid-cols-3 gap-2">
+      {[
+        { Icon: Calendar, value: new Date(r.date).toLocaleDateString("es-ES", { day: "2-digit", month: "short" }) },
+        { Icon: Clock3,   value: r.time },
+        { Icon: Users,    value: `${r.guests} pax` },
+      ].map(({ Icon, value }) => (
+        <div
+          key={value}
+          className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl"
+          style={{ background: "rgba(15,31,26,0.04)" }}
+        >
+          <Icon className="h-4 w-4" style={{ color: "#88B5A2" }} />
+          <span className="text-[12px] font-medium" style={{ color: "#0F1F1A" }}>{value}</span>
+        </div>
+      ))}
+    </div>
+  )
+
+  // ── Render ────────────────────────────────────────────────
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
-      {/* Logo */}
-      <div className="mb-8">
-        <IncentisLogo size="md" />
-      </div>
+      <div className="mb-8"><IncentisLogo size="md" /></div>
 
-      <div
-        className="w-full max-w-sm rounded-3xl p-6"
-        style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}
-      >
-        {/* Loading */}
+      <div className="w-full max-w-sm rounded-3xl p-6" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+
+        {/* ── Loading ── */}
         {state === "loading" && (
-          <div className="flex flex-col items-center gap-4 py-8">
+          <div className="flex flex-col items-center gap-4 py-10">
             <div
               className="h-10 w-10 rounded-full border-2 animate-spin"
               style={{ borderColor: "rgba(31,107,77,0.20)", borderTopColor: "#1F6B4D" }}
@@ -144,13 +170,11 @@ export default function ScanPage() {
           </div>
         )}
 
-        {/* Invalid */}
+        {/* ── Invalid ── */}
         {state === "invalid" && (
-          <div className="flex flex-col items-center gap-4 py-8 text-center">
-            <div
-              className="h-16 w-16 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.15)" }}
-            >
+          <div className="flex flex-col items-center gap-4 py-10 text-center">
+            <div className="h-16 w-16 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.15)" }}>
               <XCircle className="h-8 w-8" style={{ color: "#dc2626" }} />
             </div>
             <div>
@@ -160,181 +184,167 @@ export default function ScanPage() {
           </div>
         )}
 
-        {/* Ready / Confirming — show reservation + PIN input */}
-        {(state === "ready" || state === "confirming") && reservation && (
-          <>
-            {/* Business + client info */}
-            <div className="text-center mb-5">
-              <p
-                className="text-[10px] uppercase tracking-[0.12em] font-mono"
-                style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}
-              >
-                Validar reserva
+        {/* ── Ready: reservation info + Verify button ── */}
+        {state === "ready" && reservation && (
+          <div className="space-y-5">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl mb-3"
+                style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)" }}>
+                <QrCode className="h-6 w-6" style={{ color: "#1F6B4D" }} />
+              </div>
+              <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: "#88B5A2" }}>
+                Reserva verificada
               </p>
-              <p className="font-semibold text-[15px] mt-1" style={{ color: "#0F1F1A" }}>{reservation.businessName}</p>
+              <p className="font-semibold text-[16px] mt-1" style={{ color: "#0F1F1A" }}>{reservation.businessName}</p>
             </div>
 
-            {/* Reservation details */}
-            <div
-              className="rounded-2xl p-4 mb-6 space-y-3"
-              style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.08)" }}
-            >
+            <div className="rounded-2xl p-4 space-y-3" style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.08)" }}>
               <div className="flex items-center gap-3">
-                <div
-                  className="h-10 w-10 rounded-full flex items-center justify-center font-bold text-[14px] shrink-0"
-                  style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}
-                >
+                <div className="h-11 w-11 rounded-full flex items-center justify-center font-bold text-[16px] shrink-0"
+                  style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}>
                   {reservation.clientName.charAt(0).toUpperCase()}
                 </div>
-                <p className="font-semibold text-[15px]" style={{ color: "#0F1F1A" }}>{reservation.clientName}</p>
+                <div>
+                  <p className="font-semibold text-[15px]" style={{ color: "#0F1F1A" }}>{reservation.clientName}</p>
+                  <p className="text-[12px]" style={{ color: "#88B5A2" }}>Cliente</p>
+                </div>
               </div>
-
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { icon: Calendar, value: new Date(reservation.date).toLocaleDateString("es-ES", { day: "2-digit", month: "short" }) },
-                  { icon: Clock3,   value: reservation.time },
-                  { icon: Users,    value: `${reservation.guests} pax` },
-                ].map(({ icon: Icon, value }) => (
-                  <div
-                    key={value}
-                    className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl"
-                    style={{ background: "rgba(15,31,26,0.04)" }}
-                  >
-                    <Icon className="h-4 w-4" style={{ color: "#88B5A2" }} />
-                    <span className="text-[12px] font-medium" style={{ color: "#0F1F1A" }}>{value}</span>
-                  </div>
-                ))}
-              </div>
+              <DetailGrid r={reservation} />
             </div>
 
-            {/* PIN entry */}
-            <div className="space-y-4">
-              <div className="text-center">
-                <p className="font-medium text-[14px]" style={{ color: "#0F1F1A" }}>Introduce tu PIN</p>
-                <p className="text-[12px] mt-0.5" style={{ color: "#88B5A2" }}>4 dígitos asignados al registrarte</p>
-              </div>
-
-              {/* PIN boxes */}
-              <div className="flex items-center justify-center gap-3">
-                {pin.map((digit, i) => (
-                  <input
-                    key={i}
-                    ref={(el) => { inputRefs.current[i] = el }}
-                    type="password"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handlePinDigit(i, e.target.value)}
-                    onKeyDown={(e) => handlePinKeyDown(i, e)}
-                    className="w-14 h-14 rounded-2xl text-center text-[22px] font-bold outline-none transition-all"
-                    style={{
-                      background: pinError ? "rgba(220,38,38,0.06)" : "#F2EBDC",
-                      border: pinError
-                        ? "2px solid rgba(220,38,38,0.40)"
-                        : digit
-                        ? "2px solid #1F6B4D"
-                        : "2px solid rgba(15,31,26,0.15)",
-                      color: "#0F1F1A",
-                    }}
-                    disabled={state === "confirming"}
-                    autoFocus={i === 0}
-                  />
-                ))}
-              </div>
-
-              {pinError && (
-                <p className="text-center text-[13px] font-medium" style={{ color: "#dc2626" }}>
-                  PIN incorrecto. Inténtalo de nuevo.
-                </p>
-              )}
-
-              {/* Numpad for mobile */}
-              <div className="grid grid-cols-3 gap-2 mt-2">
-                {["1","2","3","4","5","6","7","8","9"].map((d) => (
-                  <button
-                    key={d}
-                    onClick={() => handleNumpad(d)}
-                    disabled={state === "confirming"}
-                    className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:opacity-50 disabled:opacity-30"
-                    style={{ background: "#F2EBDC", color: "#0F1F1A", border: "1px solid rgba(15,31,26,0.10)" }}
-                  >
-                    {d}
-                  </button>
-                ))}
-                <button
-                  onClick={handleDelete}
-                  disabled={state === "confirming"}
-                  className="h-12 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
-                  style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.10)" }}
-                >
-                  <Delete className="h-5 w-5" style={{ color: "#88B5A2" }} />
-                </button>
-                <button
-                  onClick={() => handleNumpad("0")}
-                  disabled={state === "confirming"}
-                  className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:opacity-50 disabled:opacity-30"
-                  style={{ background: "#F2EBDC", color: "#0F1F1A", border: "1px solid rgba(15,31,26,0.10)" }}
-                >
-                  0
-                </button>
-                <button
-                  onClick={handleConfirm}
-                  disabled={pinValue.length < 4 || state === "confirming"}
-                  className="h-12 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-30 hover:opacity-90"
-                  style={{ background: "#1F6B4D", color: "#F2EBDC" }}
-                >
-                  {state === "confirming" ? (
-                    <span className="flex items-center justify-center">
-                      <span
-                        className="h-4 w-4 rounded-full border-2 animate-spin"
-                        style={{ borderColor: "rgba(242,235,220,0.30)", borderTopColor: "#F2EBDC" }}
-                      />
-                    </span>
-                  ) : "OK"}
-                </button>
-              </div>
-            </div>
-          </>
+            <button
+              onClick={() => setState("pin_entry")}
+              className="w-full py-3.5 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
+              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+            >
+              Verificar reserva
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
         )}
 
-        {/* Confirmed */}
-        {state === "confirmed" && reservation && (
-          <div className="flex flex-col items-center gap-5 py-6 text-center">
-            <div
-              className="h-20 w-20 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}
-            >
-              <CheckCircle className="h-10 w-10" style={{ color: "#1F6B4D" }} />
-            </div>
-            <div>
-              <p
-                className="text-[22px] font-bold"
-                style={{ color: "#0F1F1A", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}
+        {/* ── PIN entry ── */}
+        {(state === "pin_entry" || state === "confirming") && reservation && (
+          <div className="space-y-5">
+            {/* Header with back button */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => { setPin(["", "", "", ""]); setPinError(false); setState("ready") }}
+                disabled={state === "confirming"}
+                className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
+                style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)" }}
               >
-                ¡Reserva confirmada!
-              </p>
-              <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{reservation.clientName}</p>
-              {staffName && (
-                <p className="text-[12px] mt-1" style={{ color: "#88B5A2" }}>Validado por {staffName}</p>
-              )}
+                <X className="h-4 w-4" style={{ color: "#88B5A2" }} />
+              </button>
+              <div>
+                <p className="font-semibold text-[15px]" style={{ color: "#0F1F1A" }}>{reservation.clientName}</p>
+                <p className="text-[12px]" style={{ color: "#88B5A2" }}>{reservation.businessName}</p>
+              </div>
             </div>
-            <div
-              className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
-              style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)", color: "#1F6B4D" }}
-            >
-              <Shield className="h-4 w-4 shrink-0" />
-              El incentivo ha sido acreditado automáticamente al captador.
+
+            {/* PIN label */}
+            <div className="text-center pt-2">
+              <p className="font-medium text-[15px]" style={{ color: "#0F1F1A" }}>Introduce tu código de empleado</p>
+              <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>PIN de 4 dígitos asignado al registrarte</p>
+            </div>
+
+            {/* PIN boxes */}
+            <div className="flex items-center justify-center gap-3">
+              {pin.map((digit, i) => (
+                <input
+                  key={i}
+                  ref={(el) => { inputRefs.current[i] = el }}
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleDigitInput(i, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(i, e)}
+                  disabled={state === "confirming"}
+                  className="w-14 h-14 rounded-2xl text-center text-[24px] font-bold outline-none transition-all"
+                  style={{
+                    background: pinError ? "rgba(220,38,38,0.06)" : "#F2EBDC",
+                    border: pinError
+                      ? "2px solid rgba(220,38,38,0.50)"
+                      : digit
+                        ? "2px solid #1F6B4D"
+                        : "2px solid rgba(15,31,26,0.15)",
+                    color: "#0F1F1A",
+                  }}
+                />
+              ))}
+            </div>
+
+            {pinError && (
+              <p className="text-center text-[13px] font-medium" style={{ color: "#dc2626" }}>
+                Código incorrecto. Inténtalo de nuevo.
+              </p>
+            )}
+
+            {/* Numpad */}
+            <div className="grid grid-cols-3 gap-2">
+              {["1","2","3","4","5","6","7","8","9"].map((d) => (
+                <button key={d} onClick={() => handleNumpad(d)} disabled={state === "confirming"}
+                  className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
+                  style={{ background: "#F2EBDC", color: "#0F1F1A", border: "1px solid rgba(15,31,26,0.10)" }}>
+                  {d}
+                </button>
+              ))}
+              {/* Backspace */}
+              <button onClick={handleBackspace} disabled={state === "confirming"}
+                className="h-12 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
+                style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.10)" }}>
+                <span className="text-[18px]" style={{ color: "#88B5A2" }}>⌫</span>
+              </button>
+              <button onClick={() => handleNumpad("0")} disabled={state === "confirming"}
+                className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
+                style={{ background: "#F2EBDC", color: "#0F1F1A", border: "1px solid rgba(15,31,26,0.10)" }}>
+                0
+              </button>
+              {/* Confirm */}
+              <button onClick={handleConfirm} disabled={pinValue.length < 4 || state === "confirming"}
+                className="h-12 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-30 hover:opacity-90"
+                style={{ background: "#1F6B4D", color: "#F2EBDC" }}>
+                {state === "confirming"
+                  ? <span className="flex items-center justify-center">
+                      <span className="h-4 w-4 rounded-full border-2 animate-spin inline-block"
+                        style={{ borderColor: "rgba(242,235,220,0.30)", borderTopColor: "#F2EBDC" }} />
+                    </span>
+                  : "OK"}
+              </button>
             </div>
           </div>
         )}
 
-        {/* Already scanned */}
+        {/* ── Confirmed ── */}
+        {state === "confirmed" && reservation && (
+          <div className="flex flex-col items-center gap-5 py-6 text-center">
+            <div className="h-20 w-20 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}>
+              <CheckCircle className="h-10 w-10" style={{ color: "#1F6B4D" }} />
+            </div>
+            <div>
+              <p className="text-[22px] font-bold" style={{ color: "#0F1F1A", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
+                ¡Reserva confirmada!
+              </p>
+              <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{reservation.clientName}</p>
+              {staffName && (
+                <p className="text-[12px] mt-1" style={{ color: "#88B5A2" }}>Validado por <strong>{staffName}</strong></p>
+              )}
+            </div>
+            <div className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
+              style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)", color: "#1F6B4D" }}>
+              <Shield className="h-4 w-4 shrink-0" />
+              Incentivo acreditado automáticamente al captador.
+            </div>
+          </div>
+        )}
+
+        {/* ── Already scanned ── */}
         {state === "already_scanned" && reservation && (
           <div className="flex flex-col items-center gap-4 py-6 text-center">
-            <div
-              className="h-16 w-16 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(216,139,46,0.10)", border: "1px solid rgba(216,139,46,0.25)" }}
-            >
+            <div className="h-16 w-16 rounded-full flex items-center justify-center"
+              style={{ background: "rgba(216,139,46,0.10)", border: "1px solid rgba(216,139,46,0.25)" }}>
               <Clock className="h-8 w-8" style={{ color: "#B5710D" }} />
             </div>
             <div>

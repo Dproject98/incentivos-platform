@@ -13,6 +13,12 @@ const protectedPrefixes = ["/es/captador", "/en/captador", "/es/empresa", "/en/e
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
+
+  // Scan pages have no locale — bypass intl middleware entirely
+  if (pathname.startsWith("/scan/")) {
+    return NextResponse.next()
+  }
+
   const isProtected = protectedPrefixes.some((p) => pathname.startsWith(p))
 
   if (isProtected) {
