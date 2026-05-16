@@ -4,12 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useLocale, useTranslations } from "next-intl"
 import { signOut } from "next-auth/react"
-import { cn } from "@/lib/utils"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import {
-  LayoutDashboard, Megaphone, CalendarCheck, Wallet, LogOut, QrCode,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { IncentisLogo } from "@/components/IncentisLogo"
+import { LayoutDashboard, Megaphone, CalendarCheck, Wallet, LogOut } from "lucide-react"
 
 export function SidebarCaptador() {
   const t = useTranslations("nav")
@@ -17,23 +14,22 @@ export function SidebarCaptador() {
   const pathname = usePathname()
 
   const links = [
-    { href: `/${locale}/captador/dashboard`, label: t("dashboard"),     icon: LayoutDashboard },
-    { href: `/${locale}/captador/campanas`,  label: t("campaigns"),     icon: Megaphone },
-    { href: `/${locale}/captador/reservas`,  label: t("reservations"),  icon: CalendarCheck },
-    { href: `/${locale}/captador/wallet`,    label: t("wallet"),        icon: Wallet },
+    { href: `/${locale}/captador/dashboard`, label: t("dashboard"),    icon: LayoutDashboard },
+    { href: `/${locale}/captador/campanas`,  label: t("campaigns"),    icon: Megaphone },
+    { href: `/${locale}/captador/reservas`,  label: t("reservations"), icon: CalendarCheck },
+    { href: `/${locale}/captador/wallet`,    label: t("wallet"),       icon: Wallet },
   ]
 
   return (
     <aside
-      className="flex flex-col w-64 min-h-screen px-4 py-6 gap-2 border-r border-white/5"
-      style={{ background: "rgba(10, 14, 39, 0.95)", backdropFilter: "blur(12px)" }}
+      className="flex flex-col w-64 min-h-screen px-4 py-6 shrink-0"
+      style={{ background: "#fff", borderRight: "1px solid rgba(15,31,26,0.10)" }}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2.5 mb-8 px-2">
-        <div className="h-9 w-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
-          <QrCode className="h-5 w-5 text-purple-400" />
-        </div>
-        <span className="font-bold text-lg text-white">Incentis</span>
+      <div className="mb-8 px-2">
+        <Link href={`/${locale}`}>
+          <IncentisLogo size="sm" />
+        </Link>
       </div>
 
       {/* Nav */}
@@ -45,33 +41,44 @@ export function SidebarCaptador() {
             <Link
               key={link.href}
               href={link.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200",
-                active
-                  ? "bg-purple-600/20 border border-purple-500/30 text-purple-300 font-medium shadow-glow-purple"
-                  : "text-slate-500 hover:bg-white/5 hover:text-slate-300 border border-transparent"
-              )}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] transition-all"
+              style={{
+                background: active ? "rgba(31,107,77,0.08)" : "transparent",
+                color: active ? "#1F6B4D" : "#2A3B34",
+                border: active ? "1px solid rgba(31,107,77,0.15)" : "1px solid transparent",
+                fontWeight: active ? 500 : 400,
+              }}
             >
-              <Icon className={cn("h-4 w-4", active ? "text-purple-400" : "text-slate-600")} />
+              <Icon
+                className="h-4 w-4 shrink-0"
+                style={{ color: active ? "#1F6B4D" : "#88B5A2" }}
+              />
               {link.label}
-              {active && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-purple-400" />}
+              {active && (
+                <span
+                  className="ml-auto h-1.5 w-1.5 rounded-full shrink-0"
+                  style={{ background: "#D88B2E" }}
+                />
+              )}
             </Link>
           )
         })}
       </nav>
 
       {/* Bottom */}
-      <div className="flex flex-col gap-2 pt-4 border-t border-white/5">
+      <div
+        className="flex flex-col gap-2 pt-4 border-t"
+        style={{ borderColor: "rgba(15,31,26,0.08)" }}
+      >
         <LanguageSwitcher />
-        <Button
-          variant="ghost"
-          size="sm"
-          className="justify-start gap-2 text-slate-600 hover:text-slate-300 hover:bg-white/5"
+        <button
           onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl text-[14px] transition-all hover:bg-red-50 w-full text-left"
+          style={{ color: "#88B5A2" }}
         >
           <LogOut className="h-4 w-4" />
           {t("logout")}
-        </Button>
+        </button>
       </div>
     </aside>
   )
