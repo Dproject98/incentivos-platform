@@ -47,7 +47,15 @@ export default function NuevaCampanaPage() {
         bonusMinValue: form.bonusMinValue ? Number(form.bonusMinValue) : undefined,
       }),
     })
-    if (!res.ok) { toast.error("Error al crear la campaña"); setLoading(false); return }
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}))
+      const msg = errData.issues
+        ? errData.issues.map((i: { path: string[]; message: string }) => `${i.path.join(".")}: ${i.message}`).join(" | ")
+        : errData.detail ?? errData.error ?? "Error desconocido"
+      toast.error(`Error al crear la campaña: ${msg}`)
+      setLoading(false)
+      return
+    }
     toast.success("Campaña creada con éxito")
     router.push(`/${locale}/empresa/campanas`)
   }
@@ -175,7 +183,7 @@ export default function NuevaCampanaPage() {
                   Saldo mínimo que debe tener el captador en su wallet para solicitar este bono
                 </p>
                 <input
-                  type="number" min={1} step={0.5} required
+                  type="number" min={0.01} step="any" required
                   value={form.bonusMinValue}
                   onChange={(e) => setForm({ ...form, bonusMinValue: e.target.value })}
                   placeholder="Ej: 30"

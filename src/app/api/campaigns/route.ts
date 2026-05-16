@@ -7,7 +7,7 @@ const createSchema = z.object({
   title: z.string().min(3),
   description: z.string().optional(),
   incentiveType: z.enum(["FIXED", "PERCENTAGE", "BONO"]),
-  incentiveValue: z.number().positive(),
+  incentiveValue: z.number().min(0),
   bonusDescription: z.string().optional(),
   bonusMinValue: z.number().positive().optional(),
   startDate: z.string(),
@@ -48,27 +48,39 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session || session.user.role !== "EMPRESA") {
-    return NextResponse.json({ error: "forbidden" }, { status: 403 })
+  try {
+    const session = await auth()
+    if (!session || session.user.role !== "EMPRESA") {
+      return NextResponse.json({ error: "forbidden" }, { status: 403 })
+    }
+
+    const business = await prisma.business.findUnique({
+      where: { userId: session.user.id },
+    })
+    if (!business) return NextResponse.json({ error: "no_business" }, { status: 404 })
+
+    const body = await req.json()
+    console.log("[campaigns POST] body recibido:", JSON.stringify(body))
+
+    const parsed = createSchema.safeParse(body)
+    if (!parsed.success) {
+      console.error("[campaigns POST] Zod error:", JSON.stringify(parsed.error.issues))
+      return NextResponse.json({ error: "validation_error", issues: parsed.error.issues }, { status: 400 })
+    }
+    const data = parsed.data
+
+    const campaign = await prisma.campaign.create({
+      data: {
+        ...data,
+        startDate: new Date(data.startDate),
+        endDate: data.endDate ? new Date(data.endDate) : undefined,
+        businessId: business.id,
+      },
+    })
+
+    return NextResponse.json(campaign, { status: 201 })
+  } catch (err) {
+    console.error("[campaigns POST] error:", err)
+    return NextResponse.json({ error: "server_error", detail: String(err) }, { status: 500 })
   }
-
-  const business = await prisma.business.findUnique({
-    where: { userId: session.user.id },
-  })
-  if (!business) return NextResponse.json({ error: "no_business" }, { status: 404 })
-
-  const body = await req.json()
-  const data = createSchema.parse(body)
-
-  const campaign = await prisma.campaign.create({
-    data: {
-      ...data,
-      startDate: new Date(data.startDate),
-      endDate: data.endDate ? new Date(data.endDate) : undefined,
-      businessId: business.id,
-    },
-  })
-
-  return NextResponse.json(campaign, { status: 201 })
 }
