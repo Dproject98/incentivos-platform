@@ -7,7 +7,8 @@ const createSchema = z.object({
   title: z.string().min(3),
   description: z.string().optional(),
   incentiveTypes: z.array(z.enum(["FIXED", "PERCENTAGE", "BONO"])).min(1),
-  incentiveValue: z.number().min(0),
+  fixedValue: z.number().min(0).optional(),
+  percentageValue: z.number().min(0).optional(),
   bonusDescription: z.string().optional(),
   bonusMinValue: z.number().positive().optional(),
   startDate: z.string(),
@@ -69,11 +70,36 @@ export async function POST(req: NextRequest) {
     }
     const data = parsed.data
 
+    // Business rule: every selected incentive type must have its value(s).
+    const issues: { path: string[]; message: string }[] = []
+    if (data.incentiveTypes.includes("FIXED") && (data.fixedValue == null || data.fixedValue <= 0)) {
+      issues.push({ path: ["fixedValue"], message: "El valor fijo (€) es obligatorio y debe ser mayor que 0" })
+    }
+    if (data.incentiveTypes.includes("PERCENTAGE") && (data.percentageValue == null || data.percentageValue <= 0)) {
+      issues.push({ path: ["percentageValue"], message: "El porcentaje (%) es obligatorio y debe ser mayor que 0" })
+    }
+    if (data.incentiveTypes.includes("BONO")) {
+      if (!data.bonusDescription) issues.push({ path: ["bonusDescription"], message: "La descripción del bono es obligatoria" })
+      if (data.bonusMinValue == null || data.bonusMinValue <= 0) {
+        issues.push({ path: ["bonusMinValue"], message: "El valor mínimo de canje es obligatorio y debe ser mayor que 0" })
+      }
+    }
+    if (issues.length > 0) {
+      return NextResponse.json({ error: "validation_error", issues }, { status: 400 })
+    }
+
     const campaign = await prisma.campaign.create({
       data: {
-        ...data,
+        title: data.title,
+        description: data.description,
+        incentiveTypes: data.incentiveTypes,
+        fixedValue: data.incentiveTypes.includes("FIXED") ? data.fixedValue : null,
+        percentageValue: data.incentiveTypes.includes("PERCENTAGE") ? data.percentageValue : null,
+        bonusDescription: data.incentiveTypes.includes("BONO") ? data.bonusDescription : null,
+        bonusMinValue: data.incentiveTypes.includes("BONO") ? data.bonusMinValue : null,
         startDate: new Date(data.startDate),
         endDate: data.endDate ? new Date(data.endDate) : undefined,
+        maxReservations: data.maxReservations,
         businessId: business.id,
       },
     })

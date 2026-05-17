@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/lib/auth"
+import { cashIncentiveAmount } from "@/lib/incentive"
 
 export async function POST(
   req: NextRequest,
@@ -19,7 +20,7 @@ export async function POST(
   const reservation = await prisma.reservation.findUnique({
     where: { id },
     include: {
-      campaign: { select: { businessId: true, incentiveTypes: true, incentiveValue: true, business: { select: { name: true } } } },
+      campaign: { select: { businessId: true, incentiveTypes: true, incentiveValue: true, fixedValue: true, percentageValue: true, business: { select: { name: true } } } },
       captador: { include: { wallet: true } },
     },
   })
@@ -32,8 +33,7 @@ export async function POST(
     return NextResponse.json({ error: "already_confirmed" }, { status: 409 })
   }
 
-  const hasCash = reservation.campaign.incentiveTypes.some((t) => t === "FIXED" || t === "PERCENTAGE")
-  const incentiveAmount = hasCash ? reservation.campaign.incentiveValue : 0
+  const incentiveAmount = cashIncentiveAmount(reservation.campaign, reservation.chosenIncentiveType)
 
   await prisma.$transaction(async (tx) => {
     await tx.reservation.update({

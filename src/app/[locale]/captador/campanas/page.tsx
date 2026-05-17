@@ -53,8 +53,8 @@ export default async function CampanasPage() {
             const cfg = incentiveConfig[primaryType] ?? incentiveConfig.FIXED
             const Icon = cfg.icon
             const incentiveText = [
-              campaign.incentiveTypes.includes("FIXED") ? `${campaign.incentiveValue}€ ${t("per_reservation")}` : null,
-              campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.incentiveValue}% ${t("per_reservation")}` : null,
+              campaign.incentiveTypes.includes("FIXED") ? `${campaign.fixedValue ?? campaign.incentiveValue}€ ${t("per_reservation")}` : null,
+              campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.percentageValue ?? campaign.incentiveValue}% ${t("per_reservation")}` : null,
               campaign.incentiveTypes.includes("BONO") ? (campaign.bonusDescription ?? "Bono") : null,
             ].filter(Boolean).join(" + ")
 

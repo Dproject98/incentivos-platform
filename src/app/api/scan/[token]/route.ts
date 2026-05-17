@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { cashIncentiveAmount } from "@/lib/incentive"
 
 export async function GET(
   req: NextRequest,
@@ -77,8 +78,7 @@ export async function POST(
   }
 
   // All checks pass — confirm the reservation
-  const hasCash = reservation.campaign.incentiveTypes.some((t: string) => t === "FIXED" || t === "PERCENTAGE")
-  const incentiveAmount = hasCash ? reservation.campaign.incentiveValue : 0
+  const incentiveAmount = cashIncentiveAmount(reservation.campaign, reservation.chosenIncentiveType)
 
   await prisma.$transaction(async (tx) => {
     await tx.reservation.update({

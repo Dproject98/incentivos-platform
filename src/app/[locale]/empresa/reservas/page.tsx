@@ -20,7 +20,7 @@ export default async function EmpresaReservasPage() {
 
   const reservations = await prisma.reservation.findMany({
     where: { campaign: { businessId: business.id } },
-    include: { campaign: { select: { title: true, incentiveTypes: true, incentiveValue: true } } },
+    include: { campaign: { select: { title: true, incentiveTypes: true, incentiveValue: true, fixedValue: true, percentageValue: true } } },
     orderBy: { createdAt: "desc" },
   })
 
@@ -65,10 +65,14 @@ export default async function EmpresaReservasPage() {
           <div>
             {reservations.map((r, i) => {
               const ss = statusStyle[r.status] ?? statusStyle.PENDING
+              const chosen = r.chosenIncentiveType
               const incentive = r.status === "CONFIRMED"
-                ? [
-                    r.campaign.incentiveTypes.includes("FIXED") ? `${r.campaign.incentiveValue}€` : null,
-                    r.campaign.incentiveTypes.includes("PERCENTAGE") ? `${r.campaign.incentiveValue}%` : null,
+                ? chosen === "FIXED"      ? `${r.campaign.fixedValue ?? r.campaign.incentiveValue}€`
+                : chosen === "PERCENTAGE" ? `${r.campaign.percentageValue ?? r.campaign.incentiveValue}%`
+                : chosen === "BONO"       ? "Bono"
+                : [
+                    r.campaign.incentiveTypes.includes("FIXED") ? `${r.campaign.fixedValue ?? r.campaign.incentiveValue}€` : null,
+                    r.campaign.incentiveTypes.includes("PERCENTAGE") ? `${r.campaign.percentageValue ?? r.campaign.incentiveValue}%` : null,
                     r.campaign.incentiveTypes.includes("BONO") ? "Bono" : null,
                   ].filter(Boolean).join(" + ")
                 : "—"

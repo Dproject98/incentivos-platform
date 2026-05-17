@@ -14,6 +14,7 @@ const createSchema = z.object({
   time: z.string(),
   guests: z.number().int().min(1),
   notes: z.string().optional(),
+  chosenIncentiveType: z.enum(["FIXED", "PERCENTAGE", "BONO"]).optional(),
 })
 
 export async function GET(req: NextRequest) {
@@ -62,6 +63,18 @@ export async function POST(req: NextRequest) {
   })
   if (!campaign) return NextResponse.json({ error: "campaign_not_found" }, { status: 404 })
 
+  // Determine which compensation the captador receives.
+  let chosenIncentiveType = data.chosenIncentiveType
+  if (chosenIncentiveType) {
+    if (!campaign.incentiveTypes.includes(chosenIncentiveType)) {
+      return NextResponse.json({ error: "invalid_incentive_type" }, { status: 400 })
+    }
+  } else if (campaign.incentiveTypes.length === 1) {
+    chosenIncentiveType = campaign.incentiveTypes[0] as "FIXED" | "PERCENTAGE" | "BONO"
+  } else {
+    return NextResponse.json({ error: "incentive_type_required" }, { status: 400 })
+  }
+
   const user = await prisma.user.findUnique({ where: { id: session.user.id } })
 
   const reservation = await prisma.reservation.create({
@@ -75,6 +88,7 @@ export async function POST(req: NextRequest) {
       time: data.time,
       guests: data.guests,
       notes: data.notes,
+      chosenIncentiveType,
     },
   })
 

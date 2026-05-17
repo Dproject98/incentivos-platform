@@ -89,8 +89,8 @@ export default async function EmpresaCampanasPage() {
                       <span style={{ color: "#88B5A2" }}>Incentivo</span>
                       <span className="font-semibold" style={{ color: "#D88B2E" }}>
                         {[
-                          campaign.incentiveTypes.includes("FIXED") ? `${campaign.incentiveValue}€` : null,
-                          campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.incentiveValue}%` : null,
+                          campaign.incentiveTypes.includes("FIXED") ? `${campaign.fixedValue ?? campaign.incentiveValue}€` : null,
+                          campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.percentageValue ?? campaign.incentiveValue}%` : null,
                           campaign.incentiveTypes.includes("BONO") ? (campaign.bonusDescription ?? "Bono") : null,
                         ].filter(Boolean).join(" + ")}
                       </span>

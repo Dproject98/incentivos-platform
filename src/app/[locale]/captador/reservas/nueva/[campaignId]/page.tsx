@@ -12,8 +12,16 @@ interface Campaign {
   title: string
   incentiveTypes: string[]
   incentiveValue: number
+  fixedValue: number | null
+  percentageValue: number | null
   bonusDescription: string | null
   business: { name: string }
+}
+
+const TYPE_META: Record<string, { label: string; icon: typeof Euro }> = {
+  FIXED:      { label: "Pago fijo",   icon: Euro },
+  PERCENTAGE: { label: "Porcentaje",  icon: TrendingUp },
+  BONO:       { label: "Bono",        icon: Gift },
 }
 
 const inputStyle = {
@@ -35,6 +43,7 @@ export default function NuevaReservaPage() {
   const campaignId = params.campaignId as string
 
   const [campaign, setCampaign] = useState<Campaign | null>(null)
+  const [chosenType, setChosenType] = useState<string | null>(null)
   const [form, setForm] = useState({
     clientName: "", clientEmail: "", clientPhone: "",
     date: "", time: "20:00", guests: 2, notes: "",
@@ -46,17 +55,31 @@ export default function NuevaReservaPage() {
       .then((r) => r.json())
       .then((campaigns: Campaign[]) => {
         const c = campaigns.find((c) => c.id === campaignId)
-        if (c) setCampaign(c)
+        if (c) {
+          setCampaign(c)
+          // Auto-select when the campaign offers a single compensation
+          if (c.incentiveTypes.length === 1) setChosenType(c.incentiveTypes[0])
+        }
       })
   }, [campaignId])
 
+  const valueLabel = (campaign: Campaign, type: string) => {
+    if (type === "FIXED") return `${campaign.fixedValue ?? campaign.incentiveValue}€ por reserva confirmada`
+    if (type === "PERCENTAGE") return `${campaign.percentageValue ?? campaign.incentiveValue}% del ticket`
+    return campaign.bonusDescription ?? "Bono / Voucher"
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (campaign && campaign.incentiveTypes.length > 1 && !chosenType) {
+      toast.error("Elige qué compensación quieres recibir")
+      return
+    }
     setLoading(true)
     const res = await fetch("/api/reservations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, campaignId, guests: Number(form.guests) }),
+      body: JSON.stringify({ ...form, campaignId, guests: Number(form.guests), chosenIncentiveType: chosenType ?? undefined }),
     })
     if (!res.ok) { toast.error("Error al crear la reserva"); setLoading(false); return }
     const reservation = await res.json()
@@ -66,8 +89,8 @@ export default function NuevaReservaPage() {
 
   const incentiveText = campaign
     ? [
-        campaign.incentiveTypes.includes("FIXED") ? `${campaign.incentiveValue}€ por reserva confirmada` : null,
-        campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.incentiveValue}% por reserva confirmada` : null,
+        campaign.incentiveTypes.includes("FIXED") ? `${campaign.fixedValue ?? campaign.incentiveValue}€` : null,
+        campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.percentageValue ?? campaign.incentiveValue}%` : null,
         campaign.incentiveTypes.includes("BONO") ? (campaign.bonusDescription ?? "Bono") : null,
       ].filter(Boolean).join(" + ")
     : null
@@ -75,6 +98,7 @@ export default function NuevaReservaPage() {
   const iconMap: Record<string, typeof Euro> = { FIXED: Euro, PERCENTAGE: TrendingUp, BONO: Gift }
   const primaryType = campaign?.incentiveTypes.find((t) => t !== "BONO") ?? campaign?.incentiveTypes[0] ?? "FIXED"
   const IncentiveIcon = iconMap[primaryType] ?? Euro
+  const multiType = !!campaign && campaign.incentiveTypes.length > 1
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
@@ -108,6 +132,52 @@ export default function NuevaReservaPage() {
           >
             <IncentiveIcon className="h-4 w-4" />
             {incentiveText}
+          </div>
+        </div>
+      )}
+
+      {/* Compensation selector — only when the campaign offers more than one */}
+      {campaign && multiType && (
+        <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+          <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-1" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+            Elige tu compensación
+          </p>
+          <p className="text-[13px] mb-4" style={{ color: "#88B5A2" }}>
+            Esta campaña ofrece varias formas de compensación. Selecciona la que quieres recibir por esta reserva.
+          </p>
+          <div className="space-y-2">
+            {campaign.incentiveTypes.map((type) => {
+              const meta = TYPE_META[type] ?? TYPE_META.FIXED
+              const Icon = meta.icon
+              const active = chosenType === type
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setChosenType(type)}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
+                  style={{
+                    background: active ? "rgba(31,107,77,0.08)" : "#F2EBDC",
+                    border: active ? "1px solid rgba(31,107,77,0.30)" : "1px solid rgba(15,31,26,0.12)",
+                  }}
+                >
+                  <div
+                    className="h-9 w-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: active ? "rgba(31,107,77,0.15)" : "rgba(15,31,26,0.05)" }}
+                  >
+                    <Icon className="h-4 w-4" style={{ color: active ? "#1F6B4D" : "#88B5A2" }} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[14px] font-semibold" style={{ color: "#0F1F1A" }}>{meta.label}</p>
+                    <p className="text-[12px]" style={{ color: "#88B5A2" }}>{valueLabel(campaign, type)}</p>
+                  </div>
+                  <span
+                    className="h-4 w-4 rounded-full shrink-0 flex items-center justify-center"
+                    style={{ border: active ? "5px solid #1F6B4D" : "2px solid rgba(15,31,26,0.20)" }}
+                  />
+                </button>
+              )
+            })}
           </div>
         </div>
       )}

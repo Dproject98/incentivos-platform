@@ -92,7 +92,9 @@ model Campaign {
   description      String?
   businessId       String
   incentiveTypes   String[]
-  incentiveValue   Float
+  incentiveValue   Float    @default(0)   // legacy: shared value, kept for backward compat
+  fixedValue       Float?                  // € per reservation when FIXED is chosen
+  percentageValue  Float?                  // % of ticket when PERCENTAGE is chosen
   bonusDescription String?
   bonusMinValue    Float?          // min wallet balance required to redeem this bono
   status           CampaignStatus @default(ACTIVE)
@@ -122,6 +124,7 @@ model Reservation {
   qrScannedAt   DateTime?
   status        ReservationStatus @default(PENDING)
   incentivePaid Boolean           @default(false)
+  chosenIncentiveType String?     // "FIXED" | "PERCENTAGE" | "BONO" picked by the captador
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
 

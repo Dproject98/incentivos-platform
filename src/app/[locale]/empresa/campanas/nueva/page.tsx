@@ -23,7 +23,8 @@ export default function NuevaCampanaPage() {
     title: "",
     description: "",
     incentiveTypes: ["FIXED"] as string[],
-    incentiveValue: "",
+    fixedValue: "",
+    percentageValue: "",
     bonusDescription: "",
     bonusMinValue: "",
     startDate: new Date().toISOString().split("T")[0],
@@ -34,21 +35,14 @@ export default function NuevaCampanaPage() {
   const toggleType = (value: string) => {
     setForm((prev) => {
       const current = prev.incentiveTypes
-      if (value === "BONO") {
-        // BONO toggles independently
-        return {
-          ...prev,
-          incentiveTypes: current.includes("BONO")
-            ? current.filter((t) => t !== "BONO")
-            : [...current, "BONO"],
-        }
-      } else {
-        // FIXED and PERCENTAGE are mutually exclusive; keep BONO if present
-        const hasBono = current.includes("BONO")
-        const isAlreadySelected = current.includes(value)
-        if (isAlreadySelected && current.filter((t) => t !== "BONO").length === 1) return prev // prevent deselecting all cash types
-        const newCash = isAlreadySelected ? current.filter((t) => t !== value && t !== "BONO") : [value]
-        return { ...prev, incentiveTypes: hasBono ? [...newCash, "BONO"] : newCash }
+      const isSelected = current.includes(value)
+      // Each type toggles independently. Keep at least one type selected.
+      if (isSelected && current.length === 1) return prev
+      return {
+        ...prev,
+        incentiveTypes: isSelected
+          ? current.filter((t) => t !== value)
+          : [...current, value],
       }
     })
   }
@@ -64,7 +58,8 @@ export default function NuevaCampanaPage() {
         title: form.title,
         description: form.description || undefined,
         incentiveTypes: form.incentiveTypes,
-        incentiveValue: form.incentiveTypes.some((t) => t === "FIXED" || t === "PERCENTAGE") ? Number(form.incentiveValue) : 0,
+        fixedValue: form.incentiveTypes.includes("FIXED") && form.fixedValue ? Number(form.fixedValue) : undefined,
+        percentageValue: form.incentiveTypes.includes("PERCENTAGE") && form.percentageValue ? Number(form.percentageValue) : undefined,
         maxReservations: form.maxReservations ? Number(form.maxReservations) : undefined,
         startDate: form.startDate,
         endDate: form.endDate || undefined,
@@ -175,18 +170,36 @@ export default function NuevaCampanaPage() {
             </div>
           </div>
 
-          {/* Incentive value — shown if FIXED or PERCENTAGE selected */}
-          {form.incentiveTypes.some((t) => t === "FIXED" || t === "PERCENTAGE") && (
+          {/* Fixed value — shown if FIXED selected */}
+          {form.incentiveTypes.includes("FIXED") && (
             <div>
               <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
-                {form.incentiveTypes.includes("PERCENTAGE") && !form.incentiveTypes.includes("FIXED")
-                  ? "Porcentaje del ticket (%)"
-                  : t("incentive_value")}
+                Valor fijo (€ por reserva confirmada)
               </label>
               <input
                 type="number" min={0.1} step="any" required
-                value={form.incentiveValue}
-                onChange={(e) => setForm({ ...form, incentiveValue: e.target.value })}
+                value={form.fixedValue}
+                onChange={(e) => setForm({ ...form, fixedValue: e.target.value })}
+                placeholder="Ej: 15"
+                className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
+                style={inputStyle}
+                onFocus={focusBorder}
+                onBlur={blurBorder}
+              />
+            </div>
+          )}
+
+          {/* Percentage value — shown if PERCENTAGE selected */}
+          {form.incentiveTypes.includes("PERCENTAGE") && (
+            <div>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                Porcentaje del ticket (%)
+              </label>
+              <input
+                type="number" min={0.1} step="any" required
+                value={form.percentageValue}
+                onChange={(e) => setForm({ ...form, percentageValue: e.target.value })}
+                placeholder="Ej: 5"
                 className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
                 style={inputStyle}
                 onFocus={focusBorder}
