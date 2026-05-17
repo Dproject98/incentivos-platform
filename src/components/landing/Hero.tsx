@@ -1,6 +1,16 @@
 import Link from "next/link"
 
-export function Hero({ locale }: { locale: string }) {
+interface HeroProps {
+  locale: string
+  confirmedThisMonth: number
+  captadoresCount: number
+  conversionRate: number
+  paidThisWeek: number
+}
+
+export function Hero({ locale, confirmedThisMonth, captadoresCount, conversionRate, paidThisWeek }: HeroProps) {
+  const fmtEur = (n: number) => "+€" + Math.round(n).toLocaleString("es-ES")
+
   return (
     <section className="pt-32 pb-24 px-6 md:px-12" style={{ background: "#F2EBDC" }}>
       <div className="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -77,9 +87,9 @@ export function Hero({ locale }: { locale: string }) {
               {/* Stats row */}
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { label: "Conversiones", value: "47", sub: "este mes" },
-                  { label: "Captadores", value: "12", sub: "activos" },
-                  { label: "Verificadas", value: "94%", sub: "anti-fraude" },
+                  { label: "Conversiones", value: String(confirmedThisMonth), sub: "este mes" },
+                  { label: "Captadores", value: String(captadoresCount), sub: "activos" },
+                  { label: "Verificadas", value: conversionRate + "%", sub: "anti-fraude" },
                 ].map((s) => (
                   <div key={s.label} className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.05)" }}>
                     <p className="text-[10px] uppercase tracking-widest mb-1" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>{s.label}</p>
@@ -92,7 +102,7 @@ export function Hero({ locale }: { locale: string }) {
               {/* Amber badge */}
               <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ background: "rgba(216,139,46,0.15)", border: "1px solid rgba(216,139,46,0.25)" }}>
                 <span className="text-[13px] font-medium" style={{ color: "#EFC78A" }}>Incentivos pagados esta semana</span>
-                <span className="text-[18px] font-display font-semibold" style={{ color: "#D88B2E", fontFamily: "var(--font-display)" }}>+€2.430</span>
+                <span className="text-[18px] font-display font-semibold" style={{ color: "#D88B2E", fontFamily: "var(--font-display)" }}>{fmtEur(paidThisWeek)}</span>
               </div>
 
               {/* Mini table */}
