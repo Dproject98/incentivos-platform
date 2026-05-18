@@ -34,7 +34,11 @@ export default function WalletPage() {
   const [loading, setLoading] = useState(false)
   const [connectingStripe, setConnectingStripe] = useState(false)
 
-  const reload = () => fetch("/api/wallet").then((r) => r.json()).then(setData)
+  const reload = () =>
+    fetch("/api/wallet").then((r) => {
+      if (!r.ok) return null
+      return r.json()
+    }).then((d) => { if (d) setData(d) })
   useEffect(() => { reload() }, [])
 
   const handleWithdraw = async () => {
