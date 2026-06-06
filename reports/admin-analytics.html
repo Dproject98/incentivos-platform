@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incentis — Panel de Analíticas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --ink:    #0F1F1A;
+      --paper:  #F2EBDC;
+      --forest: #1F6B4D;
+      --amber:  #D88B2E;
+      --sage:   #88B5A2;
+      --dark:   #2A3B34;
+      --card:   #FFFFFF;
+      --bg:     #F2EBDC;
+      --border: rgba(15,31,26,0.10);
+      --gap: 16px;
+      --r: 16px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    /* ── Header ── */
+    .header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 2px solid var(--forest);
+    }
+    .header-left h1 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .header-left p { font-size: 12px; color: var(--sage); margin-top: 2px; }
+    .logo { font-size: 20px; font-weight: 700; letter-spacing: -0.04em; color: var(--paper); }
+    .logo span { color: var(--forest); }
+    .filters {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    }
+    .filter-group { display: flex; align-items: center; gap: 6px; }
+    .filter-group label { font-size: 11px; color: var(--sage); text-transform: uppercase; letter-spacing: 0.08em; }
+    .filter-group select, .filter-group input[type=date] {
+      padding: 5px 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      color: var(--paper);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .filter-group select option { background: var(--ink); }
+    /* ── Container ── */
+    .container { max-width: 1300px; margin: 0 auto; padding: 24px var(--gap); }
+    /* ── KPI Row ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+    }
+    .kpi-card {
+      background: var(--card);
+      border-radius: var(--r);
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .kpi-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--sage); margin-bottom: 4px; font-family: monospace;
+    }
+    .kpi-value {
+      font-size: 28px; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--ink); margin-bottom: 2px;
+    }
+    .kpi-value.forest { color: var(--forest); }
+    .kpi-value.amber  { color: var(--amber); }
+    .kpi-sub { font-size: 11px; color: var(--sage); }
+    .kpi-badge {
+      display: inline-block;
+      font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; margin-top: 4px;
+    }
+    .kpi-badge.up   { background: rgba(31,107,77,0.10); color: var(--forest); border: 1px solid rgba(31,107,77,0.20); }
+    .kpi-badge.down { background: rgba(220,38,38,0.08); color: #dc2626; border: 1px solid rgba(220,38,38,0.15); }
+    /* ── Charts ── */
+    .chart-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+    }
+    .chart-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+    }
+    .chart-card {
+      background: var(--card);
+      border-radius: var(--r);
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .chart-title {
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .chart-title span { font-size: 11px; color: var(--sage); font-weight: 400; }
+    canvas { max-height: 280px; }
+    /* ── Table ── */
+    .table-card {
+      background: var(--card);
+      border-radius: var(--r);
+      padding: 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: var(--gap);
+    }
+    .table-header {
+      padding: 16px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-header h3 { font-size: 13px; font-weight: 600; }
+    .table-header span { font-size: 12px; color: var(--sage); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table thead th {
+      padding: 10px 16px; text-align: left;
+      border-bottom: 1px solid var(--border);
+      color: var(--sage); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.1em; cursor: pointer; user-select: none;
+      font-family: monospace; white-space: nowrap;
+    }
+    .data-table thead th:hover { color: var(--ink); background: rgba(15,31,26,0.03); }
+    .data-table tbody td { padding: 10px 16px; border-bottom: 1px solid rgba(15,31,26,0.04); }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover { background: rgba(15,31,26,0.02); }
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 500;
+    }
+    .badge-confirmed { background: rgba(31,107,77,0.10); color: var(--forest); border: 1px solid rgba(31,107,77,0.20); }
+    .badge-pending   { background: rgba(216,139,46,0.10); color: #B5710D; border: 1px solid rgba(216,139,46,0.25); }
+    .badge-cancelled { background: rgba(220,38,38,0.08); color: #dc2626; border: 1px solid rgba(220,38,38,0.15); }
+    .badge-no_show   { background: rgba(15,31,26,0.06); color: var(--dark); border: 1px solid rgba(15,31,26,0.12); }
+    /* ── Footer ── */
+    .footer { text-align: center; padding: 20px; font-size: 11px; color: var(--sage); }
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .chart-row, .chart-row-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media print {
+      body { background: white; }
+      .filters { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">incent<span>is</span></div>
+    <p>Panel de Analíticas · Administración</p>
+  </div>
+  <div class="filters">
+    <div class="filter-group">
+      <label>Período</label>
+      <select id="filter-period" onchange="applyFilters()">
+        <option value="30">Últimos 30 días</option>
+        <option value="14">Últimos 14 días</option>
+        <option value="7">Últimos 7 días</option>
+        <option value="90">Últimos 90 días</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Estado</label>
+      <select id="filter-status" onchange="applyFilters()">
+        <option value="all">Todos</option>
+        <option value="CONFIRMED">Confirmadas</option>
+        <option value="PENDING">Pendientes</option>
+        <option value="CANCELLED">Canceladas</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Tipo incentivo</label>
+      <select id="filter-type" onchange="applyFilters()">
+        <option value="all">Todos</option>
+        <option value="FIXED">Fijo €</option>
+        <option value="PERCENTAGE">Porcentaje %</option>
+        <option value="BONO">Bono</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Reservas totales</div>
+      <div class="kpi-value forest" id="kpi-reservas">—</div>
+      <div class="kpi-badge up" id="kpi-reservas-badge">—</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Tasa de conversión</div>
+      <div class="kpi-value amber" id="kpi-conv">—</div>
+      <div class="kpi-sub" id="kpi-conv-sub">—</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Incentivos pagados</div>
+      <div class="kpi-value forest" id="kpi-paid">—</div>
+      <div class="kpi-badge up" id="kpi-paid-badge">—</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Ticket medio incentivo</div>
+      <div class="kpi-value amber" id="kpi-ticket">—</div>
+      <div class="kpi-sub">por reserva confirmada</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Captadores activos</div>
+      <div class="kpi-value forest" id="kpi-captadores">—</div>
+      <div class="kpi-sub" id="kpi-cap-sub">—</div>
+    </div>
+  </div>
+
+  <!-- Main chart + donut -->
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-title">Reservas e incentivos pagados <span id="chart-period-label">· últimos 30 días</span></div>
+      <canvas id="chart-main"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Distribución por tipo de incentivo</div>
+      <canvas id="chart-donut"></canvas>
+    </div>
+  </div>
+
+  <!-- Conversion + status breakdown + registros -->
+  <div class="chart-row-3">
+    <div class="chart-card">
+      <div class="chart-title">Tasa de conversión diaria <span>%</span></div>
+      <canvas id="chart-conv"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Estados de reservas</div>
+      <canvas id="chart-status"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Nuevos registros</div>
+      <canvas id="chart-users"></canvas>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3>Reservas recientes</h3>
+      <span id="table-count">—</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable('date')">Fecha ↕</th>
+            <th onclick="sortTable('client')">Cliente ↕</th>
+            <th onclick="sortTable('campaign')">Campaña ↕</th>
+            <th onclick="sortTable('type')">Tipo ↕</th>
+            <th onclick="sortTable('amount')">Incentivo ↕</th>
+            <th onclick="sortTable('status')">Estado ↕</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Incentis · Panel de Analíticas · Datos de muestra — reemplazar con queries reales via <code>prisma.reservation.findMany()</code> &amp; <code>prisma.transaction.aggregate()</code>
+  </div>
+</div>
+
+<script>
+// ── Datos ─────────────────────────────────────────────────────────────────────
+// Genera datos de muestra realistas para los últimos 90 días
+function generateData() {
+  const reservations = [];
+  const transactions  = [];
+  const userRegs      = [];
+  const now = new Date();
+
+  const campaigns = [
+    { id: 'c1', title: 'Campaña Verano 2026',   business: "DProject's",     types: ['FIXED','PERCENTAGE'],  fixedValue: 15, percentageValue: 8 },
+    { id: 'c2', title: 'Menú Degustación',       business: 'Restaurante Mar', types: ['FIXED'],               fixedValue: 12, percentageValue: null },
+    { id: 'c3', title: 'Spa Wellness',           business: 'Hotel Palma',    types: ['BONO','FIXED'],         fixedValue: 20, percentageValue: null },
+    { id: 'c4', title: 'Cóctel Rooftop',         business: 'Sky Bar',        types: ['PERCENTAGE','FIXED'],   fixedValue: 10, percentageValue: 5  },
+    { id: 'c5', title: 'Brunch Dominical',       business: 'The Brunch Co.',  types: ['FIXED'],               fixedValue: 8,  percentageValue: null },
+  ];
+
+  const names = ['Ana García','Jordi Puig','María López','Carlos Ruiz','Elena Torres',
+    'Pau Vidal','Sofia Molina','David Mas','Laura Ferrer','Miquel Serra'];
+
+  const captadores = ['captador@incentivos.com','carlos@email.com','sofia@test.com','pau@example.com'];
+
+  let resId = 1;
+  let txId  = 1;
+
+  for (let d = 89; d >= 0; d--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - d);
+    const dateStr = date.toISOString().slice(0,10);
+
+    // 1-6 reservations per day with slight growth trend
+    const growthFactor = 1 + (89 - d) / 200;
+    const nRes = Math.floor((1 + Math.random() * 4) * growthFactor);
+
+    for (let i = 0; i < nRes; i++) {
+      const campaign = campaigns[Math.floor(Math.random() * campaigns.length)];
+      const statusRand = Math.random();
+      let status, chosenType, incentiveAmount;
+
+      const type = campaign.types[Math.floor(Math.random() * campaign.types.length)];
+      chosenType = type;
+
+      if (statusRand < 0.65) {
+        status = 'CONFIRMED';
+        incentiveAmount = type === 'FIXED' ? campaign.fixedValue
+          : type === 'PERCENTAGE' ? campaign.percentageValue
+          : 0;
+      } else if (statusRand < 0.85) {
+        status = 'PENDING';
+        incentiveAmount = 0;
+      } else if (statusRand < 0.93) {
+        status = 'CANCELLED';
+        incentiveAmount = 0;
+      } else {
+        status = 'NO_SHOW';
+        incentiveAmount = 0;
+      }
+
+      const captador = captadores[Math.floor(Math.random() * captadores.length)];
+
+      reservations.push({
+        id: `r${resId++}`,
+        date: dateStr,
+        client: names[Math.floor(Math.random() * names.length)],
+        campaign: campaign.title,
+        business: campaign.business,
+        captador,
+        type: chosenType,
+        status,
+        incentiveAmount,
+      });
+
+      if (status === 'CONFIRMED' && incentiveAmount > 0) {
+        transactions.push({
+          id: `tx${txId++}`,
+          date: dateStr,
+          amount: incentiveAmount,
+          type: 'CREDIT',
+          captador,
+        });
+      }
+    }
+
+    // 0-2 new user registrations per day
+    const nUsers = Math.floor(Math.random() * 2.5 * growthFactor);
+    for (let u = 0; u < nUsers; u++) {
+      userRegs.push({
+        date: dateStr,
+        role: Math.random() < 0.7 ? 'CAPTADOR' : 'EMPRESA',
+      });
+    }
+  }
+
+  return { reservations, transactions, userRegs };
+}
+
+const RAW = generateData();
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let filteredRes = [];
+let filteredTx  = [];
+let chartMain, chartDonut, chartConv, chartStatus, chartUsers;
+let sortCol = 'date', sortDir = 'desc';
+
+// ── Filters ───────────────────────────────────────────────────────────────────
+function applyFilters() {
+  const period = parseInt(document.getElementById('filter-period').value);
+  const status = document.getElementById('filter-status').value;
+  const type   = document.getElementById('filter-type').value;
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - period);
+  const cutoffStr = cutoff.toISOString().slice(0,10);
+
+  filteredRes = RAW.reservations.filter(r => {
+    if (r.date < cutoffStr) return false;
+    if (status !== 'all' && r.status !== status) return false;
+    if (type !== 'all' && r.type !== type) return false;
+    return true;
+  });
+
+  filteredTx = RAW.transactions.filter(t => t.date >= cutoffStr);
+
+  const label = {30:'últimos 30 días',14:'últimos 14 días',7:'últimos 7 días',90:'últimos 90 días'}[period];
+  document.getElementById('chart-period-label').textContent = '· ' + label;
+
+  renderKPIs();
+  updateCharts(period);
+  renderTable();
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────────────────
+function renderKPIs() {
+  const total = filteredRes.length;
+  const confirmed = filteredRes.filter(r => r.status === 'CONFIRMED').length;
+  const rate = total > 0 ? Math.round((confirmed / total) * 100) : 0;
+  const paid = filteredTx.reduce((s, t) => s + t.amount, 0);
+  const ticket = confirmed > 0 ? paid / confirmed : 0;
+  const caps = new Set(filteredRes.map(r => r.captador)).size;
+
+  document.getElementById('kpi-reservas').textContent = total.toLocaleString('es');
+  document.getElementById('kpi-reservas-badge').textContent = `${confirmed} confirmadas`;
+  document.getElementById('kpi-conv').textContent = rate + '%';
+  document.getElementById('kpi-conv-sub').textContent = `${confirmed} de ${total} reservas`;
+  document.getElementById('kpi-paid').textContent = paid.toFixed(0) + ' €';
+  document.getElementById('kpi-paid-badge').textContent = `${filteredTx.length} transacciones`;
+  document.getElementById('kpi-ticket').textContent = ticket.toFixed(2) + ' €';
+  document.getElementById('kpi-captadores').textContent = caps;
+  document.getElementById('kpi-cap-sub').textContent = `captadores únicos`;
+}
+
+// ── Chart helpers ─────────────────────────────────────────────────────────────
+const C = { forest: '#1F6B4D', amber: '#D88B2E', sage: '#88B5A2', ink: '#0F1F1A', red: '#dc2626', dark: '#2A3B34' };
+
+function getDates(period) {
+  const dates = [];
+  for (let i = period - 1; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    dates.push(d.toISOString().slice(0,10));
+  }
+  return dates;
+}
+
+function buildDaySeries(period) {
+  const dates = getDates(period);
+  const resMap = {}, txMap = {}, convMap = {};
+
+  dates.forEach(d => { resMap[d] = 0; txMap[d] = 0; convMap[d] = { total:0, confirmed:0 }; });
+
+  filteredRes.forEach(r => {
+    if (resMap[r.date] !== undefined) {
+      resMap[r.date]++;
+      convMap[r.date].total++;
+      if (r.status === 'CONFIRMED') convMap[r.date].confirmed++;
+    }
+  });
+  filteredTx.forEach(t => { if (txMap[t.date] !== undefined) txMap[t.date] += t.amount; });
+
+  return {
+    dates,
+    labels: dates.map(d => { const [,m,day] = d.split('-'); return `${parseInt(day)}/${parseInt(m)}`; }),
+    reservas: dates.map(d => resMap[d]),
+    incentivos: dates.map(d => +txMap[d].toFixed(2)),
+    convRate: dates.map(d => {
+      const { total, confirmed } = convMap[d];
+      return total > 0 ? Math.round((confirmed/total)*100) : 0;
+    }),
+  };
+}
+
+// ── Init charts ───────────────────────────────────────────────────────────────
+function initCharts(period) {
+  const { labels, reservas, incentivos, convRate } = buildDaySeries(period);
+
+  // Main: reservas + incentivos
+  chartMain = new Chart(document.getElementById('chart-main').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Reservas', data: reservas, backgroundColor: 'rgba(31,107,77,0.20)', borderColor: C.forest, borderWidth: 1.5, borderRadius: 4, yAxisID: 'y' },
+        { label: 'Incentivos €', data: incentivos, type: 'line', borderColor: C.amber, backgroundColor: 'rgba(216,139,46,0.08)', borderWidth: 2, tension: 0.3, fill: true, pointRadius: 2, yAxisID: 'y2' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 16, font: { size: 11 } } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        y:  { position: 'left',  beginAtZero: true, grid: { color: 'rgba(15,31,26,0.05)' }, ticks: { font: { size: 10 } } },
+        y2: { position: 'right', beginAtZero: true, grid: { display: false }, ticks: { callback: v => v+'€', font: { size: 10 } } },
+      }
+    }
+  });
+
+  // Donut: tipos de incentivo
+  const typeCounts = { FIXED: 0, PERCENTAGE: 0, BONO: 0 };
+  filteredRes.forEach(r => { if (typeCounts[r.type] !== undefined) typeCounts[r.type]++; });
+  chartDonut = new Chart(document.getElementById('chart-donut').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Fijo €', 'Porcentaje %', 'Bono'],
+      datasets: [{ data: [typeCounts.FIXED, typeCounts.PERCENTAGE, typeCounts.BONO], backgroundColor: [C.forest+'CC', C.amber+'CC', C.sage+'CC'], borderColor: '#fff', borderWidth: 3 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '60%',
+      plugins: {
+        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => { const t = ctx.dataset.data.reduce((a,b)=>a+b,0); return ` ${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed/t*100)}%)`; } } }
+      }
+    }
+  });
+
+  // Conv rate trend
+  chartConv = new Chart(document.getElementById('chart-conv').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: 'Conversión %', data: convRate, borderColor: C.forest, backgroundColor: 'rgba(31,107,77,0.08)', fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9 }, maxTicksLimit: 10 } },
+        y: { beginAtZero: true, max: 100, ticks: { callback: v => v+'%', font: { size: 9 } }, grid: { color: 'rgba(15,31,26,0.05)' } }
+      }
+    }
+  });
+
+  // Status breakdown
+  const statusCounts = { CONFIRMED: 0, PENDING: 0, CANCELLED: 0, NO_SHOW: 0 };
+  filteredRes.forEach(r => { if (statusCounts[r.status] !== undefined) statusCounts[r.status]++; });
+  chartStatus = new Chart(document.getElementById('chart-status').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Confirmadas','Pendientes','Canceladas','No show'],
+      datasets: [{
+        data: [statusCounts.CONFIRMED, statusCounts.PENDING, statusCounts.CANCELLED, statusCounts.NO_SHOW],
+        backgroundColor: ['rgba(31,107,77,0.7)','rgba(216,139,46,0.7)','rgba(220,38,38,0.7)','rgba(42,59,52,0.5)'],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } }
+    }
+  });
+
+  // User registrations
+  const period30 = parseInt(document.getElementById('filter-period').value);
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - period30);
+  const cutoffStr = cutoff.toISOString().slice(0,10);
+  const regMap = {};
+  getDates(period30).forEach(d => { regMap[d] = { CAPTADOR: 0, EMPRESA: 0 }; });
+  RAW.userRegs.filter(u => u.date >= cutoffStr).forEach(u => { if (regMap[u.date]) regMap[u.date][u.role]++; });
+  chartUsers = new Chart(document.getElementById('chart-users').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Captadores', data: getDates(period30).map(d => regMap[d]?.CAPTADOR||0), backgroundColor: 'rgba(31,107,77,0.7)', borderRadius: 4, stack: 'a' },
+        { label: 'Empresas',   data: getDates(period30).map(d => regMap[d]?.EMPRESA||0),  backgroundColor: 'rgba(216,139,46,0.7)', borderRadius: 4, stack: 'a' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } } },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 9 }, maxTicksLimit: 10 } },
+        y: { stacked: true, beginAtZero: true, ticks: { font: { size: 9 } }, grid: { color: 'rgba(15,31,26,0.05)' } }
+      }
+    }
+  });
+}
+
+function updateCharts(period) {
+  const { labels, reservas, incentivos, convRate } = buildDaySeries(period);
+
+  // Main
+  chartMain.data.labels = labels;
+  chartMain.data.datasets[0].data = reservas;
+  chartMain.data.datasets[1].data = incentivos;
+  chartMain.update('none');
+
+  // Donut
+  const typeCounts = { FIXED: 0, PERCENTAGE: 0, BONO: 0 };
+  filteredRes.forEach(r => { if (typeCounts[r.type] !== undefined) typeCounts[r.type]++; });
+  chartDonut.data.datasets[0].data = [typeCounts.FIXED, typeCounts.PERCENTAGE, typeCounts.BONO];
+  chartDonut.update('none');
+
+  // Conv
+  chartConv.data.labels = labels;
+  chartConv.data.datasets[0].data = convRate;
+  chartConv.update('none');
+
+  // Status
+  const statusCounts = { CONFIRMED: 0, PENDING: 0, CANCELLED: 0, NO_SHOW: 0 };
+  filteredRes.forEach(r => { if (statusCounts[r.status] !== undefined) statusCounts[r.status]++; });
+  chartStatus.data.datasets[0].data = [statusCounts.CONFIRMED, statusCounts.PENDING, statusCounts.CANCELLED, statusCounts.NO_SHOW];
+  chartStatus.update('none');
+
+  // Users
+  const regMap = {};
+  getDates(period).forEach(d => { regMap[d] = { CAPTADOR: 0, EMPRESA: 0 }; });
+  const cutoff2 = new Date(); cutoff2.setDate(cutoff2.getDate() - period);
+  RAW.userRegs.filter(u => u.date >= cutoff2.toISOString().slice(0,10)).forEach(u => { if (regMap[u.date]) regMap[u.date][u.role]++; });
+  chartUsers.data.labels = labels;
+  chartUsers.data.datasets[0].data = getDates(period).map(d => regMap[d]?.CAPTADOR||0);
+  chartUsers.data.datasets[1].data = getDates(period).map(d => regMap[d]?.EMPRESA||0);
+  chartUsers.update('none');
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+function renderTable() {
+  const sorted = [...filteredRes].sort((a,b) => {
+    let av = a[sortCol], bv = b[sortCol];
+    const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+    return sortDir === 'asc' ? cmp : -cmp;
+  }).slice(0, 50);
+
+  document.getElementById('table-count').textContent =
+    `Mostrando ${sorted.length} de ${filteredRes.length}`;
+
+  const statusBadge = {
+    CONFIRMED: '<span class="badge badge-confirmed">Confirmada</span>',
+    PENDING:   '<span class="badge badge-pending">Pendiente</span>',
+    CANCELLED: '<span class="badge badge-cancelled">Cancelada</span>',
+    NO_SHOW:   '<span class="badge badge-no_show">No show</span>',
+  };
+  const typeLabel = { FIXED: 'Fijo', PERCENTAGE: 'Porcentaje', BONO: 'Bono' };
+
+  document.getElementById('table-body').innerHTML = sorted.map(r => `
+    <tr>
+      <td style="color:#88B5A2;font-size:12px">${r.date}</td>
+      <td style="font-weight:500">${r.client}</td>
+      <td style="color:#2A3B34;font-size:12px">${r.campaign}</td>
+      <td style="font-size:12px">${typeLabel[r.type]||r.type}</td>
+      <td style="font-weight:600;color:${r.incentiveAmount>0?'#D88B2E':'#88B5A2'}">${r.incentiveAmount>0?r.incentiveAmount+'€':'—'}</td>
+      <td>${statusBadge[r.status]||r.status}</td>
+    </tr>
+  `).join('');
+}
+
+window.sortTable = function(col) {
+  if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  else { sortCol = col; sortDir = 'desc'; }
+  renderTable();
+};
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+applyFilters();
+initCharts(30);
+</script>
+</body>
+</html>

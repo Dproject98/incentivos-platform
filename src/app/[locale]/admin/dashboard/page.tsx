@@ -5,6 +5,7 @@ import { getLocale } from "next-intl/server"
 import { Users, Megaphone, CalendarCheck, Euro, ArrowLeftRight, TrendingUp } from "lucide-react"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import { AdminCharts } from "@/components/admin/AdminCharts"
 
 export default async function AdminDashboard() {
   const session = await auth()
@@ -14,6 +15,7 @@ export default async function AdminDashboard() {
 
   const today = new Date()
   const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+  const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000)
 
   const [
     totalUsers,
@@ -26,6 +28,8 @@ export default async function AdminDashboard() {
     totalIncentives,
     recentTransactions,
     recentReservations,
+    last30Reservations,
+    last30Transactions,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.user.count({ where: { role: "CAPTADOR" } }),
@@ -48,9 +52,39 @@ export default async function AdminDashboard() {
         captador: { select: { name: true } },
       },
     }),
+    // For charts: last 30 days of reservations
+    prisma.reservation.findMany({
+      where: { createdAt: { gte: thirtyDaysAgo } },
+      select: { createdAt: true, status: true },
+    }),
+    // For charts: last 30 days of credit transactions
+    prisma.transaction.findMany({
+      where: { type: "CREDIT", createdAt: { gte: thirtyDaysAgo } },
+      select: { createdAt: true, amount: true },
+    }),
   ])
 
   const conversionRate = totalReservations > 0 ? Math.round((confirmedCount / totalReservations) * 100) : 0
+
+  // Build daily series for charts (last 30 days)
+  const dayMap: Record<string, { reservas: number; confirmadas: number; incentivos: number }> = {}
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today.getTime() - i * 24 * 60 * 60 * 1000)
+    const key = d.toISOString().slice(0, 10)
+    dayMap[key] = { reservas: 0, confirmadas: 0, incentivos: 0 }
+  }
+  last30Reservations.forEach((r) => {
+    const key = r.createdAt.toISOString().slice(0, 10)
+    if (dayMap[key]) {
+      dayMap[key].reservas++
+      if (r.status === "CONFIRMED") dayMap[key].confirmadas++
+    }
+  })
+  last30Transactions.forEach((t) => {
+    const key = t.createdAt.toISOString().slice(0, 10)
+    if (dayMap[key]) dayMap[key].incentivos = +(dayMap[key].incentivos + t.amount).toFixed(2)
+  })
+  const dailyChartData = Object.entries(dayMap).map(([date, v]) => ({ date, ...v }))
   const totalPaid = totalIncentives._sum.amount ?? 0
 
   const stats = [
@@ -119,6 +153,9 @@ export default async function AdminDashboard() {
           )
         })}
       </div>
+
+      {/* Charts */}
+      <AdminCharts dailyData={dailyChartData} />
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent reservations */}
