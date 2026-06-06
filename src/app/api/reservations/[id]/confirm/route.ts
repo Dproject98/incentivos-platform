@@ -35,11 +35,18 @@ export async function POST(
 
   const incentiveAmount = cashIncentiveAmount(reservation.campaign, reservation.chosenIncentiveType)
 
+  // Atomic confirmation: updateMany with status filter prevents double-credit
+  // even under concurrent requests (race condition fix)
+  const updated = await prisma.reservation.updateMany({
+    where: { id, status: { not: "CONFIRMED" } },
+    data: { status: "CONFIRMED", qrScannedAt: new Date(), incentivePaid: true },
+  })
+
+  if (updated.count === 0) {
+    return NextResponse.json({ error: "already_confirmed" }, { status: 409 })
+  }
+
   await prisma.$transaction(async (tx) => {
-    await tx.reservation.update({
-      where: { id },
-      data: { status: "CONFIRMED", qrScannedAt: new Date(), incentivePaid: true },
-    })
 
     if (incentiveAmount > 0 && reservation.captador.wallet) {
       await tx.wallet.update({
