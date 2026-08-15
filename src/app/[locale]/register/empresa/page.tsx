@@ -136,7 +136,7 @@ export default function RegisterEmpresaPage() {
 
             <div>
               <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("business_type")}</label>
-              <Select value={form.businessType} onValueChange={(v) => setForm({ ...form, businessType: v })}>
+              <Select value={form.businessType} onValueChange={(v) => setForm({ ...form, businessType: v ?? "" })}>
                 <SelectTrigger
                   className="w-full rounded-xl px-4 py-2.5 text-[14px] h-auto outline-none"
                   style={{ ...inputStyle, boxShadow: "none" }}
