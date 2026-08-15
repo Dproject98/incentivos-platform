@@ -72,3 +72,39 @@ export async function sendReservationEmail(data: ReservationEmailData) {
     ],
   })
 }
+
+export async function sendPasswordResetEmail(email: string, resetUrl: string) {
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2 style="color: #0F1F1A; font-size: 22px; margin-bottom: 8px;">Restablecer contraseña</h2>
+      <p style="color: #4a5568; margin-bottom: 24px;">
+        Has solicitado restablecer tu contraseña en Incentivos Platform.
+        Haz clic en el botón siguiente para crear una nueva contraseña.
+      </p>
+      <div style="text-align: center; margin: 32px 0;">
+        <a href="${resetUrl}"
+          style="background: #1F6B4D; color: #F2EBDC; padding: 14px 32px; border-radius: 999px;
+                 text-decoration: none; font-weight: 600; font-size: 15px; display: inline-block;">
+          Restablecer contraseña
+        </a>
+      </div>
+      <p style="color: #718096; font-size: 13px; margin-top: 24px;">
+        Este enlace expira en <strong>1 hora</strong>. Si no has solicitado este cambio,
+        ignora este email y tu contraseña no cambiará.
+      </p>
+      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+      <p style="color: #a0aec0; font-size: 12px;">
+        Si el botón no funciona, copia este enlace en tu navegador:<br/>
+        <a href="${resetUrl}" style="color: #1F6B4D;">${resetUrl}</a>
+      </p>
+    </div>
+  `
+
+  const resend = getResend()
+  await resend.emails.send({
+    from: "Incentivos Platform <noreply@incentivos.app>",
+    to: email,
+    subject: "Restablece tu contraseña — Incentivos Platform",
+    html,
+  })
+}

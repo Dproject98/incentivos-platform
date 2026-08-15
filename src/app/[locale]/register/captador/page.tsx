@@ -50,7 +50,7 @@ export default function RegisterCaptadorPage() {
   ]
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "oklch(0.15 0.012 250)" }}>
       <div className="absolute top-4 right-4 z-20"><LanguageSwitcher /></div>
 
       <div className="w-full max-w-md">
@@ -65,28 +65,28 @@ export default function RegisterCaptadorPage() {
             <div
               key={p.label}
               className="rounded-xl px-3 py-3 text-center"
-              style={{ background: "rgba(31,107,77,0.07)", border: "1px solid rgba(31,107,77,0.15)" }}
+              style={{ background: "oklch(0.80 0.17 162 / 0.07)", border: "1px solid oklch(0.80 0.17 162 / 0.15)" }}
             >
-              <span className="block text-[16px] mb-1" style={{ color: "#D88B2E" }}>{p.symbol}</span>
-              <span className="text-[11px] font-medium" style={{ color: "#1F6B4D" }}>{p.label}</span>
+              <span className="block text-[16px] mb-1" style={{ color: "#2bd49a" }}>{p.symbol}</span>
+              <span className="text-[11px] font-medium" style={{ color: "#2bd49a" }}>{p.label}</span>
             </div>
           ))}
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl p-8" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+        <div className="rounded-2xl p-8" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
           <h1
             className="font-semibold mb-1"
-            style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}
+            style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "22px", letterSpacing: "-0.03em" }}
           >
             {t("register_captador")}
           </h1>
-          <p className="text-[14px] mb-7" style={{ color: "#88B5A2" }}>{t("captador_desc")}</p>
+          <p className="text-[14px] mb-7" style={{ color: "oklch(0.62 0.01 250)" }}>{t("captador_desc")}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {fields.map(({ key, type, placeholder, label, required }) => (
               <div key={key}>
-                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
                   {label}
                 </label>
                 <input
@@ -96,9 +96,9 @@ export default function RegisterCaptadorPage() {
                   required={required}
                   placeholder={placeholder}
                   className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
-                  style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.15)", color: "#0F1F1A" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+                  style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)", color: "#ffffff" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
                 />
               </div>
             ))}
@@ -107,23 +107,23 @@ export default function RegisterCaptadorPage() {
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-full text-[15px] font-semibold mt-2 transition-opacity disabled:opacity-60 hover:opacity-90"
-              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+              style={{ background: "#2bd49a", color: "#0c0c0a" }}
             >
               {loading ? t("registering") : t("register")}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-[13px]" style={{ color: "#88B5A2" }}>
+          <p className="mt-6 text-center text-[13px]" style={{ color: "oklch(0.62 0.01 250)" }}>
             {t("have_account")}{" "}
-            <Link href={`/${locale}/login`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            <Link href={`/${locale}/login`} className="font-medium" style={{ color: "#2bd49a" }}>
               {t("login")}
             </Link>
           </p>
         </div>
 
-        <p className="mt-5 text-center text-[12px]" style={{ color: "#88B5A2" }}>
+        <p className="mt-5 text-center text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
           ¿Eres empresa?{" "}
-          <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#1F6B4D" }}>
+          <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#2bd49a" }}>
             Registra tu negocio
           </Link>
         </p>

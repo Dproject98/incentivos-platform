@@ -19,9 +19,9 @@ const BUSINESS_TYPES = [
 ]
 
 const inputStyle = {
-  background: "#F2EBDC",
-  border: "1px solid rgba(15,31,26,0.15)",
-  color: "#0F1F1A",
+  background: "oklch(0.22 0.015 250)",
+  border: "1px solid oklch(0.30 0.02 250)",
+  color: "#ffffff",
 }
 
 export default function RegisterEmpresaPage() {
@@ -58,11 +58,11 @@ export default function RegisterEmpresaPage() {
     router.push(`/${locale}/empresa/dashboard`)
   }
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => (e.currentTarget.style.borderColor = "#1F6B4D")
-  const handleBlur  = (e: React.FocusEvent<HTMLInputElement>) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => (e.currentTarget.style.borderColor = "#2bd49a")
+  const handleBlur  = (e: React.FocusEvent<HTMLInputElement>) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "oklch(0.15 0.012 250)" }}>
       <div className="absolute top-4 right-4 z-20"><LanguageSwitcher /></div>
 
       <div className="w-full max-w-lg">
@@ -72,20 +72,20 @@ export default function RegisterEmpresaPage() {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl p-8" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+        <div className="rounded-2xl p-8" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
           <h1
             className="font-semibold mb-1"
-            style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}
+            style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "22px", letterSpacing: "-0.03em" }}
           >
             {t("register_empresa")}
           </h1>
-          <p className="text-[14px] mb-7" style={{ color: "#88B5A2" }}>{t("empresa_desc")}</p>
+          <p className="text-[14px] mb-7" style={{ color: "oklch(0.62 0.01 250)" }}>{t("empresa_desc")}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Sección: Datos personales */}
             <p
               className="text-[10px] uppercase tracking-[0.12em] font-mono pt-1"
-              style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}
+              style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}
             >
               Datos personales
             </p>
@@ -96,7 +96,7 @@ export default function RegisterEmpresaPage() {
               { key: "password", type: "password", placeholder: "Mínimo 6 caracteres", label: t("password") },
             ].map(({ key, type, placeholder, label }) => (
               <div key={key}>
-                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{label}</label>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{label}</label>
                 <input
                   type={type}
                   required
@@ -114,13 +114,13 @@ export default function RegisterEmpresaPage() {
             {/* Sección: Datos del negocio */}
             <p
               className="text-[10px] uppercase tracking-[0.12em] font-mono pt-3 border-t"
-              style={{ color: "#88B5A2", fontFamily: "var(--font-mono)", borderColor: "rgba(15,31,26,0.08)" }}
+              style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)", borderColor: "oklch(0.30 0.02 250)" }}
             >
               Datos del negocio
             </p>
 
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("business_name")}</label>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("business_name")}</label>
               <input
                 type="text"
                 required
@@ -135,7 +135,7 @@ export default function RegisterEmpresaPage() {
             </div>
 
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("business_type")}</label>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("business_type")}</label>
               <Select value={form.businessType} onValueChange={(v) => setForm({ ...form, businessType: v })}>
                 <SelectTrigger
                   className="w-full rounded-xl px-4 py-2.5 text-[14px] h-auto outline-none"
@@ -145,14 +145,14 @@ export default function RegisterEmpresaPage() {
                 </SelectTrigger>
                 <SelectContent
                   className="rounded-xl border"
-                  style={{ background: "#F2EBDC", borderColor: "rgba(15,31,26,0.12)", color: "#0F1F1A" }}
+                  style={{ background: "oklch(0.22 0.015 250)", borderColor: "oklch(0.30 0.02 250)", color: "#ffffff" }}
                 >
                   {BUSINESS_TYPES.map((bt) => (
                     <SelectItem
                       key={bt.value}
                       value={bt.value}
                       className="text-[14px] rounded-lg cursor-pointer"
-                      style={{ color: "#0F1F1A" }}
+                      style={{ color: "#ffffff" }}
                     >
                       {bt.label}
                     </SelectItem>
@@ -162,7 +162,7 @@ export default function RegisterEmpresaPage() {
             </div>
 
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("business_address")}</label>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("business_address")}</label>
               <input
                 type="text"
                 placeholder="Dirección del negocio"
@@ -179,23 +179,23 @@ export default function RegisterEmpresaPage() {
               type="submit"
               disabled={loading}
               className="w-full py-3 rounded-full text-[15px] font-semibold mt-2 transition-opacity disabled:opacity-60 hover:opacity-90"
-              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+              style={{ background: "#2bd49a", color: "#0c0c0a" }}
             >
               {loading ? t("registering") : t("register")}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-[13px]" style={{ color: "#88B5A2" }}>
+          <p className="mt-6 text-center text-[13px]" style={{ color: "oklch(0.62 0.01 250)" }}>
             {t("have_account")}{" "}
-            <Link href={`/${locale}/login`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            <Link href={`/${locale}/login`} className="font-medium" style={{ color: "#2bd49a" }}>
               {t("login")}
             </Link>
           </p>
         </div>
 
-        <p className="mt-5 text-center text-[12px]" style={{ color: "#88B5A2" }}>
+        <p className="mt-5 text-center text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
           ¿Eres captador?{" "}
-          <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#1F6B4D" }}>
+          <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#2bd49a" }}>
             Regístrate para captar
           </Link>
         </p>

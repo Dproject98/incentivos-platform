@@ -3,7 +3,10 @@ import type { NextAuthConfig } from "next-auth"
 // Edge-compatible auth config (no Node.js-only imports like bcryptjs or prisma)
 // Used by middleware to read JWT sessions in the Edge Runtime
 export const authConfig: NextAuthConfig = {
-  session: { strategy: "jwt" },
+  session: {
+    strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, // 7 days — tokens expire; forces re-login after inactivity
+  },
   pages: {
     signIn: "/es/login",
   },

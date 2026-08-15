@@ -42,13 +42,13 @@ export default function LoginPage() {
   }
 
   const inputStyle = {
-    background: "#F2EBDC",
-    border: "1px solid rgba(15,31,26,0.15)",
-    color: "#0F1F1A",
+    background: "oklch(0.22 0.015 250)",
+    border: "1px solid oklch(0.30 0.02 250)",
+    color: "#ffffff",
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "oklch(0.15 0.012 250)" }}>
       <div className="absolute top-4 right-4 z-20"><LanguageSwitcher /></div>
 
       <div className="w-full max-w-md">
@@ -58,23 +58,23 @@ export default function LoginPage() {
         </Link>
 
         {/* Card */}
-        <div className="rounded-2xl p-8" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+        <div className="rounded-2xl p-8" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
           <h1
             className="font-semibold mb-1"
-            style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}
+            style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "22px", letterSpacing: "-0.03em" }}
           >
             {t("login")}
           </h1>
-          <p className="text-[14px] mb-7" style={{ color: "#88B5A2" }}>
+          <p className="text-[14px] mb-7" style={{ color: "oklch(0.62 0.01 250)" }}>
             {t("no_account")}{" "}
-            <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#2bd49a" }}>
               {t("register")}
             </Link>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
                 {t("email")}
               </label>
               <input
@@ -86,13 +86,13 @@ export default function LoginPage() {
                 placeholder="tu@email.com"
                 className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
                 style={inputStyle}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
               />
             </div>
 
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
                 {t("password")}
               </label>
               <input
@@ -104,16 +104,22 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
                 style={inputStyle}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
               />
+            </div>
+
+            <div className="flex justify-end">
+              <Link href={`/${locale}/login/forgot-password`} className="text-[12px] hover:opacity-70" style={{ color: "oklch(0.62 0.01 250)" }}>
+                ¿Olvidaste tu contraseña?
+              </Link>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-full text-[15px] font-semibold mt-2 transition-opacity disabled:opacity-60 hover:opacity-90"
-              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+              className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90"
+              style={{ background: "#2bd49a", color: "#0c0c0a" }}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -126,22 +132,22 @@ export default function LoginPage() {
 
           <div
             className="mt-6 pt-6 border-t text-center text-[13px]"
-            style={{ borderColor: "rgba(15,31,26,0.08)", color: "#88B5A2" }}
+            style={{ borderColor: "oklch(0.30 0.02 250)", color: "oklch(0.62 0.01 250)" }}
           >
             {t("or_register_as")}{" "}
-            <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#1F6B4D" }}>
+            <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#2bd49a" }}>
               {t("register_empresa")}
             </Link>
           </div>
         </div>
 
-        <p className="mt-5 text-center text-[12px]" style={{ color: "#88B5A2" }}>
+        <p className="mt-5 text-center text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
           ¿Primera vez?{" "}
-          <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#1F6B4D" }}>
+          <Link href={`/${locale}/register/captador`} className="font-medium" style={{ color: "#2bd49a" }}>
             Crear cuenta captador
           </Link>
           {" · "}
-          <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#1F6B4D" }}>
+          <Link href={`/${locale}/register/empresa`} className="font-medium" style={{ color: "#2bd49a" }}>
             Registrar empresa
           </Link>
         </p>
