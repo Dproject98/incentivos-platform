@@ -31,12 +31,5 @@ export default async function AdminCobrosPage() {
     take: 10,
   })
 
-  // Also compute total owed per business (all time, unpaid)
-  const totalOwed = await prisma.reservation.groupBy({
-    by: [],
-    where: { status: "CONFIRMED", empresaPaid: false },
-    _count: { id: true },
-  })
-
   return <AdminCobrosClient locale={locale} payments={payments as any} confirmed={confirmed as any} />
 }

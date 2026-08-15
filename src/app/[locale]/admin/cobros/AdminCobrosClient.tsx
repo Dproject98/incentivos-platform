@@ -53,7 +53,7 @@ export function AdminCobrosClient({
       body: JSON.stringify({ action }),
     })
     if (res.ok) {
-      setDone((prev) => new Set([...prev, paymentId]))
+      setDone((prev) => new Set(prev).add(paymentId))
     }
     setProcessing(null)
   }
