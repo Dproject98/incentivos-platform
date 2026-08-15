@@ -66,6 +66,65 @@
   }
 }
 
+/* ─── Incentis Landing Keyframes ─────────────────────────────── */
+@keyframes inc-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes inc-pulse { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.25); } }
+@keyframes inc-float { 0%,100% { transform:translateY(0) rotate(-2deg); } 50% { transform:translateY(-14px) rotate(-2deg); } }
+
+/* ─── Landing responsive ──────────────────────────────────────── */
+/* Tablet */
+@media (max-width: 1024px) {
+  .inc-hero-grid    { grid-template-columns: 1fr !important; }
+  .inc-hero-card    { display: none !important; }
+  .inc-niveles-grid { grid-template-columns: 1fr 1fr !important; }
+  .inc-step         { grid-template-columns: 60px 1fr !important; gap: 24px !important; }
+  .inc-step-card    { grid-column: 2; }
+  .inc-roi-grid     { grid-template-columns: 1fr !important; }
+  .inc-antifraud-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .inc-nav          { padding: 14px 20px !important; }
+  .inc-nav-links    { display: none !important; }
+
+  .inc-hero         { padding: 52px 20px 40px !important; }
+  .inc-hero-h1      { font-size: 42px !important; line-height: 1.0 !important; letter-spacing: -0.03em !important; }
+  .inc-hero-lead    { font-size: 16px !important; }
+
+  .inc-marquee-inner { font-size: 18px !important; }
+
+  .inc-steps-section { padding: 64px 20px 24px !important; }
+  .inc-steps-header  { flex-direction: column !important; align-items: flex-start !important; margin-bottom: 32px !important; }
+  .inc-steps-h2      { font-size: 38px !important; }
+  .inc-step          { grid-template-columns: 1fr !important; gap: 16px !important; padding: 28px 0 !important; }
+  .inc-step-num      { display: none !important; }
+  .inc-step-card     { grid-column: 1 !important; }
+  .inc-step-h3       { font-size: 22px !important; }
+
+  .inc-roi-section  { padding: 72px 20px !important; }
+  .inc-roi-h2       { font-size: 34px !important; }
+  .inc-roi-lead     { font-size: 15px !important; }
+
+  .inc-antifraud    { padding: 72px 20px !important; }
+  .inc-antifraud-h3 { font-size: 32px !important; }
+
+  .inc-niveles      { padding: 72px 20px !important; }
+  .inc-niveles-h2   { font-size: 38px !important; }
+  .inc-niveles-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .inc-niveles-mult { font-size: 38px !important; }
+
+  .inc-founder      { padding: 32px 20px 72px !important; }
+  .inc-founder-card { padding: 36px 24px !important; border-radius: 20px !important; }
+  .inc-founder-title { font-size: 26px !important; }
+
+  .inc-cta-wrap     { padding: 0 20px 56px !important; }
+  .inc-cta-inner    { padding: 52px 24px !important; border-radius: 24px !important; }
+  .inc-cta-h2       { font-size: 36px !important; }
+
+  .inc-footer       { padding: 28px 20px !important; flex-direction: column !important; align-items: flex-start !important; }
+}
+
 /* ─── Forest Trust Design Tokens ─────────────────────────────── */
 :root {
   --ft-ink:          #0F1F1A;

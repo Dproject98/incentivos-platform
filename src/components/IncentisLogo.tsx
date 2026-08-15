@@ -53,14 +53,14 @@ export function IncentisLogo({ size = "sm", light = false }: IncentisLogoProps) 
           fontWeight: 600,
           fontSize: textSize,
           letterSpacing: "-0.04em",
-          color: "#0F1F1A",
+          color: light ? "#ffffff" : "#0F1F1A",
           lineHeight: 1,
         }}
       >
         incent
         {/* "i" con el punto amber (cubre el punto nativo del glifo) */}
         <span style={{ position: "relative", display: "inline-block" }}>
-          <span style={{ color: "#0F1F1A" }}>i</span>
+          <span style={{ color: light ? "#ffffff" : "#0F1F1A" }}>i</span>
           <span
             aria-hidden="true"
             style={{
