@@ -10,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mon
 export default function ScanLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${inter.variable} ${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased font-sans" style={{ background: "#F2EBDC" }}>
+      <body className="antialiased font-sans" style={{ background: "oklch(0.15 0.012 250)" }}>
         {children}
         <Toaster richColors position="top-right" />
       </body>

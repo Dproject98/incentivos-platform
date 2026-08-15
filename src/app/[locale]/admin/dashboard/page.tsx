@@ -88,12 +88,12 @@ export default async function AdminDashboard() {
   const totalPaid = totalIncentives._sum.amount ?? 0
 
   const stats = [
-    { label: "Usuarios totales",     value: totalUsers,                                       icon: Users,        color: "#1F6B4D" },
-    { label: "Campañas activas",      value: activeCampaigns,                                  icon: Megaphone,    color: "#D88B2E" },
-    { label: "Reservas totales",      value: totalReservations,                                icon: CalendarCheck, color: "#1F6B4D" },
-    { label: "Incentivos pagados",    value: `${totalPaid.toFixed(2)} €`,                      icon: Euro,         color: "#D88B2E" },
-    { label: "Tasa de conversión",    value: `${conversionRate}%`,                             icon: TrendingUp,   color: "#1F6B4D" },
-    { label: "Reservas hoy",          value: reservationsToday,                                icon: CalendarCheck, color: "#D88B2E" },
+    { label: "Usuarios totales",     value: totalUsers,                                       icon: Users,        color: "#2bd49a" },
+    { label: "Campañas activas",      value: activeCampaigns,                                  icon: Megaphone,    color: "#2bd49a" },
+    { label: "Reservas totales",      value: totalReservations,                                icon: CalendarCheck, color: "#2bd49a" },
+    { label: "Incentivos pagados",    value: `${totalPaid.toFixed(2)} €`,                      icon: Euro,         color: "#2bd49a" },
+    { label: "Tasa de conversión",    value: `${conversionRate}%`,                             icon: TrendingUp,   color: "#2bd49a" },
+    { label: "Reservas hoy",          value: reservationsToday,                                icon: CalendarCheck, color: "#2bd49a" },
   ]
 
   const statusLabel: Record<string, string> = {
@@ -103,26 +103,26 @@ export default async function AdminDashboard() {
     NO_SHOW:   "No show",
   }
   const statusColor: Record<string, string> = {
-    PENDING:   "#B5710D",
-    CONFIRMED: "#1F6B4D",
+    PENDING:   "#fbbf24",
+    CONFIRMED: "#2bd49a",
     CANCELLED: "#dc2626",
-    NO_SHOW:   "#2A3B34",
+    NO_SHOW:   "oklch(0.72 0.01 250)",
   }
 
   return (
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
-        <p className="text-[11px] font-mono uppercase tracking-[0.14em] mb-1" style={{ color: "#88B5A2" }}>
+        <p className="text-[11px] font-mono uppercase tracking-[0.14em] mb-1" style={{ color: "oklch(0.62 0.01 250)" }}>
           Panel de administración
         </p>
         <h1
           className="font-semibold"
-          style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}
+          style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}
         >
           Vista general
         </h1>
-        <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>
+        <p className="text-[13px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>
           {totalCaptadores} captadores · {totalEmpresas} empresas
         </p>
       </div>
@@ -135,10 +135,10 @@ export default async function AdminDashboard() {
             <div
               key={s.label}
               className="rounded-2xl p-5"
-              style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+              style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
             >
               <div className="flex items-center justify-between mb-3">
-                <p className="text-[10px] uppercase tracking-[0.1em] font-mono leading-tight" style={{ color: "#88B5A2" }}>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-mono leading-tight" style={{ color: "oklch(0.62 0.01 250)" }}>
                   {s.label}
                 </p>
                 <Icon className="h-4 w-4 shrink-0" style={{ color: s.color, opacity: 0.6 }} />
@@ -160,68 +160,68 @@ export default async function AdminDashboard() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent reservations */}
         <div>
-          <h2 className="font-semibold text-[15px] mb-3" style={{ color: "#0F1F1A" }}>Últimas reservas</h2>
-          <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+          <h2 className="font-semibold text-[15px] mb-3" style={{ color: "#ffffff" }}>Últimas reservas</h2>
+          <div className="rounded-2xl overflow-hidden" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
             {recentReservations.map((r, i) => (
               <div
                 key={r.id}
                 className="flex items-center justify-between px-4 py-3"
-                style={{ borderTop: i > 0 ? "1px solid rgba(15,31,26,0.05)" : "none" }}
+                style={{ borderTop: i > 0 ? "1px solid oklch(0.30 0.02 250)" : "none" }}
               >
                 <div>
-                  <p className="font-medium text-[13px]" style={{ color: "#0F1F1A" }}>{r.clientName}</p>
-                  <p className="text-[11px] mt-0.5" style={{ color: "#88B5A2" }}>
+                  <p className="font-medium text-[13px]" style={{ color: "#ffffff" }}>{r.clientName}</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>
                     {r.campaign.business.name} · {r.captador.name}
                   </p>
                 </div>
                 <div className="text-right shrink-0">
                   <p
                     className="text-[11px] font-medium"
-                    style={{ color: statusColor[r.status] ?? "#88B5A2" }}
+                    style={{ color: statusColor[r.status] ?? "oklch(0.62 0.01 250)" }}
                   >
                     {statusLabel[r.status] ?? r.status}
                   </p>
-                  <p className="text-[11px] mt-0.5" style={{ color: "#88B5A2" }}>
+                  <p className="text-[11px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>
                     {format(new Date(r.createdAt), "dd MMM HH:mm", { locale: es })}
                   </p>
                 </div>
               </div>
             ))}
             {recentReservations.length === 0 && (
-              <p className="px-4 py-6 text-[13px] text-center" style={{ color: "#88B5A2" }}>Sin reservas aún</p>
+              <p className="px-4 py-6 text-[13px] text-center" style={{ color: "oklch(0.62 0.01 250)" }}>Sin reservas aún</p>
             )}
           </div>
         </div>
 
         {/* Recent transactions */}
         <div>
-          <h2 className="font-semibold text-[15px] mb-3" style={{ color: "#0F1F1A" }}>Últimas transacciones</h2>
-          <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+          <h2 className="font-semibold text-[15px] mb-3" style={{ color: "#ffffff" }}>Últimas transacciones</h2>
+          <div className="rounded-2xl overflow-hidden" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
             {recentTransactions.map((tx, i) => (
               <div
                 key={tx.id}
                 className="flex items-center justify-between px-4 py-3"
-                style={{ borderTop: i > 0 ? "1px solid rgba(15,31,26,0.05)" : "none" }}
+                style={{ borderTop: i > 0 ? "1px solid oklch(0.30 0.02 250)" : "none" }}
               >
                 <div>
-                  <p className="font-medium text-[13px]" style={{ color: "#0F1F1A" }}>{tx.wallet.user.name}</p>
-                  <p className="text-[11px] mt-0.5" style={{ color: "#88B5A2" }}>{tx.description}</p>
+                  <p className="font-medium text-[13px]" style={{ color: "#ffffff" }}>{tx.wallet.user.name}</p>
+                  <p className="text-[11px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>{tx.description}</p>
                 </div>
                 <div className="text-right shrink-0">
                   <p
                     className="font-semibold text-[13px]"
-                    style={{ color: tx.type === "CREDIT" ? "#1F6B4D" : "#dc2626" }}
+                    style={{ color: tx.type === "CREDIT" ? "#2bd49a" : "#dc2626" }}
                   >
                     {tx.type === "CREDIT" ? "+" : "-"}{tx.amount.toFixed(2)} €
                   </p>
-                  <p className="text-[11px] mt-0.5" style={{ color: "#88B5A2" }}>
+                  <p className="text-[11px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>
                     {format(new Date(tx.createdAt), "dd MMM HH:mm", { locale: es })}
                   </p>
                 </div>
               </div>
             ))}
             {recentTransactions.length === 0 && (
-              <p className="px-4 py-6 text-[13px] text-center" style={{ color: "#88B5A2" }}>Sin transacciones aún</p>
+              <p className="px-4 py-6 text-[13px] text-center" style={{ color: "oklch(0.62 0.01 250)" }}>Sin transacciones aún</p>
             )}
           </div>
         </div>

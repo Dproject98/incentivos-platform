@@ -21,12 +21,20 @@ interface ReservationData {
 
 type PageState =
   | "loading"
-  | "ready"        // show reservation info + Verify button
-  | "pin_entry"    // show PIN input
-  | "confirming"   // waiting for API
+  | "ready"
+  | "pin_entry"
+  | "confirming"
   | "confirmed"
   | "already_scanned"
   | "invalid"
+
+const BG   = "oklch(0.15 0.012 250)"
+const CARD = "oklch(0.19 0.015 250)"
+const INP  = "oklch(0.22 0.015 250)"
+const BDR  = "oklch(0.30 0.02 250)"
+const MUT  = "oklch(0.62 0.01 250)"
+const ACC  = "#2bd49a"
+const INK  = "#0c0c0a"
 
 export default function ScanPage() {
   const params = useParams()
@@ -50,7 +58,6 @@ export default function ScanPage() {
       .catch(() => setState("invalid"))
   }, [token])
 
-  // Focus first PIN box when entering PIN state
   useEffect(() => {
     if (state === "pin_entry") {
       setTimeout(() => inputRefs.current[0]?.focus(), 80)
@@ -124,7 +131,6 @@ export default function ScanPage() {
     setState("confirmed")
   }
 
-  // Auto-submit when 4 digits filled
   useEffect(() => {
     if (state === "pin_entry" && pinValue.length === 4) {
       handleConfirm()
@@ -132,7 +138,6 @@ export default function ScanPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pinValue])
 
-  // ── Helpers ──────────────────────────────────────────────
   const DetailGrid = ({ r }: { r: ReservationData }) => (
     <div className="grid grid-cols-3 gap-2">
       {[
@@ -143,70 +148,69 @@ export default function ScanPage() {
         <div
           key={value}
           className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl"
-          style={{ background: "rgba(15,31,26,0.04)" }}
+          style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${BDR}` }}
         >
-          <Icon className="h-4 w-4" style={{ color: "#88B5A2" }} />
-          <span className="text-[12px] font-medium" style={{ color: "#0F1F1A" }}>{value}</span>
+          <Icon className="h-4 w-4" style={{ color: MUT }} />
+          <span className="text-[12px] font-medium" style={{ color: "#ffffff" }}>{value}</span>
         </div>
       ))}
     </div>
   )
 
-  // ── Render ────────────────────────────────────────────────
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: "#F2EBDC" }}>
-      <div className="mb-8"><IncentisLogo size="md" /></div>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: BG }}>
+      <div className="mb-8"><IncentisLogo size="md" light /></div>
 
-      <div className="w-full max-w-sm rounded-3xl p-6" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.10)" }}>
+      <div className="w-full max-w-sm rounded-3xl p-6" style={{ background: CARD, border: `1px solid ${BDR}` }}>
 
-        {/* ── Loading ── */}
+        {/* Loading */}
         {state === "loading" && (
           <div className="flex flex-col items-center gap-4 py-10">
             <div
               className="h-10 w-10 rounded-full border-2 animate-spin"
-              style={{ borderColor: "rgba(31,107,77,0.20)", borderTopColor: "#1F6B4D" }}
+              style={{ borderColor: "rgba(43,212,154,0.20)", borderTopColor: ACC }}
             />
-            <p className="text-[13px]" style={{ color: "#88B5A2" }}>Verificando reserva...</p>
+            <p className="text-[13px]" style={{ color: MUT }}>Verificando reserva...</p>
           </div>
         )}
 
-        {/* ── Invalid ── */}
+        {/* Invalid */}
         {state === "invalid" && (
           <div className="flex flex-col items-center gap-4 py-10 text-center">
             <div className="h-16 w-16 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(220,38,38,0.08)", border: "1px solid rgba(220,38,38,0.15)" }}>
+              style={{ background: "rgba(220,38,38,0.12)", border: "1px solid rgba(220,38,38,0.25)" }}>
               <XCircle className="h-8 w-8" style={{ color: "#dc2626" }} />
             </div>
             <div>
-              <p className="font-semibold text-[16px]" style={{ color: "#0F1F1A" }}>QR no válido</p>
-              <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>Este código QR no es válido o ha caducado.</p>
+              <p className="font-semibold text-[16px]" style={{ color: "#ffffff" }}>QR no válido</p>
+              <p className="text-[13px] mt-1" style={{ color: MUT }}>Este código QR no es válido o ha caducado.</p>
             </div>
           </div>
         )}
 
-        {/* ── Ready: reservation info + Verify button ── */}
+        {/* Ready: reservation info + Verify button */}
         {state === "ready" && reservation && (
           <div className="space-y-5">
             <div className="text-center">
               <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl mb-3"
-                style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)" }}>
-                <QrCode className="h-6 w-6" style={{ color: "#1F6B4D" }} />
+                style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}>
+                <QrCode className="h-6 w-6" style={{ color: ACC }} />
               </div>
-              <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: "#88B5A2" }}>
+              <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: MUT }}>
                 Reserva verificada
               </p>
-              <p className="font-semibold text-[16px] mt-1" style={{ color: "#0F1F1A" }}>{reservation.businessName}</p>
+              <p className="font-semibold text-[16px] mt-1" style={{ color: "#ffffff" }}>{reservation.businessName}</p>
             </div>
 
-            <div className="rounded-2xl p-4 space-y-3" style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.08)" }}>
+            <div className="rounded-2xl p-4 space-y-3" style={{ background: INP, border: `1px solid ${BDR}` }}>
               <div className="flex items-center gap-3">
                 <div className="h-11 w-11 rounded-full flex items-center justify-center font-bold text-[16px] shrink-0"
-                  style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}>
+                  style={{ background: "rgba(43,212,154,0.12)", color: ACC }}>
                   {reservation.clientName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-semibold text-[15px]" style={{ color: "#0F1F1A" }}>{reservation.clientName}</p>
-                  <p className="text-[12px]" style={{ color: "#88B5A2" }}>Cliente</p>
+                  <p className="font-semibold text-[15px]" style={{ color: "#ffffff" }}>{reservation.clientName}</p>
+                  <p className="text-[12px]" style={{ color: MUT }}>Cliente</p>
                 </div>
               </div>
               <DetailGrid r={reservation} />
@@ -215,7 +219,7 @@ export default function ScanPage() {
             <button
               onClick={() => setState("pin_entry")}
               className="w-full py-3.5 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
-              style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+              style={{ background: ACC, color: INK }}
             >
               Verificar reserva
               <ChevronRight className="h-5 w-5" />
@@ -223,32 +227,29 @@ export default function ScanPage() {
           </div>
         )}
 
-        {/* ── PIN entry ── */}
+        {/* PIN entry */}
         {(state === "pin_entry" || state === "confirming") && reservation && (
           <div className="space-y-5">
-            {/* Header with back button */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => { setPin(["", "", "", ""]); setPinError(false); setState("ready") }}
                 disabled={state === "confirming"}
                 className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
-                style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)" }}
+                style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${BDR}` }}
               >
-                <X className="h-4 w-4" style={{ color: "#88B5A2" }} />
+                <X className="h-4 w-4" style={{ color: MUT }} />
               </button>
               <div>
-                <p className="font-semibold text-[15px]" style={{ color: "#0F1F1A" }}>{reservation.clientName}</p>
-                <p className="text-[12px]" style={{ color: "#88B5A2" }}>{reservation.businessName}</p>
+                <p className="font-semibold text-[15px]" style={{ color: "#ffffff" }}>{reservation.clientName}</p>
+                <p className="text-[12px]" style={{ color: MUT }}>{reservation.businessName}</p>
               </div>
             </div>
 
-            {/* PIN label */}
             <div className="text-center pt-2">
-              <p className="font-medium text-[15px]" style={{ color: "#0F1F1A" }}>Introduce tu código de empleado</p>
-              <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>PIN de 4 dígitos asignado al registrarte</p>
+              <p className="font-medium text-[15px]" style={{ color: "#ffffff" }}>Introduce tu código de empleado</p>
+              <p className="text-[13px] mt-1" style={{ color: MUT }}>PIN de 4 dígitos asignado al registrarte</p>
             </div>
 
-            {/* PIN boxes */}
             <div className="flex items-center justify-center gap-3">
               {pin.map((digit, i) => (
                 <input
@@ -263,13 +264,13 @@ export default function ScanPage() {
                   disabled={state === "confirming"}
                   className="w-14 h-14 rounded-2xl text-center text-[24px] font-bold outline-none transition-all"
                   style={{
-                    background: pinError ? "rgba(220,38,38,0.06)" : "#F2EBDC",
+                    background: pinError ? "rgba(220,38,38,0.12)" : INP,
                     border: pinError
                       ? "2px solid rgba(220,38,38,0.50)"
                       : digit
-                        ? "2px solid #1F6B4D"
-                        : "2px solid rgba(15,31,26,0.15)",
-                    color: "#0F1F1A",
+                        ? `2px solid ${ACC}`
+                        : `2px solid ${BDR}`,
+                    color: "#ffffff",
                   }}
                 />
               ))}
@@ -281,34 +282,31 @@ export default function ScanPage() {
               </p>
             )}
 
-            {/* Numpad */}
             <div className="grid grid-cols-3 gap-2">
               {["1","2","3","4","5","6","7","8","9"].map((d) => (
                 <button key={d} onClick={() => handleNumpad(d)} disabled={state === "confirming"}
                   className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
-                  style={{ background: "#F2EBDC", color: "#0F1F1A", border: "1px solid rgba(15,31,26,0.10)" }}>
+                  style={{ background: INP, color: "#ffffff", border: `1px solid ${BDR}` }}>
                   {d}
                 </button>
               ))}
-              {/* Backspace */}
               <button onClick={handleBackspace} disabled={state === "confirming"}
                 className="h-12 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
-                style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.10)" }}>
-                <span className="text-[18px]" style={{ color: "#88B5A2" }}>⌫</span>
+                style={{ background: INP, border: `1px solid ${BDR}` }}>
+                <span className="text-[18px]" style={{ color: MUT }}>⌫</span>
               </button>
               <button onClick={() => handleNumpad("0")} disabled={state === "confirming"}
                 className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
-                style={{ background: "#F2EBDC", color: "#0F1F1A", border: "1px solid rgba(15,31,26,0.10)" }}>
+                style={{ background: INP, color: "#ffffff", border: `1px solid ${BDR}` }}>
                 0
               </button>
-              {/* Confirm */}
               <button onClick={handleConfirm} disabled={pinValue.length < 4 || state === "confirming"}
                 className="h-12 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-30 hover:opacity-90"
-                style={{ background: "#1F6B4D", color: "#F2EBDC" }}>
+                style={{ background: ACC, color: INK }}>
                 {state === "confirming"
                   ? <span className="flex items-center justify-center">
                       <span className="h-4 w-4 rounded-full border-2 animate-spin inline-block"
-                        style={{ borderColor: "rgba(242,235,220,0.30)", borderTopColor: "#F2EBDC" }} />
+                        style={{ borderColor: "rgba(12,12,10,0.30)", borderTopColor: INK }} />
                     </span>
                   : "OK"}
               </button>
@@ -316,40 +314,40 @@ export default function ScanPage() {
           </div>
         )}
 
-        {/* ── Confirmed ── */}
+        {/* Confirmed */}
         {state === "confirmed" && reservation && (
           <div className="flex flex-col items-center gap-5 py-6 text-center">
             <div className="h-20 w-20 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}>
-              <CheckCircle className="h-10 w-10" style={{ color: "#1F6B4D" }} />
+              style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}>
+              <CheckCircle className="h-10 w-10" style={{ color: ACC }} />
             </div>
             <div>
-              <p className="text-[22px] font-bold" style={{ color: "#0F1F1A", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
+              <p className="text-[22px] font-bold" style={{ color: "#ffffff", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
                 ¡Reserva confirmada!
               </p>
-              <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{reservation.clientName}</p>
+              <p className="text-[14px] mt-1" style={{ color: MUT }}>{reservation.clientName}</p>
               {staffName && (
-                <p className="text-[12px] mt-1" style={{ color: "#88B5A2" }}>Validado por <strong>{staffName}</strong></p>
+                <p className="text-[12px] mt-1" style={{ color: MUT }}>Validado por <strong style={{ color: "#ffffff" }}>{staffName}</strong></p>
               )}
             </div>
             <div className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
-              style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)", color: "#1F6B4D" }}>
+              style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.20)", color: ACC }}>
               <Shield className="h-4 w-4 shrink-0" />
               Incentivo acreditado automáticamente al captador.
             </div>
           </div>
         )}
 
-        {/* ── Already scanned ── */}
+        {/* Already scanned */}
         {state === "already_scanned" && reservation && (
           <div className="flex flex-col items-center gap-4 py-6 text-center">
             <div className="h-16 w-16 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(216,139,46,0.10)", border: "1px solid rgba(216,139,46,0.25)" }}>
-              <Clock className="h-8 w-8" style={{ color: "#B5710D" }} />
+              style={{ background: "rgba(251,191,36,0.10)", border: "1px solid rgba(251,191,36,0.25)" }}>
+              <Clock className="h-8 w-8" style={{ color: "#fbbf24" }} />
             </div>
             <div>
-              <p className="font-semibold text-[16px]" style={{ color: "#0F1F1A" }}>Ya validada</p>
-              <p className="text-[13px] mt-1" style={{ color: "#88B5A2" }}>
+              <p className="font-semibold text-[16px]" style={{ color: "#ffffff" }}>Ya validada</p>
+              <p className="text-[13px] mt-1" style={{ color: MUT }}>
                 Esta reserva ya fue confirmada el{" "}
                 {reservation.qrScannedAt
                   ? new Date(reservation.qrScannedAt).toLocaleString("es-ES")
@@ -360,7 +358,7 @@ export default function ScanPage() {
         )}
       </div>
 
-      <p className="mt-6 text-[11px]" style={{ color: "#88B5A2" }}>Plataforma de incentivos anónimos · Incentis</p>
+      <p className="mt-6 text-[11px]" style={{ color: MUT }}>Plataforma de incentivos anónimos · Incentis</p>
     </div>
   )
 }

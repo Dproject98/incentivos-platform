@@ -25,15 +25,15 @@ const TYPE_META: Record<string, { label: string; icon: typeof Euro }> = {
 }
 
 const inputStyle = {
-  background: "#F2EBDC",
-  border: "1px solid rgba(15,31,26,0.15)",
-  color: "#0F1F1A",
+  background: "oklch(0.22 0.015 250)",
+  border: "1px solid oklch(0.30 0.02 250)",
+  color: "#ffffff",
 }
 
 const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-  (e.currentTarget.style.borderColor = "#1F6B4D")
+  (e.currentTarget.style.borderColor = "#2bd49a")
 const blurBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-  (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")
+  (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")
 
 export default function NuevaReservaPage() {
   const t = useTranslations("captador.reservations")
@@ -106,12 +106,12 @@ export default function NuevaReservaPage() {
         <Link href={`/${locale}/captador/campanas`}>
           <button
             className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80"
-            style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)" }}
+            style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: "#0F1F1A" }} />
+            <ArrowLeft className="h-4 w-4" style={{ color: "#ffffff" }} />
           </button>
         </Link>
-        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "22px", letterSpacing: "-0.03em" }}>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "22px", letterSpacing: "-0.03em" }}>
           {t("new")}
         </h1>
       </div>
@@ -120,15 +120,15 @@ export default function NuevaReservaPage() {
       {campaign && (
         <div
           className="rounded-2xl p-4 flex items-center justify-between gap-3"
-          style={{ background: "rgba(31,107,77,0.06)", border: "1px solid rgba(31,107,77,0.15)" }}
+          style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.15)" }}
         >
           <div>
-            <p className="font-semibold text-[14px]" style={{ color: "#0F1F1A" }}>{campaign.title}</p>
-            <p className="text-[13px]" style={{ color: "#88B5A2" }}>{campaign.business.name}</p>
+            <p className="font-semibold text-[14px]" style={{ color: "#ffffff" }}>{campaign.title}</p>
+            <p className="text-[13px]" style={{ color: "oklch(0.62 0.01 250)" }}>{campaign.business.name}</p>
           </div>
           <div
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-[13px] font-medium shrink-0"
-            style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D", border: "1px solid rgba(31,107,77,0.20)" }}
+            style={{ background: "rgba(43,212,154,0.10)", color: "#2bd49a", border: "1px solid rgba(43,212,154,0.20)" }}
           >
             <IncentiveIcon className="h-4 w-4" />
             {incentiveText}
@@ -138,11 +138,11 @@ export default function NuevaReservaPage() {
 
       {/* Compensation selector — only when the campaign offers more than one */}
       {campaign && multiType && (
-        <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-          <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-1" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+        <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+          <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-1" style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}>
             Elige tu compensación
           </p>
-          <p className="text-[13px] mb-4" style={{ color: "#88B5A2" }}>
+          <p className="text-[13px] mb-4" style={{ color: "oklch(0.62 0.01 250)" }}>
             Esta campaña ofrece varias formas de compensación. Selecciona la que quieres recibir por esta reserva.
           </p>
           <div className="space-y-2">
@@ -157,23 +157,23 @@ export default function NuevaReservaPage() {
                   onClick={() => setChosenType(type)}
                   className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
                   style={{
-                    background: active ? "rgba(31,107,77,0.08)" : "#F2EBDC",
-                    border: active ? "1px solid rgba(31,107,77,0.30)" : "1px solid rgba(15,31,26,0.12)",
+                    background: active ? "oklch(0.80 0.17 162 / 0.12)" : "oklch(0.22 0.015 250)",
+                    border: active ? "1px solid oklch(0.80 0.17 162 / 0.20)" : "1px solid oklch(0.30 0.02 250)",
                   }}
                 >
                   <div
                     className="h-9 w-9 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: active ? "rgba(31,107,77,0.15)" : "rgba(15,31,26,0.05)" }}
+                    style={{ background: active ? "rgba(43,212,154,0.15)" : "oklch(0.26 0.015 250)" }}
                   >
-                    <Icon className="h-4 w-4" style={{ color: active ? "#1F6B4D" : "#88B5A2" }} />
+                    <Icon className="h-4 w-4" style={{ color: active ? "#2bd49a" : "oklch(0.62 0.01 250)" }} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-[14px] font-semibold" style={{ color: "#0F1F1A" }}>{meta.label}</p>
-                    <p className="text-[12px]" style={{ color: "#88B5A2" }}>{valueLabel(campaign, type)}</p>
+                    <p className="text-[14px] font-semibold" style={{ color: "#ffffff" }}>{meta.label}</p>
+                    <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>{valueLabel(campaign, type)}</p>
                   </div>
                   <span
                     className="h-4 w-4 rounded-full shrink-0 flex items-center justify-center"
-                    style={{ border: active ? "5px solid #1F6B4D" : "2px solid rgba(15,31,26,0.20)" }}
+                    style={{ border: active ? "5px solid #2bd49a" : "2px solid oklch(0.30 0.02 250)" }}
                   />
                 </button>
               )
@@ -183,15 +183,15 @@ export default function NuevaReservaPage() {
       )}
 
       {/* QR delivery info */}
-      <div className="flex items-center gap-4 text-[12px]" style={{ color: "#88B5A2" }}>
-        <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" style={{ color: "#1F6B4D" }} /> QR por email</span>
-        <span className="flex items-center gap-1.5"><MessageCircle className="h-3.5 w-3.5" style={{ color: "#1F6B4D" }} /> QR por WhatsApp</span>
-        <span className="flex items-center gap-1.5"><Download className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} /> Descargable</span>
+      <div className="flex items-center gap-4 text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" style={{ color: "#2bd49a" }} /> QR por email</span>
+        <span className="flex items-center gap-1.5"><MessageCircle className="h-3.5 w-3.5" style={{ color: "#2bd49a" }} /> QR por WhatsApp</span>
+        <span className="flex items-center gap-1.5"><Download className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} /> Descargable</span>
       </div>
 
       {/* Form */}
-      <div className="rounded-2xl p-6" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-5" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+      <div className="rounded-2xl p-6" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-5" style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}>
           Datos del cliente
         </p>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -201,9 +201,9 @@ export default function NuevaReservaPage() {
             { field: "clientPhone", icon: Phone,  type: "tel",   placeholder: "+34 600 000 000",   label: t("client_phone"), required: true },
           ].map(({ field, icon: Icon, type, placeholder, label, required }) => (
             <div key={field}>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{label}</label>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{label}</label>
               <div className="relative">
-                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "#88B5A2" }} />
+                <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "oklch(0.62 0.01 250)" }} />
                 <input
                   type={type}
                   required={required}
@@ -221,8 +221,8 @@ export default function NuevaReservaPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
-                <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("date")}</span>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+                <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} />{t("date")}</span>
               </label>
               <input
                 type="date"
@@ -237,8 +237,8 @@ export default function NuevaReservaPage() {
               />
             </div>
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
-                <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("time")}</span>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+                <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} />{t("time")}</span>
               </label>
               <input
                 type="time"
@@ -254,8 +254,8 @@ export default function NuevaReservaPage() {
           </div>
 
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
-              <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("guests")}</span>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+              <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} />{t("guests")}</span>
             </label>
             <input
               type="number" min={1} max={50} required
@@ -269,8 +269,8 @@ export default function NuevaReservaPage() {
           </div>
 
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>
-              <span className="flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" style={{ color: "#88B5A2" }} />{t("notes")}</span>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+              <span className="flex items-center gap-1.5"><FileText className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} />{t("notes")}</span>
             </label>
             <textarea
               rows={3}
@@ -287,7 +287,7 @@ export default function NuevaReservaPage() {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 flex items-center justify-center gap-2"
-            style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+            style={{ background: "#2bd49a", color: "#0c0c0a" }}
           >
             {loading ? t("submitting") : (
               <><Zap className="h-4 w-4" />{t("submit")}</>

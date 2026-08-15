@@ -7,9 +7,9 @@ import Link from "next/link"
 import { CampaignActions } from "./campaign-actions"
 
 const statusStyle: Record<string, { bg: string; color: string; border: string; label?: string }> = {
-  ACTIVE: { bg: "rgba(31,107,77,0.10)",  color: "#1F6B4D", border: "rgba(31,107,77,0.20)" },
-  PAUSED: { bg: "rgba(216,139,46,0.10)", color: "#B5710D", border: "rgba(216,139,46,0.25)" },
-  ENDED:  { bg: "rgba(15,31,26,0.06)",   color: "#2A3B34", border: "rgba(15,31,26,0.12)" },
+  ACTIVE: { bg: "rgba(43,212,154,0.10)",  color: "#2bd49a", border: "rgba(43,212,154,0.20)" },
+  PAUSED: { bg: "rgba(251,191,36,0.10)",  color: "#fbbf24", border: "rgba(251,191,36,0.25)" },
+  ENDED:  { bg: "oklch(0.30 0.02 250)",   color: "oklch(0.72 0.01 250)", border: "oklch(0.30 0.02 250)" },
 }
 
 export default async function EmpresaCampanasPage() {
@@ -38,15 +38,15 @@ export default async function EmpresaCampanasPage() {
     <div className="space-y-8 max-w-6xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+          <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
             {t("title")}
           </h1>
-          <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{campaigns.length} campañas creadas</p>
+          <p className="text-[14px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>{campaigns.length} campañas creadas</p>
         </div>
         <Link
           href={`/${locale}/empresa/campanas/nueva`}
           className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[14px] font-semibold transition-opacity hover:opacity-90"
-          style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+          style={{ background: "#2bd49a", color: "#0c0c0a" }}
         >
           <Plus className="h-4 w-4" />
           {t("new")}
@@ -54,9 +54,9 @@ export default async function EmpresaCampanasPage() {
       </div>
 
       {campaigns.length === 0 ? (
-        <div className="rounded-2xl p-16 text-center" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "#88B5A2" }} />
-          <p style={{ color: "#88B5A2" }}>{t("empty")}</p>
+        <div className="rounded-2xl p-16 text-center" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "oklch(0.62 0.01 250)" }} />
+          <p style={{ color: "oklch(0.62 0.01 250)" }}>{t("empty")}</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -66,14 +66,14 @@ export default async function EmpresaCampanasPage() {
               <div
                 key={campaign.id}
                 className="rounded-2xl flex flex-col transition-shadow hover:shadow-sm"
-                style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+                style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
               >
                 <div className="p-5 flex-1">
                   <div className="flex items-start justify-between gap-2 mb-3">
                     <div className="min-w-0">
-                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#0F1F1A" }}>{campaign.title}</h3>
+                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#ffffff" }}>{campaign.title}</h3>
                       {campaign.description && (
-                        <p className="text-[13px] mt-1 line-clamp-2" style={{ color: "#88B5A2" }}>{campaign.description}</p>
+                        <p className="text-[13px] mt-1 line-clamp-2" style={{ color: "oklch(0.62 0.01 250)" }}>{campaign.description}</p>
                       )}
                     </div>
                     <span
@@ -86,8 +86,8 @@ export default async function EmpresaCampanasPage() {
 
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center justify-between text-[13px]">
-                      <span style={{ color: "#88B5A2" }}>Incentivo</span>
-                      <span className="font-semibold" style={{ color: "#D88B2E" }}>
+                      <span style={{ color: "oklch(0.62 0.01 250)" }}>Incentivo</span>
+                      <span className="font-semibold" style={{ color: "#2bd49a" }}>
                         {[
                           campaign.incentiveTypes.includes("FIXED") ? `${campaign.fixedValue ?? campaign.incentiveValue}€` : null,
                           campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.percentageValue ?? campaign.incentiveValue}%` : null,
@@ -96,16 +96,16 @@ export default async function EmpresaCampanasPage() {
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-[13px]">
-                      <span className="flex items-center gap-1.5" style={{ color: "#88B5A2" }}>
+                      <span className="flex items-center gap-1.5" style={{ color: "oklch(0.62 0.01 250)" }}>
                         <CalendarCheck className="h-3.5 w-3.5" />
                         {t("reservations_count")}
                       </span>
-                      <span className="font-semibold" style={{ color: "#1F6B4D" }}>{campaign._count.reservations}</span>
+                      <span className="font-semibold" style={{ color: "#2bd49a" }}>{campaign._count.reservations}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 border-t" style={{ borderColor: "rgba(15,31,26,0.06)" }}>
+                <div className="p-4 border-t" style={{ borderColor: "oklch(0.30 0.02 250)" }}>
                   <CampaignActions campaignId={campaign.id} status={campaign.status} locale={locale} />
                 </div>
               </div>

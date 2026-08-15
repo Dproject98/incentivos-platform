@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/lib/auth"
+import { z } from "zod"
+
+const patchSchema = z.object({
+  action: z.enum(["approve", "reject"]),
+  notes: z.string().max(500).optional(),
+})
 
 export async function PATCH(
   req: NextRequest,
@@ -12,7 +18,16 @@ export async function PATCH(
   }
 
   const { id } = await params
-  const { action, notes } = await req.json() // action: "approve" | "reject"
+
+  const body = await req.json().catch(() => null)
+  if (!body) return NextResponse.json({ error: "invalid_body" }, { status: 400 })
+
+  const parsed = patchSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: "validation_error", issues: parsed.error.issues }, { status: 422 })
+  }
+
+  const { action, notes } = parsed.data
 
   const business = await prisma.business.findUnique({ where: { userId: session.user.id } })
   if (!business) return NextResponse.json({ error: "no_business" }, { status: 404 })
@@ -38,28 +53,24 @@ export async function PATCH(
     return NextResponse.json({ success: true, status: "APPROVED" })
   }
 
-  if (action === "reject") {
-    // Refund wallet balance
-    await prisma.$transaction(async (tx) => {
-      await tx.bonoRedemption.update({
-        where: { id },
-        data: { status: "REJECTED", notes: notes ?? null, updatedAt: new Date() },
-      })
-      await tx.wallet.update({
-        where: { id: redemption.walletId },
-        data: { balance: { increment: redemption.amount } },
-      })
-      await tx.transaction.create({
-        data: {
-          walletId: redemption.walletId,
-          amount: redemption.amount,
-          type: "CREDIT",
-          description: `Reembolso canje rechazado`,
-        },
-      })
+  // action === "reject"
+  await prisma.$transaction(async (tx) => {
+    await tx.bonoRedemption.update({
+      where: { id },
+      data: { status: "REJECTED", notes: notes ?? null, updatedAt: new Date() },
     })
-    return NextResponse.json({ success: true, status: "REJECTED" })
-  }
-
-  return NextResponse.json({ error: "invalid_action" }, { status: 400 })
+    await tx.wallet.update({
+      where: { id: redemption.walletId },
+      data: { balance: { increment: redemption.amount } },
+    })
+    await tx.transaction.create({
+      data: {
+        walletId: redemption.walletId,
+        amount: redemption.amount,
+        type: "CREDIT",
+        description: "Reembolso canje rechazado",
+      },
+    })
+  })
+  return NextResponse.json({ success: true, status: "REJECTED" })
 }

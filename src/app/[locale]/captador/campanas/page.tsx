@@ -26,24 +26,24 @@ export default async function CampanasPage() {
   }) as Campaign[]
 
   const incentiveConfig: Record<string, { icon: typeof Euro; color: string; bg: string; border: string; label: string }> = {
-    FIXED:      { icon: Euro,       color: "#1F6B4D", bg: "rgba(31,107,77,0.08)",   border: "rgba(31,107,77,0.20)",   label: "Fijo" },
-    PERCENTAGE: { icon: TrendingUp, color: "#B5710D", bg: "rgba(216,139,46,0.10)",  border: "rgba(216,139,46,0.25)",  label: "%" },
-    BONO:       { icon: Gift,       color: "#1F6B4D", bg: "rgba(31,107,77,0.08)",   border: "rgba(31,107,77,0.20)",   label: "Bono" },
+    FIXED:      { icon: Euro,       color: "#2bd49a", bg: "rgba(43,212,154,0.10)",  border: "rgba(43,212,154,0.20)",  label: "Fijo" },
+    PERCENTAGE: { icon: TrendingUp, color: "#fbbf24", bg: "rgba(251,191,36,0.10)",  border: "rgba(251,191,36,0.25)",  label: "%" },
+    BONO:       { icon: Gift,       color: "#2bd49a", bg: "rgba(43,212,154,0.10)",  border: "rgba(43,212,154,0.20)",  label: "Bono" },
   }
 
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
           {t("title")}
         </h1>
-        <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>{campaigns.length} campañas activas disponibles</p>
+        <p className="text-[14px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>{campaigns.length} campañas activas disponibles</p>
       </div>
 
       {campaigns.length === 0 ? (
-        <div className="rounded-2xl p-16 text-center" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "#88B5A2" }} />
-          <p style={{ color: "#88B5A2" }}>{t("empty")}</p>
+        <div className="rounded-2xl p-16 text-center" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "oklch(0.62 0.01 250)" }} />
+          <p style={{ color: "oklch(0.62 0.01 250)" }}>{t("empty")}</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -62,13 +62,13 @@ export default async function CampanasPage() {
               <div
                 key={campaign.id}
                 className="rounded-2xl flex flex-col transition-shadow hover:shadow-sm"
-                style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+                style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
               >
                 <div className="p-5 flex-1">
                   <div className="flex items-start justify-between gap-2 mb-3">
                     <div className="min-w-0">
-                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#0F1F1A" }}>{campaign.title}</h3>
-                      <p className="text-[13px] mt-0.5" style={{ color: "#88B5A2" }}>{campaign.business.name}</p>
+                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#ffffff" }}>{campaign.title}</h3>
+                      <p className="text-[13px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>{campaign.business.name}</p>
                     </div>
                     <span
                       className="text-[11px] px-2.5 py-1 rounded-full font-medium shrink-0"
@@ -79,7 +79,7 @@ export default async function CampanasPage() {
                   </div>
 
                   {campaign.description && (
-                    <p className="text-[13px] mb-4 line-clamp-2" style={{ color: "#88B5A2" }}>{campaign.description}</p>
+                    <p className="text-[13px] mb-4 line-clamp-2" style={{ color: "oklch(0.62 0.01 250)" }}>{campaign.description}</p>
                   )}
 
                   <div
@@ -92,12 +92,12 @@ export default async function CampanasPage() {
 
                   <div className="mt-4 space-y-1.5">
                     {campaign.business.address && (
-                      <div className="flex items-center gap-1.5 text-[12px]" style={{ color: "#88B5A2" }}>
+                      <div className="flex items-center gap-1.5 text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
                         <MapPin className="h-3.5 w-3.5 shrink-0" />
                         {campaign.business.address}
                       </div>
                     )}
-                    <div className="text-[12px]" style={{ color: "#88B5A2" }}>
+                    <div className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
                       {campaign.endDate
                         ? `${t("expires")}: ${format(new Date(campaign.endDate), "dd MMM yyyy", { locale: dateLocale })}`
                         : t("no_expiry")}
@@ -105,11 +105,11 @@ export default async function CampanasPage() {
                   </div>
                 </div>
 
-                <div className="p-4" style={{ borderTop: "1px solid rgba(15,31,26,0.06)" }}>
+                <div className="p-4" style={{ borderTop: "1px solid oklch(0.30 0.02 250)" }}>
                   <Link
                     href={`/${locale}/captador/reservas/nueva/${campaign.id}`}
                     className="flex items-center justify-center gap-2 w-full py-2.5 rounded-full text-[14px] font-semibold transition-opacity hover:opacity-90"
-                    style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+                    style={{ background: "#2bd49a", color: "#0c0c0a" }}
                   >
                     {t("reserve")}
                     <ArrowRight className="h-4 w-4" />

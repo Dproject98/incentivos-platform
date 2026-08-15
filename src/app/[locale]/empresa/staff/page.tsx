@@ -26,14 +26,14 @@ export default async function EmpresaStaffPage() {
           className="font-semibold"
           style={{
             fontFamily: "var(--font-display)",
-            color: "#0F1F1A",
+            color: "#ffffff",
             fontSize: "clamp(22px,3vw,30px)",
             letterSpacing: "-0.03em",
           }}
         >
           {t("title")}
         </h1>
-        <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>
+        <p className="text-[14px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>
           Personal autorizado para validar QR
         </p>
       </div>
@@ -41,18 +41,18 @@ export default async function EmpresaStaffPage() {
       {/* Info banner */}
       <div
         className="rounded-2xl p-4 flex items-start gap-3"
-        style={{ background: "rgba(31,107,77,0.06)", border: "1px solid rgba(31,107,77,0.15)" }}
+        style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.15)" }}
       >
         <div
           className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}
+          style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}
         >
-          <Smartphone className="h-4 w-4" style={{ color: "#1F6B4D" }} />
+          <Smartphone className="h-4 w-4" style={{ color: "#2bd49a" }} />
         </div>
         <div>
-          <p className="text-[14px] font-medium" style={{ color: "#0F1F1A" }}>Cómo funciona</p>
-          <p className="text-[13px] mt-1" style={{ color: "#2A3B34" }}>{t("desc")}</p>
-          <p className="text-[12px] mt-1.5" style={{ color: "#88B5A2" }}>
+          <p className="text-[14px] font-medium" style={{ color: "#ffffff" }}>Cómo funciona</p>
+          <p className="text-[13px] mt-1" style={{ color: "oklch(0.72 0.01 250)" }}>{t("desc")}</p>
+          <p className="text-[12px] mt-1.5" style={{ color: "oklch(0.62 0.01 250)" }}>
             Cada trabajador recibe un <strong>PIN único de 4 dígitos</strong>. Lo introduce al escanear el QR del cliente para verificar su identidad.
           </p>
         </div>
@@ -62,10 +62,10 @@ export default async function EmpresaStaffPage() {
       <AddStaffForm />
 
       {/* Staff list */}
-      <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+      <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
         <p
           className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4 flex items-center gap-2"
-          style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}
+          style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}
         >
           <Users className="h-3.5 w-3.5" />
           Personal registrado ({business.staff.length})

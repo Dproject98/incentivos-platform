@@ -58,27 +58,27 @@ export default async function StaffPage() {
   ).length
 
   const statusStyle: Record<string, { bg: string; color: string; border: string; label: string }> = {
-    PENDING:   { label: "Pendiente",  bg: "rgba(216,139,46,0.10)", color: "#B5710D", border: "rgba(216,139,46,0.25)" },
-    CONFIRMED: { label: "Confirmada", bg: "rgba(31,107,77,0.10)",  color: "#1F6B4D", border: "rgba(31,107,77,0.20)" },
-    CANCELLED: { label: "Cancelada",  bg: "rgba(220,38,38,0.08)",  color: "#dc2626", border: "rgba(220,38,38,0.15)" },
-    NO_SHOW:   { label: "No show",    bg: "rgba(15,31,26,0.06)",   color: "#2A3B34", border: "rgba(15,31,26,0.12)" },
+    PENDING:   { label: "Pendiente",  bg: "rgba(251,191,36,0.10)",  color: "#fbbf24", border: "rgba(251,191,36,0.25)" },
+    CONFIRMED: { label: "Confirmada", bg: "rgba(43,212,154,0.10)",  color: "#2bd49a", border: "rgba(43,212,154,0.20)" },
+    CANCELLED: { label: "Cancelada",  bg: "rgba(220,38,38,0.12)",   color: "#dc2626", border: "rgba(220,38,38,0.20)" },
+    NO_SHOW:   { label: "No show",    bg: "oklch(0.30 0.02 250)",   color: "oklch(0.72 0.01 250)", border: "oklch(0.30 0.02 250)" },
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F2EBDC" }}>
+    <div className="min-h-screen" style={{ background: "oklch(0.15 0.012 250)" }}>
       {/* Top bar */}
       <div
         className="flex items-center justify-between px-5 py-4"
-        style={{ background: "#fff", borderBottom: "1px solid rgba(15,31,26,0.08)" }}
+        style={{ background: "oklch(0.19 0.015 250)", borderBottom: "1px solid oklch(0.30 0.02 250)" }}
       >
         <IncentisLogo size="sm" />
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <p className="text-[13px] font-medium" style={{ color: "#0F1F1A" }}>
+            <p className="text-[13px] font-medium" style={{ color: "#ffffff" }}>
               {staffRecord?.name ?? session.user.name}
             </p>
             {business && (
-              <p className="text-[12px]" style={{ color: "#88B5A2" }}>{business.name}</p>
+              <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>{business.name}</p>
             )}
           </div>
           <form
@@ -90,9 +90,9 @@ export default async function StaffPage() {
             <button
               type="submit"
               className="h-9 w-9 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70"
-              style={{ background: "rgba(15,31,26,0.06)", border: "1px solid rgba(15,31,26,0.10)" }}
+              style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
             >
-              <LogOut className="h-4 w-4" style={{ color: "#88B5A2" }} />
+              <LogOut className="h-4 w-4" style={{ color: "oklch(0.62 0.01 250)" }} />
             </button>
           </form>
         </div>
@@ -105,14 +105,14 @@ export default async function StaffPage() {
             className="font-semibold"
             style={{
               fontFamily: "var(--font-display)",
-              color: "#0F1F1A",
+              color: "#ffffff",
               fontSize: "clamp(22px,5vw,28px)",
               letterSpacing: "-0.03em",
             }}
           >
             Hola, {(staffRecord?.name ?? session.user.name ?? "").split(" ")[0]}
           </h1>
-          <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>
+          <p className="text-[14px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>
             {business ? `Personal autorizado — ${business.name}` : "Panel de validación QR"}
           </p>
         </div>
@@ -120,18 +120,18 @@ export default async function StaffPage() {
         {/* PIN card — most prominent element */}
         <div
           className="rounded-2xl p-5 flex items-center gap-4"
-          style={{ background: "#1F6B4D" }}
+          style={{ background: "oklch(0.80 0.17 162 / 0.15)", border: "1px solid oklch(0.80 0.17 162 / 0.25)" }}
         >
           <div
             className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(242,235,220,0.12)", border: "1px solid rgba(242,235,220,0.20)" }}
+            style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}
           >
-            <Lock className="h-6 w-6" style={{ color: "#F2EBDC" }} />
+            <Lock className="h-6 w-6" style={{ color: "#2bd49a" }} />
           </div>
           <div className="flex-1">
             <p
               className="text-[10px] uppercase tracking-[0.12em] font-mono mb-1"
-              style={{ color: "rgba(242,235,220,0.60)", fontFamily: "var(--font-mono)" }}
+              style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}
             >
               Tu PIN de validación
             </p>
@@ -142,18 +142,18 @@ export default async function StaffPage() {
                     <div
                       key={i}
                       className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-[20px]"
-                      style={{ background: "rgba(242,235,220,0.15)", color: "#F2EBDC" }}
+                      style={{ background: "rgba(43,212,154,0.12)", color: "#2bd49a" }}
                     >
                       {digit}
                     </div>
                   ))}
                 </div>
-                <p className="text-[12px]" style={{ color: "rgba(242,235,220,0.60)" }}>
+                <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
                   Introdúcelo al escanear el QR
                 </p>
               </div>
             ) : (
-              <p className="text-[13px]" style={{ color: "rgba(242,235,220,0.70)" }}>
+              <p className="text-[13px]" style={{ color: "oklch(0.72 0.01 250)" }}>
                 PIN no asignado — contacta con tu empresa
               </p>
             )}
@@ -163,42 +163,42 @@ export default async function StaffPage() {
         {/* Validaciones hoy */}
         <div
           className="rounded-2xl p-5 flex items-center justify-between"
-          style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+          style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
         >
           <div>
             <p
               className="text-[10px] uppercase tracking-[0.12em] font-mono"
-              style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}
+              style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}
             >
               Validaciones hoy
             </p>
-            <span className="text-[40px] font-bold leading-tight" style={{ color: "#0F1F1A" }}>
+            <span className="text-[40px] font-bold leading-tight" style={{ color: "#ffffff" }}>
               {confirmedToday}
             </span>
           </div>
-          <CheckCircle className="h-8 w-8" style={{ color: "#1F6B4D" }} />
+          <CheckCircle className="h-8 w-8" style={{ color: "#2bd49a" }} />
         </div>
 
         {/* Instrucciones */}
         <div
           className="rounded-2xl p-5 flex items-start gap-4"
-          style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}
+          style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
         >
           <div
             className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(31,107,77,0.08)", border: "1px solid rgba(31,107,77,0.15)" }}
+            style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.15)" }}
           >
-            <Smartphone className="h-5 w-5" style={{ color: "#1F6B4D" }} />
+            <Smartphone className="h-5 w-5" style={{ color: "#2bd49a" }} />
           </div>
           <div>
-            <p className="font-medium text-[14px] mb-1.5" style={{ color: "#0F1F1A" }}>Cómo validar una reserva</p>
-            <ol className="text-[13px] space-y-1.5" style={{ color: "#2A3B34" }}>
+            <p className="font-medium text-[14px] mb-1.5" style={{ color: "#ffffff" }}>Cómo validar una reserva</p>
+            <ol className="text-[13px] space-y-1.5" style={{ color: "oklch(0.72 0.01 250)" }}>
               <li>1. El cliente muestra el código QR en su teléfono</li>
               <li>2. Escanéalo con la cámara de tu dispositivo</li>
               <li>3. Introduce tu <strong>PIN de 4 dígitos</strong> en la pantalla</li>
               <li>4. La reserva queda confirmada automáticamente</li>
             </ol>
-            <p className="text-[12px] mt-2" style={{ color: "#88B5A2" }}>
+            <p className="text-[12px] mt-2" style={{ color: "oklch(0.62 0.01 250)" }}>
               El incentivo se acredita al captador al instante.
             </p>
           </div>
@@ -206,10 +206,10 @@ export default async function StaffPage() {
 
         {/* Reservas recientes */}
         {recentReservations.length > 0 && (
-          <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
+          <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
             <p
               className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4 flex items-center gap-2"
-              style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}
+              style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}
             >
               <Clock className="h-3.5 w-3.5" />
               Reservas recientes ({recentReservations.length})
@@ -221,18 +221,18 @@ export default async function StaffPage() {
                   <div
                     key={r.id}
                     className="flex items-center justify-between p-3 rounded-xl"
-                    style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.06)" }}
+                    style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className="h-8 w-8 rounded-full flex items-center justify-center font-semibold text-[12px] shrink-0"
-                        style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}
+                        style={{ background: "rgba(43,212,154,0.10)", color: "#2bd49a" }}
                       >
                         {r.clientName.charAt(0)}
                       </div>
                       <div>
-                        <p className="font-medium text-[13px]" style={{ color: "#0F1F1A" }}>{r.clientName}</p>
-                        <p className="text-[11px]" style={{ color: "#88B5A2" }}>
+                        <p className="font-medium text-[13px]" style={{ color: "#ffffff" }}>{r.clientName}</p>
+                        <p className="text-[11px]" style={{ color: "oklch(0.62 0.01 250)" }}>
                           {r.campaign.title} · {format(new Date(r.date), "dd MMM", { locale: es })} {r.time}
                         </p>
                       </div>

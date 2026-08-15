@@ -15,9 +15,9 @@ export function AddStaffForm() {
   const [copied, setCopied] = useState(false)
 
   const inputStyle = {
-    background: "#F2EBDC",
-    border: "1px solid rgba(15,31,26,0.15)",
-    color: "#0F1F1A",
+    background: "oklch(0.22 0.015 250)",
+    border: "1px solid oklch(0.30 0.02 250)",
+    color: "#ffffff",
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,8 +47,8 @@ export function AddStaffForm() {
   }
 
   return (
-    <div className="rounded-2xl p-5 space-y-4" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-      <p className="text-[10px] uppercase tracking-[0.12em] font-mono flex items-center gap-2" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+    <div className="rounded-2xl p-5 space-y-4" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+      <p className="text-[10px] uppercase tracking-[0.12em] font-mono flex items-center gap-2" style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}>
         <UserPlus className="h-3.5 w-3.5" />
         {t("add")}
       </p>
@@ -56,7 +56,7 @@ export function AddStaffForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("name")}</label>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("name")}</label>
             <input
               required
               value={form.name}
@@ -64,12 +64,12 @@ export function AddStaffForm() {
               placeholder="Nombre del empleado"
               className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
               style={inputStyle}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
             />
           </div>
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("email")}</label>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("email")}</label>
             <input
               type="email"
               required
@@ -78,8 +78,8 @@ export function AddStaffForm() {
               placeholder="empleado@empresa.com"
               className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
               style={inputStyle}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
             />
           </div>
         </div>
@@ -87,7 +87,7 @@ export function AddStaffForm() {
           type="submit"
           disabled={loading}
           className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[14px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90"
-          style={{ background: "#1F6B4D", color: "#F2EBDC" }}
+          style={{ background: "#2bd49a", color: "#0c0c0a" }}
         >
           <UserPlus className="h-4 w-4" />
           {loading ? "Añadiendo..." : t("invite")}
@@ -98,16 +98,16 @@ export function AddStaffForm() {
       {newPin && (
         <div
           className="rounded-2xl p-4 flex items-center gap-4"
-          style={{ background: "rgba(31,107,77,0.06)", border: "1px solid rgba(31,107,77,0.20)" }}
+          style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.20)" }}
         >
           <div
             className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(31,107,77,0.10)", border: "1px solid rgba(31,107,77,0.20)" }}
+            style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}
           >
-            <Lock className="h-5 w-5" style={{ color: "#1F6B4D" }} />
+            <Lock className="h-5 w-5" style={{ color: "#2bd49a" }} />
           </div>
           <div className="flex-1">
-            <p className="text-[13px] font-medium" style={{ color: "#0F1F1A" }}>
+            <p className="text-[13px] font-medium" style={{ color: "#ffffff" }}>
               PIN asignado a <strong>{newPin.name}</strong>
             </p>
             <div className="flex items-center gap-2 mt-1">
@@ -116,7 +116,7 @@ export function AddStaffForm() {
                   <div
                     key={i}
                     className="h-9 w-9 rounded-xl flex items-center justify-center font-bold font-mono text-[18px]"
-                    style={{ background: "#fff", border: "1px solid rgba(31,107,77,0.25)", color: "#1F6B4D" }}
+                    style={{ background: "oklch(0.22 0.015 250)", border: "1px solid rgba(43,212,154,0.25)", color: "#2bd49a" }}
                   >
                     {d}
                   </div>
@@ -125,13 +125,13 @@ export function AddStaffForm() {
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1 rounded-lg transition-opacity hover:opacity-70"
-                style={{ background: "rgba(31,107,77,0.10)", color: "#1F6B4D" }}
+                style={{ background: "rgba(43,212,154,0.10)", color: "#2bd49a" }}
               >
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                 {copied ? "Copiado" : "Copiar"}
               </button>
             </div>
-            <p className="text-[11px] mt-1.5" style={{ color: "#88B5A2" }}>
+            <p className="text-[11px] mt-1.5" style={{ color: "oklch(0.62 0.01 250)" }}>
               Comparte este PIN con el trabajador. Lo necesitará para validar QRs.
             </p>
           </div>

@@ -35,9 +35,9 @@ export function CampaignActions({ campaignId, status }: Props) {
       onClick={toggle}
       className="flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-[13px] font-medium transition-all hover:opacity-80"
       style={{
-        background: status === "ACTIVE" ? "rgba(216,139,46,0.10)" : "rgba(31,107,77,0.10)",
-        color: status === "ACTIVE" ? "#B5710D" : "#1F6B4D",
-        border: `1px solid ${status === "ACTIVE" ? "rgba(216,139,46,0.25)" : "rgba(31,107,77,0.20)"}`,
+        background: status === "ACTIVE" ? "rgba(251,191,36,0.10)" : "rgba(43,212,154,0.10)",
+        color: status === "ACTIVE" ? "#fbbf24" : "#2bd49a",
+        border: `1px solid ${status === "ACTIVE" ? "rgba(251,191,36,0.25)" : "rgba(43,212,154,0.20)"}`,
       }}
     >
       {status === "ACTIVE" ? (

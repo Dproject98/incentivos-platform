@@ -21,7 +21,7 @@ interface WalletData {
   availableBonos: AvailableBono[]; pendingRedemptions: PendingRedemption[]
 }
 
-const inputStyle = { background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.15)", color: "#0F1F1A" }
+const inputStyle = { background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)", color: "#ffffff" }
 
 export default function WalletPage() {
   const t = useTranslations("captador.wallet")
@@ -91,33 +91,33 @@ export default function WalletPage() {
   if (!data) return (
     <div className="flex items-center justify-center h-48">
       <div className="h-8 w-8 rounded-full border-2 animate-spin"
-        style={{ borderColor: "rgba(31,107,77,0.20)", borderTopColor: "#1F6B4D" }} />
+        style={{ borderColor: "oklch(0.80 0.17 162 / 0.20)", borderTopColor: "#2bd49a" }} />
     </div>
   )
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
       <div>
-        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#0F1F1A", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
           {t("title")}
         </h1>
-        <p className="text-[14px] mt-1" style={{ color: "#88B5A2" }}>Tu saldo e historial de incentivos</p>
+        <p className="text-[14px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>Tu saldo e historial de incentivos</p>
       </div>
 
       {/* Balance */}
-      <div className="rounded-2xl p-6" style={{ background: "#1F6B4D" }}>
-        <div className="flex items-center gap-2 mb-3 text-[13px]" style={{ color: "rgba(242,235,220,0.70)" }}>
+      <div className="rounded-2xl p-6" style={{ background: "oklch(0.80 0.17 162 / 0.15)", border: "1px solid oklch(0.80 0.17 162 / 0.20)" }}>
+        <div className="flex items-center gap-2 mb-3 text-[13px]" style={{ color: "oklch(0.72 0.01 250)" }}>
           <Wallet className="h-4 w-4" />{t("balance")}
         </div>
-        <div className="text-[48px] font-bold leading-none" style={{ color: "#F2EBDC" }}>
-          {data.balance.toFixed(2)} <span style={{ color: "#D88B2E" }}>€</span>
+        <div className="text-[48px] font-bold leading-none" style={{ color: "#ffffff" }}>
+          {data.balance.toFixed(2)} <span style={{ color: "#2bd49a" }}>€</span>
         </div>
-        <p className="text-[13px] mt-2" style={{ color: "rgba(242,235,220,0.55)" }}>Disponible</p>
+        <p className="text-[13px] mt-2" style={{ color: "oklch(0.62 0.01 250)" }}>Disponible</p>
       </div>
 
       {/* Method selector */}
-      <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+      <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4" style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}>
           {t("withdraw")}
         </p>
         <div className="grid grid-cols-2 gap-2 mb-5">
@@ -128,13 +128,13 @@ export default function WalletPage() {
             <button key={key} onClick={() => { setMethod(key); setSelectedBono(null) }}
               className="p-3 rounded-xl text-left transition-all"
               style={{
-                background: method === key ? (key === "stripe" ? "rgba(31,107,77,0.08)" : "rgba(216,139,46,0.10)") : "#F2EBDC",
-                border: method === key ? (key === "stripe" ? "1px solid rgba(31,107,77,0.25)" : "1px solid rgba(216,139,46,0.25)") : "1px solid rgba(15,31,26,0.12)",
-                color: method === key ? (key === "stripe" ? "#1F6B4D" : "#B5710D") : "#2A3B34",
+                background: method === key ? (key === "stripe" ? "rgba(43,212,154,0.10)" : "rgba(251,191,36,0.10)") : "oklch(0.22 0.015 250)",
+                border: method === key ? (key === "stripe" ? "1px solid rgba(43,212,154,0.25)" : "1px solid rgba(251,191,36,0.25)") : "1px solid oklch(0.30 0.02 250)",
+                color: method === key ? (key === "stripe" ? "#2bd49a" : "#fbbf24") : "oklch(0.72 0.01 250)",
               }}>
-              <Icon className="h-4 w-4 mb-1.5" style={{ color: method === key ? (key === "stripe" ? "#1F6B4D" : "#B5710D") : "#88B5A2" }} />
+              <Icon className="h-4 w-4 mb-1.5" style={{ color: method === key ? (key === "stripe" ? "#2bd49a" : "#fbbf24") : "oklch(0.62 0.01 250)" }} />
               <p className="text-[13px] font-medium">{label}</p>
-              <p className="text-[12px] mt-0.5" style={{ color: "#88B5A2" }}>{sub}</p>
+              <p className="text-[12px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>{sub}</p>
             </button>
           ))}
         </div>
@@ -143,30 +143,30 @@ export default function WalletPage() {
         {method === "stripe" && (
           <div className="space-y-4">
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#0F1F1A" }}>{t("withdraw_amount")}</label>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("withdraw_amount")}</label>
               <input type="number" min={1} max={data.balance} step={0.01} value={amount}
                 onChange={(e) => setAmount(e.target.value)} placeholder="0.00"
                 className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors" style={inputStyle}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#1F6B4D")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(15,31,26,0.15)")} />
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")} />
             </div>
             {!data.stripeConnected && (
-              <div className="p-3 rounded-xl text-[13px]" style={{ background: "rgba(216,139,46,0.08)", border: "1px solid rgba(216,139,46,0.20)" }}>
-                <p className="font-medium" style={{ color: "#B5710D" }}>Cuenta bancaria no conectada</p>
+              <div className="p-3 rounded-xl text-[13px]" style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.20)" }}>
+                <p className="font-medium" style={{ color: "#fbbf24" }}>Cuenta bancaria no conectada</p>
                 <button onClick={handleStripeConnect} disabled={connectingStripe}
-                  className="mt-2 flex items-center gap-1.5 text-[12px] font-medium hover:opacity-80" style={{ color: "#B5710D" }}>
+                  className="mt-2 flex items-center gap-1.5 text-[12px] font-medium hover:opacity-80" style={{ color: "#fbbf24" }}>
                   <Link2 className="h-3.5 w-3.5" />{t("connect_stripe")}
                 </button>
               </div>
             )}
             {data.stripeConnected && (
-              <div className="flex items-center gap-2 text-[13px]" style={{ color: "#1F6B4D" }}>
+              <div className="flex items-center gap-2 text-[13px]" style={{ color: "#2bd49a" }}>
                 <CheckCircle className="h-4 w-4" />{t("stripe_connected")}
               </div>
             )}
             <button onClick={handleWithdraw} disabled={loading || !amount || parseFloat(amount) <= 0}
               className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90"
-              style={{ background: "#1F6B4D", color: "#F2EBDC" }}>
+              style={{ background: "#2bd49a", color: "#0c0c0a" }}>
               {loading ? "Procesando..." : t("withdraw")}
             </button>
           </div>
@@ -177,12 +177,12 @@ export default function WalletPage() {
           <div className="space-y-4">
             {data.availableBonos.length === 0 ? (
               <div className="py-6 text-center">
-                <Gift className="h-8 w-8 mx-auto mb-2" style={{ color: "#88B5A2" }} />
-                <p className="text-[13px]" style={{ color: "#88B5A2" }}>No hay bonos disponibles ahora mismo</p>
+                <Gift className="h-8 w-8 mx-auto mb-2" style={{ color: "oklch(0.62 0.01 250)" }} />
+                <p className="text-[13px]" style={{ color: "oklch(0.62 0.01 250)" }}>No hay bonos disponibles ahora mismo</p>
               </div>
             ) : (
               <>
-                <p className="text-[13px]" style={{ color: "#2A3B34" }}>
+                <p className="text-[13px]" style={{ color: "oklch(0.72 0.01 250)" }}>
                   Selecciona el bono que quieres canjear. Se descontará el valor mínimo de tu saldo y la empresa gestionará tu solicitud.
                 </p>
 
@@ -196,22 +196,22 @@ export default function WalletPage() {
                         disabled={!canAfford}
                         className="w-full p-3 rounded-xl text-left transition-all"
                         style={{
-                          background: isSelected ? "rgba(216,139,46,0.10)" : canAfford ? "#F2EBDC" : "rgba(15,31,26,0.03)",
-                          border: isSelected ? "1px solid rgba(216,139,46,0.35)" : "1px solid rgba(15,31,26,0.10)",
+                          background: isSelected ? "rgba(251,191,36,0.10)" : canAfford ? "oklch(0.22 0.015 250)" : "oklch(0.19 0.015 250)",
+                          border: isSelected ? "1px solid rgba(251,191,36,0.35)" : "1px solid oklch(0.30 0.02 250)",
                           opacity: canAfford ? 1 : 0.5,
                         }}>
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-[14px]" style={{ color: "#0F1F1A" }}>
+                            <p className="font-semibold text-[14px]" style={{ color: "#ffffff" }}>
                               {bono.bonusDescription ?? bono.title}
                             </p>
-                            <p className="text-[12px] mt-0.5" style={{ color: "#88B5A2" }}>{bono.business.name}</p>
+                            <p className="text-[12px] mt-0.5" style={{ color: "oklch(0.62 0.01 250)" }}>{bono.business.name}</p>
                           </div>
                           <div className="shrink-0 text-right">
-                            <span className="font-bold text-[15px]" style={{ color: "#D88B2E" }}>
+                            <span className="font-bold text-[15px]" style={{ color: "#2bd49a" }}>
                               {bono.bonusMinValue}€
                             </span>
-                            <p className="text-[11px]" style={{ color: "#88B5A2" }}>mínimo</p>
+                            <p className="text-[11px]" style={{ color: "oklch(0.62 0.01 250)" }}>mínimo</p>
                           </div>
                         </div>
                         {!canAfford && (
@@ -220,7 +220,7 @@ export default function WalletPage() {
                           </p>
                         )}
                         {isSelected && (
-                          <div className="flex items-center gap-1 mt-1.5 text-[12px]" style={{ color: "#B5710D" }}>
+                          <div className="flex items-center gap-1 mt-1.5 text-[12px]" style={{ color: "#fbbf24" }}>
                             <CheckCircle className="h-3.5 w-3.5" /> Seleccionado
                           </div>
                         )}
@@ -230,8 +230,8 @@ export default function WalletPage() {
                 </div>
 
                 {selectedBono && (
-                  <div className="rounded-xl p-3" style={{ background: "rgba(216,139,46,0.08)", border: "1px solid rgba(216,139,46,0.20)" }}>
-                    <p className="text-[13px]" style={{ color: "#B5710D" }}>
+                  <div className="rounded-xl p-3" style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.20)" }}>
+                    <p className="text-[13px]" style={{ color: "#fbbf24" }}>
                       Se descontarán <strong>{selectedBono.bonusMinValue}€</strong> de tu saldo.
                       La empresa confirmará el canje en breve.
                     </p>
@@ -240,7 +240,7 @@ export default function WalletPage() {
 
                 <button onClick={handleRedeemBono} disabled={!selectedBono || loading}
                   className="w-full py-3 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity disabled:opacity-40 hover:opacity-90"
-                  style={{ background: "#D88B2E", color: "#fff" }}>
+                  style={{ background: "#2bd49a", color: "#0c0c0a" }}>
                   <Gift className="h-4 w-4" />
                   {loading ? "Enviando..." : "Solicitar canje"}
                 </button>
@@ -250,24 +250,24 @@ export default function WalletPage() {
             {/* Pending redemptions */}
             {data.pendingRedemptions.length > 0 && (
               <div className="pt-2">
-                <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-3" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+                <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-3" style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}>
                   Mis solicitudes
                 </p>
                 <div className="space-y-2">
                   {data.pendingRedemptions.map((r) => {
                     const statusStyle = {
-                      PENDING:  { bg: "rgba(216,139,46,0.10)", color: "#B5710D", label: "Pendiente" },
-                      APPROVED: { bg: "rgba(31,107,77,0.10)",  color: "#1F6B4D", label: "Aprobado"  },
-                      REJECTED: { bg: "rgba(220,38,38,0.08)",  color: "#dc2626", label: "Rechazado" },
-                    }[r.status] ?? { bg: "rgba(15,31,26,0.06)", color: "#2A3B34", label: r.status }
+                      PENDING:  { bg: "rgba(251,191,36,0.10)",  color: "#fbbf24", label: "Pendiente" },
+                      APPROVED: { bg: "rgba(43,212,154,0.10)",  color: "#2bd49a", label: "Aprobado"  },
+                      REJECTED: { bg: "rgba(220,38,38,0.12)",   color: "#dc2626", label: "Rechazado" },
+                    }[r.status] ?? { bg: "oklch(0.30 0.02 250)", color: "oklch(0.72 0.01 250)", label: r.status }
                     return (
                       <div key={r.id} className="flex items-center justify-between p-3 rounded-xl"
-                        style={{ background: "#F2EBDC", border: "1px solid rgba(15,31,26,0.08)" }}>
+                        style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
                         <div>
-                          <p className="font-medium text-[13px]" style={{ color: "#0F1F1A" }}>
+                          <p className="font-medium text-[13px]" style={{ color: "#ffffff" }}>
                             {r.campaign.bonusDescription ?? r.campaign.title}
                           </p>
-                          <p className="text-[12px]" style={{ color: "#88B5A2" }}>{r.campaign.business.name} · {r.amount}€</p>
+                          <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>{r.campaign.business.name} · {r.amount}€</p>
                         </div>
                         <span className="text-[11px] px-2.5 py-1 rounded-full font-medium"
                           style={{ background: statusStyle.bg, color: statusStyle.color, border: `1px solid ${statusStyle.color}30` }}>
@@ -284,35 +284,35 @@ export default function WalletPage() {
       </div>
 
       {/* Transaction history */}
-      <div className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid rgba(15,31,26,0.08)" }}>
-        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4" style={{ color: "#88B5A2", fontFamily: "var(--font-mono)" }}>
+      <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+        <p className="text-[10px] uppercase tracking-[0.12em] font-mono mb-4" style={{ color: "oklch(0.62 0.01 250)", fontFamily: "var(--font-mono)" }}>
           {t("history")}
         </p>
         {data.transactions.length === 0 ? (
-          <p className="text-[13px]" style={{ color: "#88B5A2" }}>{t("no_transactions")}</p>
+          <p className="text-[13px]" style={{ color: "oklch(0.62 0.01 250)" }}>{t("no_transactions")}</p>
         ) : (
           <div className="space-y-1">
             {data.transactions.map((tx) => (
               <div key={tx.id} className="flex items-center justify-between py-3"
-                style={{ borderBottom: "1px solid rgba(15,31,26,0.05)" }}>
+                style={{ borderBottom: "1px solid oklch(0.30 0.02 250)" }}>
                 <div className="flex items-center gap-3">
                   <div className="h-8 w-8 rounded-full flex items-center justify-center shrink-0"
                     style={{
-                      background: tx.type === "CREDIT" ? "rgba(31,107,77,0.10)" : "rgba(220,38,38,0.08)",
-                      border: tx.type === "CREDIT" ? "1px solid rgba(31,107,77,0.20)" : "1px solid rgba(220,38,38,0.15)",
+                      background: tx.type === "CREDIT" ? "rgba(43,212,154,0.10)" : "rgba(220,38,38,0.12)",
+                      border: tx.type === "CREDIT" ? "1px solid rgba(43,212,154,0.20)" : "1px solid rgba(220,38,38,0.20)",
                     }}>
                     {tx.type === "CREDIT"
-                      ? <ArrowDownRight className="h-4 w-4" style={{ color: "#1F6B4D" }} />
+                      ? <ArrowDownRight className="h-4 w-4" style={{ color: "#2bd49a" }} />
                       : <ArrowUpRight className="h-4 w-4" style={{ color: "#dc2626" }} />}
                   </div>
                   <div>
-                    <p className="text-[13px] font-medium" style={{ color: "#0F1F1A" }}>{tx.description}</p>
-                    <p className="text-[12px]" style={{ color: "#88B5A2" }}>
+                    <p className="text-[13px] font-medium" style={{ color: "#ffffff" }}>{tx.description}</p>
+                    <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
                       {new Date(tx.createdAt).toLocaleDateString(locale === "en" ? "en-GB" : "es-ES")}
                     </p>
                   </div>
                 </div>
-                <span className="font-semibold text-[13px]" style={{ color: tx.type === "CREDIT" ? "#1F6B4D" : "#dc2626" }}>
+                <span className="font-semibold text-[13px]" style={{ color: tx.type === "CREDIT" ? "#2bd49a" : "#dc2626" }}>
                   {tx.type === "CREDIT" ? "+" : "-"}{tx.amount.toFixed(2)} €
                 </span>
               </div>
