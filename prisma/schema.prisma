@@ -59,19 +59,22 @@ model User {
 }
 
 model Business {
-  id          String   @id @default(cuid())
-  name        String
-  type        String
-  description String?
-  address     String?
-  logoUrl     String?
-  userId      String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String   @id @default(cuid())
+  name             String
+  type             String
+  description      String?
+  address          String?
+  logoUrl          String?
+  userId           String   @unique
+  ibanHolder       String?
+  ibanNumber       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  campaigns Campaign[]
-  staff     BusinessStaff[]
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaigns       Campaign[]
+  staff           BusinessStaff[]
+  empresaPayments EmpresaPayment[]
 }
 
 model BusinessStaff {
@@ -124,14 +127,18 @@ model Reservation {
   qrScannedAt   DateTime?
   status        ReservationStatus @default(PENDING)
   incentivePaid Boolean           @default(false)
-  chosenIncentiveType String?     // "FIXED" | "PERCENTAGE" | "BONO" picked by the captador
+  chosenIncentiveType String?
+  empresaPaid   Boolean           @default(false)
+  empresaPaidAt DateTime?
+  empresaPaymentId String?
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
 
-  campaign    Campaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  captador    User        @relation("CaptadorReservations", fields: [captadorId], references: [id])
-  staffScan   StaffScan?
-  transaction Transaction?
+  campaign       Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  captador       User            @relation("CaptadorReservations", fields: [captadorId], references: [id])
+  staffScan      StaffScan?
+  transaction    Transaction?
+  empresaPayment EmpresaPayment? @relation(fields: [empresaPaymentId], references: [id])
 }
 
 model StaffScan {
@@ -168,6 +175,20 @@ model Transaction {
 
   wallet      Wallet       @relation(fields: [walletId], references: [id], onDelete: Cascade)
   reservation Reservation? @relation(fields: [reservationId], references: [id])
+}
+
+model EmpresaPayment {
+  id          String    @id @default(cuid())
+  businessId  String
+  amount      Float
+  reference   String?
+  notes       String?
+  confirmedAt DateTime?
+  confirmedBy String?
+  createdAt   DateTime  @default(now())
+
+  business     Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
 }
 
 model BonoRedemption {
