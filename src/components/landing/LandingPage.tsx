@@ -2,25 +2,29 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { IncentisLogo } from "@/components/IncentisLogo"
+
+gsap.registerPlugin(ScrollTrigger)
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const C = {
-  bg: "oklch(0.15 0.012 250)",
-  s1: "oklch(0.19 0.015 250)",
-  s2: "oklch(0.22 0.015 250)",
-  border: "oklch(0.30 0.02 250)",
+  bg: "#16171A",
+  s1: "#1E2023",
+  s2: "#26282C",
+  border: "#34373C",
   borderStrong: "oklch(0.40 0.06 250)",
-  text: "#ffffff",
-  muted: "oklch(0.72 0.01 250)",
-  faint: "oklch(0.60 0.01 250)",
-  accent: "oklch(0.80 0.17 162)",
-  accentDeep: "oklch(0.68 0.15 165)",
-  accentDeeper: "oklch(0.62 0.14 165)",
+  text: "#F2F1EF",
+  muted: "#AEB2B8",
+  faint: "#868A90",
+  accent: "oklch(0.70 0.15 35)",
+  accentDeep: "oklch(0.60 0.16 40)",
+  accentDeeper: "oklch(0.54 0.15 38)",
   accentOnLight: "oklch(0.50 0.13 162)",
   lightBg: "oklch(0.96 0.008 250)",
-  ink: "#0c0c0a",
-  grad: "linear-gradient(135deg, oklch(0.80 0.17 162), oklch(0.68 0.15 165))",
+  ink: "#16171A",
+  grad: "linear-gradient(135deg, oklch(0.70 0.15 35), oklch(0.60 0.16 40))",
 }
 const F = {
   brand: "var(--font-brand), 'Bricolage Grotesque', sans-serif",
@@ -59,6 +63,39 @@ function useReveal(rootRef: React.RefObject<HTMLElement | null>) {
   }, [rootRef])
 }
 
+// ─── Hero: profundidad ligada al scroll (estilo Apple: pin + scrub) ───────────
+// Solo desktop (>=1025px, donde vive la tarjeta flotante) y solo si el usuario
+// no pide prefers-reduced-motion. gsap.matchMedia() limpia solo al cambiar de
+// breakpoint o al desmontar — no hace falta gestionarlo a mano.
+function useHeroTilt(
+  pinRef: React.RefObject<HTMLDivElement | null>,
+  cardRef: React.RefObject<HTMLDivElement | null>,
+  textRef: React.RefObject<HTMLDivElement | null>
+) {
+  useEffect(() => {
+    const mm = gsap.matchMedia()
+
+    mm.add(
+      { desktop: "(min-width: 1025px)", motionOk: "(prefers-reduced-motion: no-preference)" },
+      (context) => {
+        const { desktop, motionOk } = context.conditions as { desktop: boolean; motionOk: boolean }
+        if (!desktop || !motionOk) return
+        if (!pinRef.current || !cardRef.current || !textRef.current) return
+
+        const scrollCfg = { trigger: pinRef.current, start: "top top", end: "bottom top", scrub: true }
+        gsap.to(cardRef.current, { rotateX: -10, rotateY: 8, y: -50, scale: 0.92, ease: "none", scrollTrigger: scrollCfg })
+        gsap.to(textRef.current, { y: -30, opacity: 0.35, ease: "none", scrollTrigger: scrollCfg })
+
+        // Las fuentes de next/font y los stats dinamicos pueden desplazar el
+        // layout despues del primer paint — recalcula las medidas del pin.
+        requestAnimationFrame(() => ScrollTrigger.refresh())
+      }
+    )
+
+    return () => mm.revert()
+  }, [pinRef, cardRef, textRef])
+}
+
 // ─── ROI Calculator ───────────────────────────────────────────────────────────
 function RoiCalc() {
   const [ticket, setTicket] = useState(80)
@@ -94,12 +131,12 @@ function RoiCalc() {
         ))}
       </div>
       {/* Result */}
-      <div style={{ background: `linear-gradient(180deg, ${C.s2}, oklch(0.18 0.012 250))`, border: `1px solid oklch(0.32 0.02 250)`, borderRadius: 20, padding: 34, display: "flex", flexDirection: "column" }}>
+      <div style={{ background: `linear-gradient(180deg, ${C.s2}, #1C1D20)`, border: `1px solid #383B40`, borderRadius: 20, padding: 34, display: "flex", flexDirection: "column" }}>
         <div style={{ fontFamily: F.mono, fontSize: 11, color: C.faint, letterSpacing: "0.1em", textTransform: "uppercase" }}>Pagarías en incentivos</div>
         <div style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 62, lineHeight: 1, marginTop: 10 }}>
           {eur(incentivos)}<span style={{ fontSize: 22, color: C.faint, fontWeight: 600 }}>/mes</span>
         </div>
-        <div style={{ height: 1, background: "oklch(0.28 0.02 250)", margin: "26px 0" }} />
+        <div style={{ height: 1, background: "#2C2E32", margin: "26px 0" }} />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
           <span style={{ fontSize: 14, color: C.muted }}>Margen neto estimado</span>
           <span style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 28 }}>{eur(neto)}</span>
@@ -125,6 +162,10 @@ interface Props {
 export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props) {
   const rootRef = useRef<HTMLDivElement>(null)
   useReveal(rootRef)
+  const heroPinRef = useRef<HTMLDivElement>(null)
+  const heroCardRef = useRef<HTMLDivElement>(null)
+  const heroTextRef = useRef<HTMLDivElement>(null)
+  useHeroTilt(heroPinRef, heroCardRef, heroTextRef)
   const eur = (n: number) => "€" + Math.round(n).toLocaleString("es-ES")
 
   return (
@@ -156,11 +197,15 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
       </nav>
 
       {/* ── HERO ── */}
-      <header className="inc-hero" style={{ position: "relative", padding: "96px 48px 80px", maxWidth: 1320, margin: "0 auto" }}>
-        <div style={{ position: "absolute", top: -80, right: -120, width: 620, height: 620, borderRadius: "50%", background: "radial-gradient(circle, oklch(0.80 0.17 162 / 0.16), transparent 65%)", pointerEvents: "none" }} />
-        <div className="inc-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.08fr 0.92fr", gap: 64, alignItems: "center", position: "relative" }}>
+      {/* Contenedor "pin": scroll extra que el header consume quedandose fijo
+          (sticky) mientras la tarjeta gana profundidad — estilo Apple product page.
+          Se anula en tablet/movil via .inc-hero-pin en globals.css. */}
+      <div ref={heroPinRef} className="inc-hero-pin" style={{ position: "relative", height: "220vh" }}>
+      <header className="inc-hero" style={{ position: "sticky", top: 0, minHeight: "100vh", display: "flex", alignItems: "center", padding: "96px 48px 80px", maxWidth: 1320, margin: "0 auto" }}>
+        <div style={{ position: "absolute", top: -80, right: -120, width: 620, height: 620, borderRadius: "50%", background: "radial-gradient(circle, oklch(0.70 0.15 35 / 0.16), transparent 65%)", pointerEvents: "none" }} />
+        <div className="inc-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.08fr 0.92fr", gap: 64, alignItems: "center", position: "relative", perspective: 1400, width: "100%" }}>
           {/* Left */}
-          <div>
+          <div ref={heroTextRef}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: F.mono, fontSize: 11.5, letterSpacing: "0.14em", color: C.accent, border: `1px solid oklch(0.40 0.06 250)`, padding: "7px 14px", borderRadius: 99, textTransform: "uppercase", fontWeight: 600 }}>
               <span style={{ width: 6, height: 6, borderRadius: 99, background: C.accent, animation: "inc-pulse 2s infinite" }} />
               Captación verificada
@@ -181,34 +226,34 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           </div>
 
           {/* Floating card */}
-          <div className="inc-hero-card" style={{ position: "relative" }}>
-            <div style={{ position: "absolute", inset: -40, background: "radial-gradient(circle at 60% 40%, oklch(0.80 0.17 162 / 0.18), transparent 70%)", filter: "blur(20px)" }} />
-            <div style={{ position: "relative", background: `linear-gradient(180deg, ${C.s2}, oklch(0.18 0.012 250))`, border: "1px solid oklch(0.32 0.02 250)", borderRadius: 22, padding: 24, boxShadow: "0 40px 90px -30px rgba(0,0,0,.7)", animation: "inc-float 7s ease-in-out infinite" }}>
+          <div ref={heroCardRef} className="inc-hero-card" style={{ position: "relative", transformStyle: "preserve-3d" }}>
+            <div style={{ position: "absolute", inset: -40, background: "radial-gradient(circle at 60% 40%, oklch(0.70 0.15 35 / 0.18), transparent 70%)", filter: "blur(20px)" }} />
+            <div style={{ position: "relative", background: `linear-gradient(180deg, ${C.s2}, #1C1D20)`, border: "1px solid #383B40", borderRadius: 22, padding: 24, boxShadow: "0 40px 90px -30px rgba(0,0,0,.7)", animation: "inc-float 7s ease-in-out infinite" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
                 <span style={{ fontFamily: F.mono, fontSize: 11, color: C.faint, letterSpacing: "0.04em" }}>incentis · vista previa</span>
-                <span style={{ fontFamily: F.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", color: C.accent, background: "oklch(0.80 0.17 162 / 0.14)", padding: "3px 8px", borderRadius: 5 }}>VISTA PREVIA</span>
+                <span style={{ fontFamily: F.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", color: C.accent, background: "oklch(0.70 0.15 35 / 0.14)", padding: "3px 8px", borderRadius: 5 }}>VISTA PREVIA</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 11, marginBottom: 13 }}>
-                <div style={{ background: "oklch(0.20 0.015 250)", border: "1px solid oklch(0.30 0.02 250)", borderRadius: 13, padding: 16 }}>
+                <div style={{ background: "#1F2124", border: "1px solid #34373C", borderRadius: 13, padding: 16 }}>
                   <div style={{ fontFamily: F.brand, fontSize: 38, fontWeight: 800, lineHeight: 1 }}>{confirmedThisMonth || 17}</div>
-                  <div style={{ fontSize: 11, color: "oklch(0.62 0.01 250)", marginTop: 4 }}>Conversiones · mes</div>
+                  <div style={{ fontSize: 11, color: "#93979E", marginTop: 4 }}>Conversiones · mes</div>
                 </div>
                 <div style={{ background: C.grad, borderRadius: 13, padding: 16, color: C.ink }}>
                   <div style={{ fontFamily: F.brand, fontSize: 34, fontWeight: 800, lineHeight: 1 }}>€0</div>
                   <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4, fontWeight: 600 }}>por adelantado</div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "oklch(0.20 0.015 250)", border: "1px solid oklch(0.30 0.02 250)", borderRadius: 11, padding: "13px 15px", marginBottom: 13 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1F2124", border: "1px solid #34373C", borderRadius: 11, padding: "13px 15px", marginBottom: 13 }}>
                 <span style={{ fontSize: 12.5, color: C.muted, fontWeight: 500 }}>Pagado esta semana</span>
                 <span style={{ fontFamily: F.brand, fontSize: 17, fontWeight: 800, color: C.accent }}>{paidThisWeek > 0 ? `+${eur(paidThisWeek)}` : "+€174"}</span>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 {[{ id: "A7", name: "Cena para 2", amount: "15€" }, { id: "B3", name: "Sesión spa", amount: "25€" }].map((item, i) => (
                   <div key={item.id}>
-                    {i > 0 && <div style={{ height: 1, background: "oklch(0.28 0.02 250)" }} />}
+                    {i > 0 && <div style={{ height: 1, background: "#2C2E32" }} />}
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 2px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <span style={{ width: 26, height: 26, borderRadius: 7, background: "oklch(0.26 0.02 250)", fontFamily: F.mono, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>{item.id}</span>
+                        <span style={{ width: 26, height: 26, borderRadius: 7, background: "#292B2F", fontFamily: F.mono, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>{item.id}</span>
                         <span style={{ fontSize: 13, fontWeight: 500 }}>{item.name}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -223,17 +268,18 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           </div>
         </div>
       </header>
+      </div>
 
       {/* ── MARQUEE ── */}
-      <div style={{ borderTop: "1px solid oklch(0.30 0.015 250)", borderBottom: "1px solid oklch(0.30 0.015 250)", padding: "22px 0", overflow: "hidden", whiteSpace: "nowrap" }}>
+      <div style={{ borderTop: "1px solid #34373C", borderBottom: "1px solid #34373C", padding: "22px 0", overflow: "hidden", whiteSpace: "nowrap" }}>
         <div style={{ display: "inline-flex", animation: "inc-marquee 28s linear infinite" }}>
           {[1, 2].map((k) => (
             <span className="inc-marquee-inner" key={k} style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 30, letterSpacing: "-0.02em", textTransform: "uppercase" }}>
-              <span style={{ color: "oklch(0.30 0.015 250)" }}>Reserva verificada&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+              <span style={{ color: "#34373C" }}>Reserva verificada&nbsp;&nbsp;·&nbsp;&nbsp;</span>
               <span style={{ color: C.accent }}>Incentivo acreditado</span>
-              <span style={{ color: "oklch(0.30 0.015 250)" }}>&nbsp;&nbsp;·&nbsp;&nbsp;Captador cobra&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+              <span style={{ color: "#34373C" }}>&nbsp;&nbsp;·&nbsp;&nbsp;Captador cobra&nbsp;&nbsp;·&nbsp;&nbsp;</span>
               <span style={{ color: C.text }}>Anti-fraude</span>
-              <span style={{ color: "oklch(0.30 0.015 250)" }}>&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+              <span style={{ color: "#34373C" }}>&nbsp;&nbsp;·&nbsp;&nbsp;</span>
             </span>
           ))}
         </div>
@@ -246,7 +292,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
             <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Cómo funciona</div>
             <h2 className="inc-steps-h2" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 60, lineHeight: 0.96, letterSpacing: "-0.04em", margin: "18px 0 0" }}>Tres pasos.<br />Sin fricciones.</h2>
           </div>
-          <p style={{ fontSize: 16, color: "oklch(0.70 0.01 250)", maxWidth: 320, lineHeight: 1.55, margin: "0 0 8px" }}>De la campaña al cobro verificado. Todo registrado, todo medible.</p>
+          <p style={{ fontSize: 16, color: "#A4A8AE", maxWidth: 320, lineHeight: 1.55, margin: "0 0 8px" }}>De la campaña al cobro verificado. Todo registrado, todo medible.</p>
         </div>
 
         {[
@@ -257,9 +303,9 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
               <div className="inc-step-card" style={{ background: C.s1, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                 <div style={{ fontFamily: F.mono, fontSize: 11, color: C.faint }}>Nueva campaña</div>
                 <div style={{ fontSize: 16, fontWeight: 600, marginTop: 10 }}>Trae amigos a cenar</div>
-                <div style={{ fontSize: 13, color: "oklch(0.70 0.01 250)", marginTop: 4 }}>€15 por reserva confirmada</div>
+                <div style={{ fontSize: 13, color: "#A4A8AE", marginTop: 4 }}>€15 por reserva confirmada</div>
                 <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-                  <span style={{ fontSize: 11, fontFamily: F.mono, color: C.accent, background: "oklch(0.80 0.17 162 / 0.12)", padding: "4px 10px", borderRadius: 6, fontWeight: 600 }}>● ACTIVA</span>
+                  <span style={{ fontSize: 11, fontFamily: F.mono, color: C.accent, background: "oklch(0.70 0.15 35 / 0.12)", padding: "4px 10px", borderRadius: 6, fontWeight: 600 }}>● ACTIVA</span>
                   <span style={{ fontSize: 11, fontFamily: F.mono, color: C.faint, background: "oklch(0.24 0.02 250)", padding: "4px 10px", borderRadius: 6 }}>Sin fecha fin</span>
                 </div>
               </div>
@@ -270,7 +316,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
             desc: "Cada captador tiene un QR personal por campaña. Lo comparte con quien quiera — de forma anónima.",
             card: (
               <div className="inc-step-card" style={{ background: C.s1, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, display: "flex", alignItems: "center", gap: 18 }}>
-                <div style={{ width: 74, height: 74, borderRadius: 12, background: "repeating-conic-gradient(#0c0c0a 0% 25%, #fff 0% 50%) 0/14px 14px", flexShrink: 0, border: "3px solid #fff" }} />
+                <div style={{ width: 74, height: 74, borderRadius: 12, background: "repeating-conic-gradient(#16171A 0% 25%, #fff 0% 50%) 0/14px 14px", flexShrink: 0, border: "3px solid #fff" }} />
                 <div>
                   <div style={{ fontFamily: F.mono, fontSize: 11, color: C.faint }}>QR personal · Captador #A7</div>
                   <div style={{ fontFamily: F.mono, fontSize: 13, color: C.accent, marginTop: 8 }}>incentis.app/scan/xk9q…</div>
@@ -285,7 +331,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
               <div className="inc-step-card" style={{ background: C.s1, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <span style={{ fontSize: 14, fontWeight: 600 }}>Reserva verificada</span>
-                  <span style={{ fontFamily: F.mono, fontSize: 12, color: "oklch(0.70 0.01 250)" }}>20:00</span>
+                  <span style={{ fontFamily: F.mono, fontSize: 12, color: "#A4A8AE" }}>20:00</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: C.grad, borderRadius: 11, padding: "13px 15px", marginTop: 14, color: C.ink }}>
                   <span style={{ fontSize: 13, fontWeight: 600 }}>Incentivo acreditado</span>
@@ -298,13 +344,13 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           <div key={step.n} className="inc-step" data-reveal style={{
             display: "grid", gridTemplateColumns: "120px 1fr 1fr", gap: 48,
             alignItems: "center", padding: "48px 0",
-            borderTop: "1px solid oklch(0.28 0.015 250)",
-            ...(i === 2 ? { borderBottom: "1px solid oklch(0.28 0.015 250)" } : {}),
+            borderTop: "1px solid #2C2E32",
+            ...(i === 2 ? { borderBottom: "1px solid #2C2E32" } : {}),
           }}>
-            <div className="inc-step-num" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 72, color: "oklch(0.32 0.02 250)", lineHeight: 1 }}>{step.n}</div>
+            <div className="inc-step-num" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 72, color: "#383B40", lineHeight: 1 }}>{step.n}</div>
             <div>
               <h3 className="inc-step-h3" style={{ fontFamily: F.brand, fontWeight: 700, fontSize: 30, letterSpacing: "-0.02em", margin: 0 }}>{step.title}</h3>
-              <p style={{ fontSize: 16, color: "oklch(0.70 0.01 250)", lineHeight: 1.55, margin: "14px 0 0" }}>{step.desc}</p>
+              <p style={{ fontSize: 16, color: "#A4A8AE", lineHeight: 1.55, margin: "14px 0 0" }}>{step.desc}</p>
             </div>
             {step.card}
           </div>
@@ -313,15 +359,15 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
 
       {/* ── ROI CALCULATOR ── */}
       <section id="roi" className="inc-roi-section" style={{ padding: "140px 48px", textAlign: "center", position: "relative" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, oklch(0.80 0.17 162 / 0.10), transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, oklch(0.70 0.15 35 / 0.10), transparent 60%)", pointerEvents: "none" }} />
         <div data-reveal style={{ position: "relative", maxWidth: 1080, margin: "0 auto" }}>
           <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Calculadora de ROI</div>
           <h2 className="inc-roi-h2" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 60, lineHeight: 0.96, letterSpacing: "-0.04em", margin: "16px 0 0" }}>¿Cuánto te costaría un cliente real?</h2>
-          <p className="inc-roi-lead" style={{ fontSize: 18, color: "oklch(0.70 0.01 250)", margin: "16px auto 0", maxWidth: 560, lineHeight: 1.55 }}>
+          <p className="inc-roi-lead" style={{ fontSize: 18, color: "#A4A8AE", margin: "16px auto 0", maxWidth: 560, lineHeight: 1.55 }}>
             Solo pagas cuando la conversión ocurre. Ajusta los valores y mira la proyección para tu negocio.
           </p>
           <RoiCalc />
-          <p style={{ fontFamily: F.mono, fontSize: 11, color: "oklch(0.55 0.01 250)", marginTop: 22, letterSpacing: "0.02em" }}>
+          <p style={{ fontFamily: F.mono, fontSize: 11, color: "#7C8087", marginTop: 22, letterSpacing: "0.02em" }}>
             * Estimación orientativa. Incentis está en fase de lanzamiento — aún no hay datos históricos.
           </p>
         </div>
@@ -330,10 +376,10 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
       {/* ── ANTI-FRAUDE + ANONIMATO ── */}
       <section className="inc-antifraud" style={{ background: C.lightBg, color: C.ink, padding: "120px 48px" }}>
         <div className="inc-antifraud-grid" style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
-          <div data-reveal style={{ background: "#fff", border: "1px solid oklch(0.90 0.006 250)", borderRadius: 24, padding: 48 }}>
+          <div data-reveal style={{ background: "#fff", border: "1px solid #E4E4E6", borderRadius: 24, padding: 48 }}>
             <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.14em", color: C.accentOnLight, textTransform: "uppercase", fontWeight: 600 }}>Atribución anti-fraude</div>
             <h3 className="inc-antifraud-h3" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 42, letterSpacing: "-0.03em", margin: "18px 0 0", lineHeight: 1 }}>Cada conversión, verificada.</h3>
-            <p style={{ fontSize: 16, color: "oklch(0.45 0.01 250)", lineHeight: 1.55, margin: "18px 0 28px" }}>
+            <p style={{ fontSize: 16, color: "#5C6066", lineHeight: 1.55, margin: "18px 0 28px" }}>
               QR de un solo uso por reserva. KYC del captador antes del primer pago. Sistema anti-self-referral automático.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -345,20 +391,20 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
               ))}
             </div>
           </div>
-          <div data-reveal style={{ background: "#0c0c0a", color: C.text, borderRadius: 24, padding: 48, display: "flex", flexDirection: "column" }}>
+          <div data-reveal style={{ background: "#16171A", color: C.text, borderRadius: 24, padding: 48, display: "flex", flexDirection: "column" }}>
             <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.14em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Para captadores</div>
             <h3 className="inc-antifraud-h3" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 42, letterSpacing: "-0.03em", margin: "18px 0 0", lineHeight: 1 }}>Anonimato total.<br />Cobro real.</h3>
-            <p style={{ fontSize: 16, color: "oklch(0.72 0.01 250)", lineHeight: 1.55, margin: "18px 0 28px" }}>
+            <p style={{ fontSize: 16, color: "#AEB2B8", lineHeight: 1.55, margin: "18px 0 28px" }}>
               El cliente final nunca sabe quién recomendó. Tu empleador no sabe que captas. El pago va a tu cuenta personal.
             </p>
-            <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 18, background: "oklch(0.20 0.015 250)", border: "1px solid oklch(0.30 0.02 250)", borderRadius: 18, padding: 24 }}>
-              <div style={{ width: 60, height: 60, borderRadius: "50%", background: "oklch(0.26 0.02 250)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 700, color: C.faint, flexShrink: 0 }}>?</div>
+            <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 18, background: "#1F2124", border: "1px solid #34373C", borderRadius: 18, padding: 24 }}>
+              <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#292B2F", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 700, color: C.faint, flexShrink: 0 }}>?</div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 15, fontWeight: 600 }}>Captador anónimo</div>
-                <div style={{ fontFamily: F.mono, fontSize: 11, color: "oklch(0.62 0.01 250)", marginTop: 3 }}>Identidad protegida · KYC interno</div>
+                <div style={{ fontFamily: F.mono, fontSize: 11, color: "#93979E", marginTop: 3 }}>Identidad protegida · KYC interno</div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontFamily: F.mono, fontSize: 11, color: "oklch(0.62 0.01 250)" }}>cuenta personal</div>
+                <div style={{ fontFamily: F.mono, fontSize: 11, color: "#93979E" }}>cuenta personal</div>
                 <div style={{ fontFamily: F.brand, fontSize: 24, fontWeight: 800, color: C.accent }}>€15 →</div>
               </div>
             </div>
@@ -375,7 +421,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
         <div className="inc-niveles-grid" data-reveal style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
           {[
             { name: "Bronze", range: "0–9 conv.", mult: "1×", multColor: C.faint, payout: "payout 72h", bg: C.s1, border: C.border, color: C.text },
-            { name: "Silver", range: "10–29 conv.", mult: "1.25×", multColor: "oklch(0.78 0.01 250)", payout: "payout 48h", bg: C.s1, border: C.border, color: C.text },
+            { name: "Silver", range: "10–29 conv.", mult: "1.25×", multColor: "#C5C8CC", payout: "payout 48h", bg: C.s1, border: C.border, color: C.text },
             { name: "Gold", range: "30–99 conv.", mult: "1.5×", multColor: C.ink, payout: "payout 24h", bg: C.grad, border: "none", color: C.ink, popular: true },
             { name: "Platinum", range: "100+ conv.", mult: "2×", multColor: C.text, payout: "payout 12h", bg: C.s1, border: C.borderStrong, color: C.text },
           ].map((tier) => (
@@ -384,9 +430,9 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
                 <span style={{ position: "absolute", top: 16, right: 16, fontFamily: F.mono, fontSize: 10, fontWeight: 600, background: C.ink, color: C.accent, padding: "4px 9px", borderRadius: 6 }}>POPULAR</span>
               )}
               <div style={{ fontFamily: F.brand, fontWeight: 700, fontSize: 22 }}>{tier.name}</div>
-              <div style={{ fontSize: 12, color: tier.popular ? undefined : "oklch(0.62 0.01 250)", opacity: tier.popular ? 0.65 : 1, marginTop: 4 }}>{tier.range}</div>
+              <div style={{ fontSize: 12, color: tier.popular ? undefined : "#93979E", opacity: tier.popular ? 0.65 : 1, marginTop: 4 }}>{tier.range}</div>
               <div className="inc-niveles-mult" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 52, marginTop: 24, color: tier.multColor }}>{tier.mult}</div>
-              <div style={{ fontFamily: F.mono, fontSize: 11, color: tier.popular ? undefined : "oklch(0.55 0.01 250)", opacity: tier.popular ? 0.7 : 1, marginTop: 8 }}>{tier.payout}</div>
+              <div style={{ fontFamily: F.mono, fontSize: 11, color: tier.popular ? undefined : "#7C8087", opacity: tier.popular ? 0.7 : 1, marginTop: 8 }}>{tier.payout}</div>
             </div>
           ))}
         </div>
@@ -399,7 +445,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           <p className="inc-founder-title" style={{ fontFamily: F.brand, fontWeight: 700, fontSize: 40, lineHeight: 1.12, letterSpacing: "-0.02em", margin: "18px auto 0", maxWidth: 720 }}>
             Estamos en fase de lanzamiento. Sé de los primeros negocios en Incentis.
           </p>
-          <p style={{ fontSize: 16, color: "oklch(0.70 0.01 250)", lineHeight: 1.55, margin: "18px auto 0", maxWidth: 540 }}>
+          <p style={{ fontSize: 16, color: "#A4A8AE", lineHeight: 1.55, margin: "18px auto 0", maxWidth: 540 }}>
             Los negocios fundadores entran con onboarding asistido 1:1, comisión reducida de por vida y línea directa con el equipo. Sin permanencia, sin tarjeta.
           </p>
           <div style={{ display: "flex", justifyContent: "center", marginTop: 34 }}>
@@ -415,7 +461,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
 
       {/* ── CTA FINAL ── */}
       <section className="inc-cta-wrap" style={{ padding: "0 48px 80px" }}>
-        <div className="inc-cta-inner" data-reveal style={{ maxWidth: 1320, margin: "0 auto", background: `linear-gradient(135deg, oklch(0.80 0.17 162), ${C.accentDeeper})`, borderRadius: 32, padding: "96px 64px", textAlign: "center", color: C.ink, position: "relative", overflow: "hidden" }}>
+        <div className="inc-cta-inner" data-reveal style={{ maxWidth: 1320, margin: "0 auto", background: `linear-gradient(135deg, oklch(0.70 0.15 35), ${C.accentDeeper})`, borderRadius: 32, padding: "96px 64px", textAlign: "center", color: C.ink, position: "relative", overflow: "hidden" }}>
           <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", fontWeight: 600, opacity: 0.6 }}>Empieza hoy</div>
           <h2 className="inc-cta-h2" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 72, lineHeight: 0.94, letterSpacing: "-0.04em", margin: "18px auto 0", maxWidth: 760 }}>
             Paga solo cuando traen un cliente real.
@@ -429,16 +475,16 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="inc-footer" style={{ borderTop: "1px solid oklch(0.28 0.015 250)", padding: 48, maxWidth: 1320, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
+      <footer className="inc-footer" style={{ borderTop: "1px solid #2C2E32", padding: 48, maxWidth: 1320, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           <IncentisLogo size="sm" light />
-          <span style={{ fontSize: 13, color: "oklch(0.55 0.01 250)" }}>Captación verificada. Solo pagas por resultado.</span>
+          <span style={{ fontSize: 13, color: "#7C8087" }}>Captación verificada. Solo pagas por resultado.</span>
         </div>
-        <div style={{ display: "flex", gap: 14, alignItems: "center", fontFamily: F.mono, fontSize: 11, color: "oklch(0.55 0.01 250)", flexWrap: "wrap" }}>
-          <span style={{ border: "1px solid oklch(0.30 0.02 250)", padding: "5px 10px", borderRadius: 6 }}>✓ Stripe</span>
-          <span style={{ border: "1px solid oklch(0.30 0.02 250)", padding: "5px 10px", borderRadius: 6 }}>✓ RGPD</span>
-          <Link href={`/${locale}/legal`} style={{ color: "oklch(0.55 0.01 250)", textDecoration: "none" }}>Aviso legal</Link>
-          <Link href={`/${locale}/privacidad`} style={{ color: "oklch(0.55 0.01 250)", textDecoration: "none" }}>Privacidad</Link>
+        <div style={{ display: "flex", gap: 14, alignItems: "center", fontFamily: F.mono, fontSize: 11, color: "#7C8087", flexWrap: "wrap" }}>
+          <span style={{ border: "1px solid #34373C", padding: "5px 10px", borderRadius: 6 }}>✓ Stripe</span>
+          <span style={{ border: "1px solid #34373C", padding: "5px 10px", borderRadius: 6 }}>✓ RGPD</span>
+          <Link href={`/${locale}/legal`} style={{ color: "#7C8087", textDecoration: "none" }}>Aviso legal</Link>
+          <Link href={`/${locale}/privacidad`} style={{ color: "#7C8087", textDecoration: "none" }}>Privacidad</Link>
           <span>© 2026 Incentis</span>
         </div>
       </footer>

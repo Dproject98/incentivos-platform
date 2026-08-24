@@ -16,7 +16,7 @@ export default function Error({
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center text-center px-4"
-      style={{ background: "oklch(0.15 0.012 250)", color: "#ffffff" }}
+      style={{ background: "#16171A", color: "#F2F1EF" }}
     >
       <div
         className="h-16 w-16 rounded-full flex items-center justify-center mb-5"
@@ -34,13 +34,13 @@ export default function Error({
       >
         Algo ha ido mal
       </h1>
-      <p className="mb-6 max-w-xs text-[14px]" style={{ color: "oklch(0.62 0.01 250)" }}>
+      <p className="mb-6 max-w-xs text-[14px]" style={{ color: "#93979E" }}>
         Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.
       </p>
       <button
         onClick={reset}
         className="px-6 py-2.5 rounded-full font-semibold text-[14px] transition-opacity hover:opacity-80"
-        style={{ background: "#2bd49a", color: "#0c0c0a" }}
+        style={{ background: "#E8735A", color: "#16171A" }}
       >
         Reintentar
       </button>

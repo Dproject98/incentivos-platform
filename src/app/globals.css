@@ -4,26 +4,27 @@
 
 @layer base {
   :root {
-    /* Space Universe Palette */
-    --background: 230 42% 9%;         /* #0a0e27 */
-    --foreground: 213 31% 96%;        /* #f1f5f9 */
-    --card: 228 36% 18%;              /* #1a1f3a */
-    --card-foreground: 213 31% 96%;
-    --popover: 228 36% 18%;
-    --popover-foreground: 213 31% 96%;
-    --primary: 263 71% 57%;           /* #7c3aed purple */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 227 33% 23%;         /* #252d4a */
-    --secondary-foreground: 215 20% 81%;
-    --muted: 227 33% 20%;
-    --muted-foreground: 215 20% 65%;  /* #94a3b8 */
-    --accent: 192 91% 43%;            /* #06b6d4 cyan */
-    --accent-foreground: 0 0% 100%;
+    /* Nocturne Palette — carbon neutral + coral (reemplaza el tema morado/cian
+       de scaffolding, que quedaba desalineado de la paleta real de la app) */
+    --background: 225 8% 9%;          /* #16171A */
+    --foreground: 40 3% 95%;          /* #F2F1EF */
+    --card: 216 8% 13%;               /* #1E2023 */
+    --card-foreground: 40 3% 95%;
+    --popover: 216 8% 13%;
+    --popover-foreground: 40 3% 95%;
+    --primary: 11 76% 63%;            /* #E8735A coral */
+    --primary-foreground: 225 8% 9%;
+    --secondary: 220 7% 16%;          /* #26282C */
+    --secondary-foreground: 218 5% 60%;
+    --muted: 220 7% 16%;
+    --muted-foreground: 218 5% 60%;   /* #93979E */
+    --accent: 39 59% 64%;             /* #D9B36C arena, acento secundario */
+    --accent-foreground: 225 8% 9%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 228 36% 22%;
-    --input: 228 36% 22%;
-    --ring: 263 71% 57%;
+    --border: 218 7% 22%;             /* #34373C */
+    --input: 218 7% 22%;
+    --ring: 11 76% 63%;
     --radius: 0.75rem;
 
     /* Custom brand colors */
@@ -74,6 +75,8 @@
 /* ─── Landing responsive ──────────────────────────────────────── */
 /* Tablet */
 @media (max-width: 1024px) {
+  .inc-hero-pin     { height: auto !important; }
+  .inc-hero         { position: static !important; min-height: 0 !important; }
   .inc-hero-grid    { grid-template-columns: 1fr !important; }
   .inc-hero-card    { display: none !important; }
   .inc-niveles-grid { grid-template-columns: 1fr 1fr !important; }

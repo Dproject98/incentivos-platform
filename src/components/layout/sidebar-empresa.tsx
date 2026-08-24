@@ -25,7 +25,7 @@ export function SidebarEmpresa() {
   return (
     <aside
       className="flex flex-col w-64 min-h-screen px-4 py-6 shrink-0"
-      style={{ background: "oklch(0.15 0.012 250)", borderRight: "1px solid oklch(0.30 0.02 250)" }}
+      style={{ background: "#16171A", borderRight: "1px solid #34373C" }}
     >
       {/* Logo */}
       <div className="mb-8 px-2">
@@ -45,21 +45,21 @@ export function SidebarEmpresa() {
               href={link.href}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] transition-all"
               style={{
-                background: active ? "oklch(0.80 0.17 162 / 0.12)" : "transparent",
-                color: active ? "#2bd49a" : "oklch(0.72 0.01 250)",
-                border: active ? "1px solid oklch(0.80 0.17 162 / 0.20)" : "1px solid transparent",
+                background: active ? "oklch(0.70 0.15 35 / 0.12)" : "transparent",
+                color: active ? "#E8735A" : "#AEB2B8",
+                border: active ? "1px solid oklch(0.70 0.15 35 / 0.20)" : "1px solid transparent",
                 fontWeight: active ? 500 : 400,
               }}
             >
               <Icon
                 className="h-4 w-4 shrink-0"
-                style={{ color: active ? "#2bd49a" : "oklch(0.62 0.01 250)" }}
+                style={{ color: active ? "#E8735A" : "#93979E" }}
               />
               {link.label}
               {active && (
                 <span
                   className="ml-auto h-1.5 w-1.5 rounded-full shrink-0"
-                  style={{ background: "#2bd49a" }}
+                  style={{ background: "#E8735A" }}
                 />
               )}
             </Link>
@@ -70,13 +70,13 @@ export function SidebarEmpresa() {
       {/* Bottom */}
       <div
         className="flex flex-col gap-2 pt-4 border-t"
-        style={{ borderColor: "oklch(0.30 0.02 250)" }}
+        style={{ borderColor: "#34373C" }}
       >
         <LanguageSwitcher />
         <button
           onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
           className="flex items-center gap-2 px-3 py-2 rounded-xl text-[14px] transition-all hover:bg-white/5 w-full text-left"
-          style={{ color: "oklch(0.62 0.01 250)" }}
+          style={{ color: "#93979E" }}
         >
           <LogOut className="h-4 w-4" />
           {t("logout")}

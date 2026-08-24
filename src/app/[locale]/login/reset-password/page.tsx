@@ -20,9 +20,9 @@ function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null)
 
   const inputStyle = {
-    background: "oklch(0.22 0.015 250)",
-    border: "1px solid oklch(0.30 0.02 250)",
-    color: "#ffffff",
+    background: "#26282C",
+    border: "1px solid #34373C",
+    color: "#F2F1EF",
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,11 +65,11 @@ function ResetPasswordForm() {
     return (
       <div className="text-center py-4">
         <AlertCircle className="h-12 w-12 mx-auto mb-3" style={{ color: "#dc2626" }} />
-        <p className="font-medium" style={{ color: "#ffffff" }}>Enlace inválido</p>
-        <p className="text-[13px] mt-1 mb-4" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <p className="font-medium" style={{ color: "#F2F1EF" }}>Enlace inválido</p>
+        <p className="text-[13px] mt-1 mb-4" style={{ color: "#93979E" }}>
           Este enlace no es válido. Solicita uno nuevo.
         </p>
-        <Link href={`/${locale}/login/forgot-password`} className="text-[14px] font-medium" style={{ color: "#2bd49a" }}>
+        <Link href={`/${locale}/login/forgot-password`} className="text-[14px] font-medium" style={{ color: "#E8735A" }}>
           Solicitar enlace
         </Link>
       </div>
@@ -80,13 +80,13 @@ function ResetPasswordForm() {
     return (
       <div className="text-center py-4">
         <div className="h-14 w-14 rounded-full flex items-center justify-center mx-auto mb-4"
-          style={{ background: "oklch(0.80 0.17 162 / 0.08)", border: "1px solid oklch(0.80 0.17 162 / 0.20)" }}>
-          <CheckCircle className="h-7 w-7" style={{ color: "#2bd49a" }} />
+          style={{ background: "oklch(0.70 0.15 35 / 0.08)", border: "1px solid oklch(0.70 0.15 35 / 0.20)" }}>
+          <CheckCircle className="h-7 w-7" style={{ color: "#E8735A" }} />
         </div>
-        <h2 className="font-semibold mb-1" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "20px", letterSpacing: "-0.03em" }}>
+        <h2 className="font-semibold mb-1" style={{ fontFamily: "var(--font-display)", color: "#F2F1EF", fontSize: "20px", letterSpacing: "-0.03em" }}>
           Contraseña restablecida
         </h2>
-        <p className="text-[14px]" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <p className="text-[14px]" style={{ color: "#93979E" }}>
           Redirigiendo al inicio de sesión...
         </p>
       </div>
@@ -95,16 +95,16 @@ function ResetPasswordForm() {
 
   return (
     <>
-      <h1 className="font-semibold mb-1" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "20px", letterSpacing: "-0.03em" }}>
+      <h1 className="font-semibold mb-1" style={{ fontFamily: "var(--font-display)", color: "#F2F1EF", fontSize: "20px", letterSpacing: "-0.03em" }}>
         Nueva contraseña
       </h1>
-      <p className="text-[13px] mb-6" style={{ color: "oklch(0.62 0.01 250)" }}>
+      <p className="text-[13px] mb-6" style={{ color: "#93979E" }}>
         Elige una contraseña de al menos 8 caracteres.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+          <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>
             Nueva contraseña
           </label>
           <input
@@ -117,12 +117,12 @@ function ResetPasswordForm() {
             placeholder="••••••••"
             className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
             style={inputStyle}
-            onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
-            onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
+            onFocus={(e) => (e.currentTarget.style.borderColor = "#E8735A")}
+            onBlur={(e) => (e.currentTarget.style.borderColor = "#34373C")}
           />
         </div>
         <div>
-          <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+          <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>
             Confirmar contraseña
           </label>
           <input
@@ -134,8 +134,8 @@ function ResetPasswordForm() {
             placeholder="••••••••"
             className="w-full rounded-xl px-4 py-2.5 text-[14px] outline-none transition-colors"
             style={inputStyle}
-            onFocus={(e) => (e.currentTarget.style.borderColor = "#2bd49a")}
-            onBlur={(e) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")}
+            onFocus={(e) => (e.currentTarget.style.borderColor = "#E8735A")}
+            onBlur={(e) => (e.currentTarget.style.borderColor = "#34373C")}
           />
         </div>
 
@@ -151,7 +151,7 @@ function ResetPasswordForm() {
           type="submit"
           disabled={loading}
           className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90"
-          style={{ background: "#2bd49a", color: "#0c0c0a" }}
+          style={{ background: "#E8735A", color: "#16171A" }}
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -170,13 +170,13 @@ export default function ResetPasswordPage() {
   const locale = params.locale as string
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "oklch(0.15 0.012 250)" }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "#16171A" }}>
       <div className="w-full max-w-md">
         <Link href={`/${locale}`} className="flex justify-center mb-8">
           <IncentisLogo size="md" />
         </Link>
-        <div className="rounded-2xl p-8" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
-          <Suspense fallback={<div className="flex justify-center py-8"><div className="h-6 w-6 rounded-full border-2 animate-spin" style={{ borderColor: "oklch(0.80 0.17 162 / 0.20)", borderTopColor: "#2bd49a" }} /></div>}>
+        <div className="rounded-2xl p-8" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
+          <Suspense fallback={<div className="flex justify-center py-8"><div className="h-6 w-6 rounded-full border-2 animate-spin" style={{ borderColor: "oklch(0.70 0.15 35 / 0.20)", borderTopColor: "#E8735A" }} /></div>}>
             <ResetPasswordForm />
           </Suspense>
         </div>

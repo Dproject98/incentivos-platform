@@ -8,9 +8,9 @@ import { ArrowLeft, Euro, TrendingUp, Gift, Calendar, Hash, FileText } from "luc
 import Link from "next/link"
 
 const inputStyle = {
-  background: "oklch(0.22 0.015 250)",
-  border: "1px solid oklch(0.30 0.02 250)",
-  color: "#ffffff",
+  background: "#26282C",
+  border: "1px solid #34373C",
+  color: "#F2F1EF",
 }
 
 export default function NuevaCampanaPage() {
@@ -86,8 +86,8 @@ export default function NuevaCampanaPage() {
     { value: "BONO",       icon: Gift,        label: "Bono / Voucher" },
   ]
 
-  const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => (e.currentTarget.style.borderColor = "#2bd49a")
-  const blurBorder  = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => (e.currentTarget.style.borderColor = "oklch(0.30 0.02 250)")
+  const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => (e.currentTarget.style.borderColor = "#E8735A")
+  const blurBorder  = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => (e.currentTarget.style.borderColor = "#34373C")
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
@@ -95,21 +95,21 @@ export default function NuevaCampanaPage() {
         <Link href={`/${locale}/empresa/campanas`}>
           <button
             className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80"
-            style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
+            style={{ background: "#26282C", border: "1px solid #34373C" }}
           >
-            <ArrowLeft className="h-4 w-4" style={{ color: "#ffffff" }} />
+            <ArrowLeft className="h-4 w-4" style={{ color: "#F2F1EF" }} />
           </button>
         </Link>
-        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "22px", letterSpacing: "-0.03em" }}>
+        <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#F2F1EF", fontSize: "22px", letterSpacing: "-0.03em" }}>
           {t("create")}
         </h1>
       </div>
 
-      <div className="rounded-2xl p-6" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+      <div className="rounded-2xl p-6" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Title */}
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("campaign_title")}</label>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>{t("campaign_title")}</label>
             <input
               required
               value={form.title}
@@ -124,9 +124,9 @@ export default function NuevaCampanaPage() {
 
           {/* Description */}
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("description")}</label>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>{t("description")}</label>
             <div className="relative">
-              <FileText className="absolute left-3 top-3 h-4 w-4" style={{ color: "oklch(0.62 0.01 250)" }} />
+              <FileText className="absolute left-3 top-3 h-4 w-4" style={{ color: "#93979E" }} />
               <textarea
                 rows={3}
                 value={form.description}
@@ -142,8 +142,8 @@ export default function NuevaCampanaPage() {
 
           {/* Incentive type — multi-select */}
           <div>
-            <label className="block text-[13px] font-medium mb-1" style={{ color: "#ffffff" }}>{t("incentive_type")}</label>
-            <p className="text-[12px] mb-2" style={{ color: "oklch(0.62 0.01 250)" }}>Puedes combinar varios tipos de compensación</p>
+            <label className="block text-[13px] font-medium mb-1" style={{ color: "#F2F1EF" }}>{t("incentive_type")}</label>
+            <p className="text-[12px] mb-2" style={{ color: "#93979E" }}>Puedes combinar varios tipos de compensación</p>
             <div className="grid grid-cols-3 gap-2">
               {incentiveTypes.map(({ value, icon: Icon, label }) => {
                 const active = form.incentiveTypes.includes(value)
@@ -154,15 +154,15 @@ export default function NuevaCampanaPage() {
                     onClick={() => toggleType(value)}
                     className="p-3 rounded-xl text-left transition-all relative"
                     style={{
-                      background: active ? "rgba(43,212,154,0.10)" : "oklch(0.22 0.015 250)",
-                      border: active ? "1px solid rgba(43,212,154,0.25)" : "1px solid oklch(0.30 0.02 250)",
-                      color: active ? "#2bd49a" : "oklch(0.72 0.01 250)",
+                      background: active ? "rgba(43,212,154,0.10)" : "#26282C",
+                      border: active ? "1px solid rgba(43,212,154,0.25)" : "1px solid #34373C",
+                      color: active ? "#E8735A" : "#AEB2B8",
                     }}
                   >
-                    <Icon className="h-4 w-4 mb-1.5" style={{ color: active ? "#2bd49a" : "oklch(0.62 0.01 250)" }} />
+                    <Icon className="h-4 w-4 mb-1.5" style={{ color: active ? "#E8735A" : "#93979E" }} />
                     <span className="text-[12px] font-medium">{label}</span>
                     {active && (
-                      <span className="absolute top-2 right-2 h-2 w-2 rounded-full" style={{ background: "#2bd49a" }} />
+                      <span className="absolute top-2 right-2 h-2 w-2 rounded-full" style={{ background: "#E8735A" }} />
                     )}
                   </button>
                 )
@@ -173,7 +173,7 @@ export default function NuevaCampanaPage() {
           {/* Fixed value — shown if FIXED selected */}
           {form.incentiveTypes.includes("FIXED") && (
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>
                 Valor fijo (€ por reserva confirmada)
               </label>
               <input
@@ -192,7 +192,7 @@ export default function NuevaCampanaPage() {
           {/* Percentage value — shown if PERCENTAGE selected */}
           {form.incentiveTypes.includes("PERCENTAGE") && (
             <div>
-              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
+              <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>
                 Porcentaje del ticket (%)
               </label>
               <input
@@ -211,9 +211,9 @@ export default function NuevaCampanaPage() {
           {/* Bono fields — shown if BONO selected */}
           {form.incentiveTypes.includes("BONO") && (
             <div className="space-y-4 rounded-xl p-4" style={{ background: "rgba(43,212,154,0.05)", border: "1px solid rgba(43,212,154,0.12)" }}>
-              <p className="text-[11px] uppercase tracking-[0.1em] font-mono" style={{ color: "#2bd49a" }}>Configuración del bono</p>
+              <p className="text-[11px] uppercase tracking-[0.1em] font-mono" style={{ color: "#E8735A" }}>Configuración del bono</p>
               <div>
-                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("bonus_description")}</label>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>{t("bonus_description")}</label>
                 <input
                   required
                   value={form.bonusDescription}
@@ -226,10 +226,10 @@ export default function NuevaCampanaPage() {
                 />
               </div>
               <div>
-                <label className="block text-[13px] font-medium mb-1" style={{ color: "#ffffff" }}>
+                <label className="block text-[13px] font-medium mb-1" style={{ color: "#F2F1EF" }}>
                   Valor mínimo de canje (€)
                 </label>
-                <p className="text-[12px] mb-1.5" style={{ color: "oklch(0.62 0.01 250)" }}>
+                <p className="text-[12px] mb-1.5" style={{ color: "#93979E" }}>
                   Saldo mínimo que debe tener el captador en su wallet para solicitar este bono
                 </p>
                 <input
@@ -253,8 +253,8 @@ export default function NuevaCampanaPage() {
               { key: "endDate",   label: t("end_date") },
             ].map(({ key, label }) => (
               <div key={key}>
-                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
-                  <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} />{label}</span>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>
+                  <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" style={{ color: "#93979E" }} />{label}</span>
                 </label>
                 <input
                   type="date"
@@ -273,8 +273,8 @@ export default function NuevaCampanaPage() {
 
           {/* Max reservations */}
           <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
-              <span className="flex items-center gap-1.5"><Hash className="h-3.5 w-3.5" style={{ color: "oklch(0.62 0.01 250)" }} />{t("max_reservations")}</span>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>
+              <span className="flex items-center gap-1.5"><Hash className="h-3.5 w-3.5" style={{ color: "#93979E" }} />{t("max_reservations")}</span>
             </label>
             <input
               type="number" min={1}
@@ -292,7 +292,7 @@ export default function NuevaCampanaPage() {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90"
-            style={{ background: "#2bd49a", color: "#0c0c0a" }}
+            style={{ background: "#E8735A", color: "#16171A" }}
           >
             {loading ? "Creando..." : t("create")}
           </button>

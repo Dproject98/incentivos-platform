@@ -29,32 +29,32 @@ export default async function AdminTransaccionesPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div>
-        <p className="text-[11px] font-mono uppercase tracking-[0.14em] mb-1" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <p className="text-[11px] font-mono uppercase tracking-[0.14em] mb-1" style={{ color: "#93979E" }}>
           Administración
         </p>
         <h1
           className="font-semibold"
-          style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}
+          style={{ fontFamily: "var(--font-display)", color: "#F2F1EF", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}
         >
           Transacciones
         </h1>
-        <p className="text-[13px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <p className="text-[13px] mt-1" style={{ color: "#93979E" }}>
           Últimas 50 transacciones
         </p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
-          <p className="text-[10px] uppercase tracking-[0.1em] font-mono mb-2" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <div className="rounded-2xl p-5" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
+          <p className="text-[10px] uppercase tracking-[0.1em] font-mono mb-2" style={{ color: "#93979E" }}>
             Total acreditado (CREDIT)
           </p>
-          <p className="font-semibold text-[28px]" style={{ fontFamily: "var(--font-display)", color: "#2bd49a", letterSpacing: "-0.03em" }}>
+          <p className="font-semibold text-[28px]" style={{ fontFamily: "var(--font-display)", color: "#E8735A", letterSpacing: "-0.03em" }}>
             {totalCredit.toFixed(2)} €
           </p>
         </div>
-        <div className="rounded-2xl p-5" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
-          <p className="text-[10px] uppercase tracking-[0.1em] font-mono mb-2" style={{ color: "oklch(0.62 0.01 250)" }}>
+        <div className="rounded-2xl p-5" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
+          <p className="text-[10px] uppercase tracking-[0.1em] font-mono mb-2" style={{ color: "#93979E" }}>
             Total retirado (DEBIT)
           </p>
           <p className="font-semibold text-[28px]" style={{ fontFamily: "var(--font-display)", color: "#dc2626", letterSpacing: "-0.03em" }}>
@@ -64,19 +64,19 @@ export default async function AdminTransaccionesPage() {
       </div>
 
       {transactions.length === 0 ? (
-        <div className="rounded-2xl p-16 text-center" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
-          <ArrowLeftRight className="h-10 w-10 mx-auto mb-4" style={{ color: "oklch(0.62 0.01 250)" }} />
-          <p style={{ color: "oklch(0.62 0.01 250)" }}>Sin transacciones</p>
+        <div className="rounded-2xl p-16 text-center" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
+          <ArrowLeftRight className="h-10 w-10 mx-auto mb-4" style={{ color: "#93979E" }} />
+          <p style={{ color: "#93979E" }}>Sin transacciones</p>
         </div>
       ) : (
-        <div className="rounded-2xl overflow-hidden" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
           {/* Header */}
           <div
             className="grid gap-4 px-5 py-3"
-            style={{ gridTemplateColumns: cols, borderBottom: "1px solid oklch(0.30 0.02 250)" }}
+            style={{ gridTemplateColumns: cols, borderBottom: "1px solid #34373C" }}
           >
             {["Captador", "Descripción", "Tipo", "Importe", "Fecha"].map((h) => (
-              <span key={h} className="text-[10px] uppercase tracking-[0.1em] font-mono" style={{ color: "oklch(0.62 0.01 250)" }}>
+              <span key={h} className="text-[10px] uppercase tracking-[0.1em] font-mono" style={{ color: "#93979E" }}>
                 {h}
               </span>
             ))}
@@ -91,18 +91,18 @@ export default async function AdminTransaccionesPage() {
                 className="grid gap-4 px-5 py-3.5 transition-colors hover:bg-white/5"
                 style={{
                   gridTemplateColumns: cols,
-                  borderTop: i > 0 ? "1px solid oklch(0.30 0.02 250)" : "none",
+                  borderTop: i > 0 ? "1px solid #34373C" : "none",
                   alignItems: "center",
                 }}
               >
                 <div>
-                  <p className="font-medium text-[13px] truncate" style={{ color: "#ffffff" }}>{tx.wallet.user.name}</p>
-                  <p className="text-[11px] mt-0.5 truncate" style={{ color: "oklch(0.62 0.01 250)" }}>{tx.wallet.user.email}</p>
+                  <p className="font-medium text-[13px] truncate" style={{ color: "#F2F1EF" }}>{tx.wallet.user.name}</p>
+                  <p className="text-[11px] mt-0.5 truncate" style={{ color: "#93979E" }}>{tx.wallet.user.email}</p>
                 </div>
                 <div>
-                  <p className="text-[12px] truncate" style={{ color: "oklch(0.72 0.01 250)" }}>{tx.description}</p>
+                  <p className="text-[12px] truncate" style={{ color: "#AEB2B8" }}>{tx.description}</p>
                   {tx.reservation && (
-                    <p className="text-[11px] mt-0.5 truncate" style={{ color: "oklch(0.62 0.01 250)" }}>
+                    <p className="text-[11px] mt-0.5 truncate" style={{ color: "#93979E" }}>
                       {tx.reservation.campaign.title}
                     </p>
                   )}
@@ -116,20 +116,20 @@ export default async function AdminTransaccionesPage() {
                     }}
                   >
                     {isCredit
-                      ? <ArrowDownRight className="h-3 w-3" style={{ color: "#2bd49a" }} />
+                      ? <ArrowDownRight className="h-3 w-3" style={{ color: "#E8735A" }} />
                       : <ArrowUpRight className="h-3 w-3" style={{ color: "#dc2626" }} />}
                   </div>
-                  <span className="text-[11px] font-mono" style={{ color: isCredit ? "#2bd49a" : "#dc2626" }}>
+                  <span className="text-[11px] font-mono" style={{ color: isCredit ? "#E8735A" : "#dc2626" }}>
                     {tx.type}
                   </span>
                 </div>
                 <p
                   className="font-semibold text-[13px]"
-                  style={{ color: isCredit ? "#2bd49a" : "#dc2626" }}
+                  style={{ color: isCredit ? "#E8735A" : "#dc2626" }}
                 >
                   {isCredit ? "+" : "-"}{tx.amount.toFixed(2)} €
                 </p>
-                <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>
+                <p className="text-[12px]" style={{ color: "#93979E" }}>
                   {format(new Date(tx.createdAt), "dd MMM yyyy HH:mm", { locale: es })}
                 </p>
               </div>
