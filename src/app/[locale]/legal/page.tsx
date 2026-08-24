@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: "Aviso legal y condiciones de uso de la plataforma Incentis.",
 }
 
-const BG   = "oklch(0.15 0.012 250)"
-const CARD = "oklch(0.19 0.015 250)"
-const BDR  = "oklch(0.30 0.02 250)"
-const MUT  = "oklch(0.62 0.01 250)"
-const ACC  = "#2bd49a"
+const BG   = "#16171A"
+const CARD = "#1E2023"
+const BDR  = "#34373C"
+const MUT  = "#93979E"
+const ACC  = "#E8735A"
 
 export default async function LegalPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -29,7 +29,7 @@ export default async function LegalPage({ params }: { params: Promise<{ locale: 
       <main style={{ maxWidth: 760, margin: "0 auto", padding: "64px 32px 96px" }}>
         <div style={{ marginBottom: 48 }}>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", color: ACC, textTransform: "uppercase", margin: "0 0 12px" }}>Documento legal</p>
-          <h1 style={{ fontFamily: "var(--font-brand)", fontWeight: 800, fontSize: 48, letterSpacing: "-0.03em", color: "#ffffff", margin: "0 0 12px", lineHeight: 1 }}>Aviso Legal</h1>
+          <h1 style={{ fontFamily: "var(--font-brand)", fontWeight: 800, fontSize: 48, letterSpacing: "-0.03em", color: "#F2F1EF", margin: "0 0 12px", lineHeight: 1 }}>Aviso Legal</h1>
           <p style={{ fontSize: 14, color: MUT, margin: 0 }}>Última actualización: junio de 2026</p>
         </div>
 
@@ -103,7 +103,7 @@ export default async function LegalPage({ params }: { params: Promise<{ locale: 
           <Link href={`/${locale}/legal`} style={{ fontSize: 13, color: ACC, textDecoration: "none" }}>Aviso legal</Link>
           <Link href={`/${locale}/privacidad`} style={{ fontSize: 13, color: MUT, textDecoration: "none" }}>Privacidad</Link>
         </div>
-        <p style={{ fontSize: 12, color: "oklch(0.45 0.01 250)", marginTop: 12 }}>© 2026 Incentis. Todos los derechos reservados.</p>
+        <p style={{ fontSize: 12, color: "#5C6066", marginTop: 12 }}>© 2026 Incentis. Todos los derechos reservados.</p>
       </footer>
     </div>
   )
@@ -112,8 +112,8 @@ export default async function LegalPage({ params }: { params: Promise<{ locale: 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section style={{ marginBottom: 40, paddingBottom: 40, borderBottom: `1px solid ${BDR}` }}>
-      <h2 style={{ fontFamily: "var(--font-brand)", fontWeight: 700, fontSize: 22, color: "#ffffff", margin: "0 0 16px", letterSpacing: "-0.02em" }}>{title}</h2>
-      <div style={{ fontSize: 15, color: "oklch(0.72 0.01 250)", lineHeight: 1.7 }}>{children}</div>
+      <h2 style={{ fontFamily: "var(--font-brand)", fontWeight: 700, fontSize: 22, color: "#F2F1EF", margin: "0 0 16px", letterSpacing: "-0.02em" }}>{title}</h2>
+      <div style={{ fontSize: 15, color: "#AEB2B8", lineHeight: 1.7 }}>{children}</div>
     </section>
   )
 }
@@ -123,7 +123,7 @@ function InfoTable({ rows }: { rows: string[][] }) {
     <div style={{ marginTop: 16, borderRadius: 12, overflow: "hidden", border: `1px solid ${BDR}` }}>
       {rows.map((row, i) => (
         <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 2fr", background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.02)", borderBottom: i < rows.length - 1 ? `1px solid ${BDR}` : "none" }}>
-          <div style={{ padding: "10px 14px", fontSize: 13, color: "#ffffff", fontWeight: 500 }}>{row[0]}</div>
+          <div style={{ padding: "10px 14px", fontSize: 13, color: "#F2F1EF", fontWeight: 500 }}>{row[0]}</div>
           <div style={{ padding: "10px 14px", fontSize: 13, color: MUT }}>{row[1]}</div>
         </div>
       ))}

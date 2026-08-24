@@ -34,8 +34,8 @@ export function CookieBanner() {
         left: "50%",
         transform: "translateX(-50%)",
         width: "min(600px, calc(100vw - 32px))",
-        background: "oklch(0.19 0.015 250)",
-        border: "1px solid oklch(0.30 0.02 250)",
+        background: "#1E2023",
+        border: "1px solid #34373C",
         borderRadius: 20,
         boxShadow: "0 8px 40px rgba(0,0,0,0.45)",
         padding: "20px 24px",
@@ -58,15 +58,15 @@ export function CookieBanner() {
             justifyContent: "center",
           }}
         >
-          <Cookie style={{ width: 18, height: 18, color: "#2bd49a" }} />
+          <Cookie style={{ width: 18, height: 18, color: "#E8735A" }} />
         </div>
 
         {/* Content */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ color: "#ffffff", fontWeight: 600, fontSize: 14, margin: 0, lineHeight: 1.4 }}>
+          <p style={{ color: "#F2F1EF", fontWeight: 600, fontSize: 14, margin: 0, lineHeight: 1.4 }}>
             Usamos cookies
           </p>
-          <p style={{ color: "oklch(0.62 0.01 250)", fontSize: 13, margin: "4px 0 0", lineHeight: 1.5 }}>
+          <p style={{ color: "#93979E", fontSize: 13, margin: "4px 0 0", lineHeight: 1.5 }}>
             Usamos cookies esenciales para que la plataforma funcione.
             {expanded && (
               <span>
@@ -81,7 +81,7 @@ export function CookieBanner() {
                   style={{
                     background: "none",
                     border: "none",
-                    color: "#2bd49a",
+                    color: "#E8735A",
                     fontSize: 13,
                     cursor: "pointer",
                     padding: 0,
@@ -92,7 +92,7 @@ export function CookieBanner() {
                   Más info
                 </button>
                 {" · "}
-                <Link href="/es/privacidad" style={{ color: "#2bd49a", fontSize: 13 }}>Política de privacidad</Link>
+                <Link href="/es/privacidad" style={{ color: "#E8735A", fontSize: 13 }}>Política de privacidad</Link>
               </>
             )}
           </p>
@@ -102,8 +102,8 @@ export function CookieBanner() {
             <button
               onClick={() => accept("all")}
               style={{
-                background: "#2bd49a",
-                color: "#0c0c0a",
+                background: "#E8735A",
+                color: "#16171A",
                 border: "none",
                 borderRadius: 999,
                 padding: "8px 18px",
@@ -119,8 +119,8 @@ export function CookieBanner() {
               onClick={() => accept("essential")}
               style={{
                 background: "rgba(255,255,255,0.06)",
-                color: "oklch(0.72 0.01 250)",
-                border: "1px solid oklch(0.30 0.02 250)",
+                color: "#AEB2B8",
+                border: "1px solid #34373C",
                 borderRadius: 999,
                 padding: "8px 18px",
                 fontSize: 13,
@@ -141,7 +141,7 @@ export function CookieBanner() {
           style={{
             flexShrink: 0,
             background: "rgba(255,255,255,0.05)",
-            border: "1px solid oklch(0.30 0.02 250)",
+            border: "1px solid #34373C",
             borderRadius: 8,
             width: 28,
             height: 28,
@@ -149,7 +149,7 @@ export function CookieBanner() {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            color: "oklch(0.62 0.01 250)",
+            color: "#93979E",
           }}
         >
           <X style={{ width: 14, height: 14 }} />

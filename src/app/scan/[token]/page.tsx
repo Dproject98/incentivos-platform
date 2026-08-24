@@ -28,13 +28,13 @@ type PageState =
   | "already_scanned"
   | "invalid"
 
-const BG   = "oklch(0.15 0.012 250)"
-const CARD = "oklch(0.19 0.015 250)"
-const INP  = "oklch(0.22 0.015 250)"
-const BDR  = "oklch(0.30 0.02 250)"
-const MUT  = "oklch(0.62 0.01 250)"
-const ACC  = "#2bd49a"
-const INK  = "#0c0c0a"
+const BG   = "#16171A"
+const CARD = "#1E2023"
+const INP  = "#26282C"
+const BDR  = "#34373C"
+const MUT  = "#93979E"
+const ACC  = "#E8735A"
+const INK  = "#16171A"
 
 export default function ScanPage() {
   const params = useParams()
@@ -151,7 +151,7 @@ export default function ScanPage() {
           style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${BDR}` }}
         >
           <Icon className="h-4 w-4" style={{ color: MUT }} />
-          <span className="text-[12px] font-medium" style={{ color: "#ffffff" }}>{value}</span>
+          <span className="text-[12px] font-medium" style={{ color: "#F2F1EF" }}>{value}</span>
         </div>
       ))}
     </div>
@@ -182,7 +182,7 @@ export default function ScanPage() {
               <XCircle className="h-8 w-8" style={{ color: "#dc2626" }} />
             </div>
             <div>
-              <p className="font-semibold text-[16px]" style={{ color: "#ffffff" }}>QR no válido</p>
+              <p className="font-semibold text-[16px]" style={{ color: "#F2F1EF" }}>QR no válido</p>
               <p className="text-[13px] mt-1" style={{ color: MUT }}>Este código QR no es válido o ha caducado.</p>
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function ScanPage() {
               <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: MUT }}>
                 Reserva verificada
               </p>
-              <p className="font-semibold text-[16px] mt-1" style={{ color: "#ffffff" }}>{reservation.businessName}</p>
+              <p className="font-semibold text-[16px] mt-1" style={{ color: "#F2F1EF" }}>{reservation.businessName}</p>
             </div>
 
             <div className="rounded-2xl p-4 space-y-3" style={{ background: INP, border: `1px solid ${BDR}` }}>
@@ -209,7 +209,7 @@ export default function ScanPage() {
                   {reservation.clientName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-semibold text-[15px]" style={{ color: "#ffffff" }}>{reservation.clientName}</p>
+                  <p className="font-semibold text-[15px]" style={{ color: "#F2F1EF" }}>{reservation.clientName}</p>
                   <p className="text-[12px]" style={{ color: MUT }}>Cliente</p>
                 </div>
               </div>
@@ -240,13 +240,13 @@ export default function ScanPage() {
                 <X className="h-4 w-4" style={{ color: MUT }} />
               </button>
               <div>
-                <p className="font-semibold text-[15px]" style={{ color: "#ffffff" }}>{reservation.clientName}</p>
+                <p className="font-semibold text-[15px]" style={{ color: "#F2F1EF" }}>{reservation.clientName}</p>
                 <p className="text-[12px]" style={{ color: MUT }}>{reservation.businessName}</p>
               </div>
             </div>
 
             <div className="text-center pt-2">
-              <p className="font-medium text-[15px]" style={{ color: "#ffffff" }}>Introduce tu código de empleado</p>
+              <p className="font-medium text-[15px]" style={{ color: "#F2F1EF" }}>Introduce tu código de empleado</p>
               <p className="text-[13px] mt-1" style={{ color: MUT }}>PIN de 4 dígitos asignado al registrarte</p>
             </div>
 
@@ -270,7 +270,7 @@ export default function ScanPage() {
                       : digit
                         ? `2px solid ${ACC}`
                         : `2px solid ${BDR}`,
-                    color: "#ffffff",
+                    color: "#F2F1EF",
                   }}
                 />
               ))}
@@ -286,7 +286,7 @@ export default function ScanPage() {
               {["1","2","3","4","5","6","7","8","9"].map((d) => (
                 <button key={d} onClick={() => handleNumpad(d)} disabled={state === "confirming"}
                   className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
-                  style={{ background: INP, color: "#ffffff", border: `1px solid ${BDR}` }}>
+                  style={{ background: INP, color: "#F2F1EF", border: `1px solid ${BDR}` }}>
                   {d}
                 </button>
               ))}
@@ -297,7 +297,7 @@ export default function ScanPage() {
               </button>
               <button onClick={() => handleNumpad("0")} disabled={state === "confirming"}
                 className="h-12 rounded-xl text-[18px] font-semibold transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
-                style={{ background: INP, color: "#ffffff", border: `1px solid ${BDR}` }}>
+                style={{ background: INP, color: "#F2F1EF", border: `1px solid ${BDR}` }}>
                 0
               </button>
               <button onClick={handleConfirm} disabled={pinValue.length < 4 || state === "confirming"}
@@ -322,12 +322,12 @@ export default function ScanPage() {
               <CheckCircle className="h-10 w-10" style={{ color: ACC }} />
             </div>
             <div>
-              <p className="text-[22px] font-bold" style={{ color: "#ffffff", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
+              <p className="text-[22px] font-bold" style={{ color: "#F2F1EF", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
                 ¡Reserva confirmada!
               </p>
               <p className="text-[14px] mt-1" style={{ color: MUT }}>{reservation.clientName}</p>
               {staffName && (
-                <p className="text-[12px] mt-1" style={{ color: MUT }}>Validado por <strong style={{ color: "#ffffff" }}>{staffName}</strong></p>
+                <p className="text-[12px] mt-1" style={{ color: MUT }}>Validado por <strong style={{ color: "#F2F1EF" }}>{staffName}</strong></p>
               )}
             </div>
             <div className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
@@ -343,10 +343,10 @@ export default function ScanPage() {
           <div className="flex flex-col items-center gap-4 py-6 text-center">
             <div className="h-16 w-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(251,191,36,0.10)", border: "1px solid rgba(251,191,36,0.25)" }}>
-              <Clock className="h-8 w-8" style={{ color: "#fbbf24" }} />
+              <Clock className="h-8 w-8" style={{ color: "#D9B36C" }} />
             </div>
             <div>
-              <p className="font-semibold text-[16px]" style={{ color: "#ffffff" }}>Ya validada</p>
+              <p className="font-semibold text-[16px]" style={{ color: "#F2F1EF" }}>Ya validada</p>
               <p className="text-[13px] mt-1" style={{ color: MUT }}>
                 Esta reserva ya fue confirmada el{" "}
                 {reservation.qrScannedAt

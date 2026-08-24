@@ -4,11 +4,11 @@ import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { Copy, Check, Send, Clock, CheckCircle, AlertCircle, Euro } from "lucide-react"
 
-const CARD = "oklch(0.19 0.015 250)"
-const BDR  = "oklch(0.30 0.02 250)"
-const MUT  = "oklch(0.62 0.01 250)"
-const ACC  = "#2bd49a"
-const INK  = "#0c0c0a"
+const CARD = "#1E2023"
+const BDR  = "#34373C"
+const MUT  = "#93979E"
+const ACC  = "#E8735A"
+const INK  = "#16171A"
 
 // ── Replace with your actual IBAN and bank details ─────────────────────────
 const PLATFORM_IBAN   = "ES12 3456 7890 1234 5678 9012"
@@ -106,19 +106,19 @@ export default function FacturacionPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-[11px] uppercase tracking-[0.1em] font-mono" style={{ color: MUT }}>Pendiente de pago</p>
-            <p style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 700, color: total > 0 ? "#fbbf24" : ACC, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
+            <p style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 700, color: total > 0 ? "#D9B36C" : ACC, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
               {total.toFixed(2)} €
             </p>
           </div>
           <div className="h-14 w-14 rounded-2xl flex items-center justify-center" style={{ background: total > 0 ? "rgba(251,191,36,0.10)" : "rgba(43,212,154,0.10)", border: `1px solid ${total > 0 ? "rgba(251,191,36,0.25)" : "rgba(43,212,154,0.20)"}` }}>
-            <Euro className="h-6 w-6" style={{ color: total > 0 ? "#fbbf24" : ACC }} />
+            <Euro className="h-6 w-6" style={{ color: total > 0 ? "#D9B36C" : ACC }} />
           </div>
         </div>
 
         {pending.length > 0 ? (
           <div className="space-y-2">
             {pending.map((r) => (
-              <div key={r.id} className="flex items-center justify-between px-3 py-2.5 rounded-xl" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid oklch(0.26 0.018 250)` }}>
+              <div key={r.id} className="flex items-center justify-between px-3 py-2.5 rounded-xl" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid #292B2F` }}>
                 <div>
                   <p className="text-[13px] font-medium" style={{ color: "#fff" }}>{r.clientName}</p>
                   <p className="text-[11px]" style={{ color: MUT }}>{r.campaignTitle} · {new Date(r.date).toLocaleDateString("es-ES", { day: "2-digit", month: "short" })}</p>
@@ -150,7 +150,7 @@ export default function FacturacionPage() {
               { label: "BIC/SWIFT", value: PLATFORM_BIC },
               { label: "Importe", value: `${total.toFixed(2)} €`, key: "amount" },
             ].map(({ label, value, key }) => (
-              <div key={label} className="flex items-center justify-between p-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid oklch(0.26 0.018 250)` }}>
+              <div key={label} className="flex items-center justify-between p-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid #292B2F` }}>
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.1em] font-mono" style={{ color: MUT }}>{label}</p>
                   <p className="text-[14px] font-medium mt-0.5" style={{ color: "#fff", fontFamily: key ? "var(--font-mono)" : undefined }}>{value}</p>
@@ -177,7 +177,7 @@ export default function FacturacionPage() {
                 onChange={(e) => { setReference(e.target.value); setError(null) }}
                 placeholder="Ej: REF-2026-001 o nº de operación del banco"
                 className="flex-1 rounded-xl px-4 py-2.5 text-[14px] outline-none"
-                style={{ background: "oklch(0.22 0.015 250)", border: `1px solid ${error ? "rgba(220,38,38,0.50)" : BDR}`, color: "#fff" }}
+                style={{ background: "#26282C", border: `1px solid ${error ? "rgba(220,38,38,0.50)" : BDR}`, color: "#fff" }}
               />
               <button
                 onClick={handleNotify}
@@ -219,7 +219,7 @@ export default function FacturacionPage() {
               <div key={p.id} className="flex items-center justify-between px-4 py-3 rounded-xl" style={{ background: CARD, border: `1px solid ${BDR}` }}>
                 <div className="flex items-center gap-3">
                   {p.reference.startsWith("__pending") ? (
-                    <Clock className="h-4 w-4 shrink-0" style={{ color: "#fbbf24" }} />
+                    <Clock className="h-4 w-4 shrink-0" style={{ color: "#D9B36C" }} />
                   ) : (
                     <CheckCircle className="h-4 w-4 shrink-0" style={{ color: ACC }} />
                   )}
@@ -232,7 +232,7 @@ export default function FacturacionPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-[14px] font-semibold" style={{ color: ACC }}>{p.amount.toFixed(2)} €</p>
-                  <span className="text-[10px] font-mono" style={{ color: p.reference.startsWith("__pending") ? "#fbbf24" : MUT }}>
+                  <span className="text-[10px] font-mono" style={{ color: p.reference.startsWith("__pending") ? "#D9B36C" : MUT }}>
                     {p.reference.startsWith("__pending") ? "PENDIENTE" : "CONFIRMADO"}
                   </span>
                 </div>

@@ -74,7 +74,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${inter.variable} ${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable} ${bricolage.variable}`}>
-      <body className="antialiased font-sans" style={{ background: "oklch(0.15 0.012 250)" }}>
+      <body className="antialiased font-sans" style={{ background: "#16171A" }}>
         <NextIntlClientProvider messages={messages}>
           {children}
           <CookieBanner />

@@ -7,9 +7,9 @@ import Link from "next/link"
 import { CampaignActions } from "./campaign-actions"
 
 const statusStyle: Record<string, { bg: string; color: string; border: string; label?: string }> = {
-  ACTIVE: { bg: "rgba(43,212,154,0.10)",  color: "#2bd49a", border: "rgba(43,212,154,0.20)" },
-  PAUSED: { bg: "rgba(251,191,36,0.10)",  color: "#fbbf24", border: "rgba(251,191,36,0.25)" },
-  ENDED:  { bg: "oklch(0.30 0.02 250)",   color: "oklch(0.72 0.01 250)", border: "oklch(0.30 0.02 250)" },
+  ACTIVE: { bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
+  PAUSED: { bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
+  ENDED:  { bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
 }
 
 export default async function EmpresaCampanasPage() {
@@ -38,15 +38,15 @@ export default async function EmpresaCampanasPage() {
     <div className="space-y-8 max-w-6xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#ffffff", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
+          <h1 className="font-semibold" style={{ fontFamily: "var(--font-display)", color: "#F2F1EF", fontSize: "clamp(22px,3vw,30px)", letterSpacing: "-0.03em" }}>
             {t("title")}
           </h1>
-          <p className="text-[14px] mt-1" style={{ color: "oklch(0.62 0.01 250)" }}>{campaigns.length} campañas creadas</p>
+          <p className="text-[14px] mt-1" style={{ color: "#93979E" }}>{campaigns.length} campañas creadas</p>
         </div>
         <Link
           href={`/${locale}/empresa/campanas/nueva`}
           className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[14px] font-semibold transition-opacity hover:opacity-90"
-          style={{ background: "#2bd49a", color: "#0c0c0a" }}
+          style={{ background: "#E8735A", color: "#16171A" }}
         >
           <Plus className="h-4 w-4" />
           {t("new")}
@@ -54,9 +54,9 @@ export default async function EmpresaCampanasPage() {
       </div>
 
       {campaigns.length === 0 ? (
-        <div className="rounded-2xl p-16 text-center" style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}>
-          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "oklch(0.62 0.01 250)" }} />
-          <p style={{ color: "oklch(0.62 0.01 250)" }}>{t("empty")}</p>
+        <div className="rounded-2xl p-16 text-center" style={{ background: "#1E2023", border: "1px solid #34373C" }}>
+          <Megaphone className="h-10 w-10 mx-auto mb-4" style={{ color: "#93979E" }} />
+          <p style={{ color: "#93979E" }}>{t("empty")}</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -66,14 +66,14 @@ export default async function EmpresaCampanasPage() {
               <div
                 key={campaign.id}
                 className="rounded-2xl flex flex-col transition-shadow hover:shadow-sm"
-                style={{ background: "oklch(0.19 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
+                style={{ background: "#1E2023", border: "1px solid #34373C" }}
               >
                 <div className="p-5 flex-1">
                   <div className="flex items-start justify-between gap-2 mb-3">
                     <div className="min-w-0">
-                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#ffffff" }}>{campaign.title}</h3>
+                      <h3 className="font-semibold text-[15px] truncate" style={{ color: "#F2F1EF" }}>{campaign.title}</h3>
                       {campaign.description && (
-                        <p className="text-[13px] mt-1 line-clamp-2" style={{ color: "oklch(0.62 0.01 250)" }}>{campaign.description}</p>
+                        <p className="text-[13px] mt-1 line-clamp-2" style={{ color: "#93979E" }}>{campaign.description}</p>
                       )}
                     </div>
                     <span
@@ -86,8 +86,8 @@ export default async function EmpresaCampanasPage() {
 
                   <div className="mt-4 space-y-2">
                     <div className="flex items-center justify-between text-[13px]">
-                      <span style={{ color: "oklch(0.62 0.01 250)" }}>Incentivo</span>
-                      <span className="font-semibold" style={{ color: "#2bd49a" }}>
+                      <span style={{ color: "#93979E" }}>Incentivo</span>
+                      <span className="font-semibold" style={{ color: "#E8735A" }}>
                         {[
                           campaign.incentiveTypes.includes("FIXED") ? `${campaign.fixedValue ?? campaign.incentiveValue}€` : null,
                           campaign.incentiveTypes.includes("PERCENTAGE") ? `${campaign.percentageValue ?? campaign.incentiveValue}%` : null,
@@ -96,16 +96,16 @@ export default async function EmpresaCampanasPage() {
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-[13px]">
-                      <span className="flex items-center gap-1.5" style={{ color: "oklch(0.62 0.01 250)" }}>
+                      <span className="flex items-center gap-1.5" style={{ color: "#93979E" }}>
                         <CalendarCheck className="h-3.5 w-3.5" />
                         {t("reservations_count")}
                       </span>
-                      <span className="font-semibold" style={{ color: "#2bd49a" }}>{campaign._count.reservations}</span>
+                      <span className="font-semibold" style={{ color: "#E8735A" }}>{campaign._count.reservations}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 border-t" style={{ borderColor: "oklch(0.30 0.02 250)" }}>
+                <div className="p-4 border-t" style={{ borderColor: "#34373C" }}>
                   <CampaignActions campaignId={campaign.id} status={campaign.status} locale={locale} />
                 </div>
               </div>

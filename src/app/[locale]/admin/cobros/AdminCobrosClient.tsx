@@ -3,11 +3,11 @@
 import { useState } from "react"
 import { CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, AlertCircle } from "lucide-react"
 
-const CARD = "oklch(0.19 0.015 250)"
-const BDR  = "oklch(0.30 0.02 250)"
-const MUT  = "oklch(0.62 0.01 250)"
-const ACC  = "#2bd49a"
-const INK  = "#0c0c0a"
+const CARD = "#1E2023"
+const BDR  = "#34373C"
+const MUT  = "#93979E"
+const ACC  = "#E8735A"
+const INK  = "#16171A"
 
 interface Payment {
   id: string
@@ -89,7 +89,7 @@ export function AdminCobrosClient({
               <div className="flex items-center justify-between p-4 gap-4">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="h-10 w-10 rounded-full flex items-center justify-center font-bold text-[15px] shrink-0"
-                    style={{ background: "rgba(251,191,36,0.12)", color: "#fbbf24" }}>
+                    style={{ background: "rgba(251,191,36,0.12)", color: "#D9B36C" }}>
                     {p.business.name.charAt(0)}
                   </div>
                   <div className="min-w-0">
@@ -100,7 +100,7 @@ export function AdminCobrosClient({
                   </div>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-[18px] font-bold" style={{ color: "#fbbf24" }}>{p.amount.toFixed(2)} €</span>
+                  <span className="text-[18px] font-bold" style={{ color: "#D9B36C" }}>{p.amount.toFixed(2)} €</span>
                   <button
                     onClick={() => setExpanded(expanded === p.id ? null : p.id)}
                     className="h-8 w-8 rounded-lg flex items-center justify-center"
@@ -122,7 +122,7 @@ export function AdminCobrosClient({
                       : (r.campaign.percentageValue ?? r.campaign.incentiveValue)
                     return (
                       <div key={r.id} className="flex items-center justify-between py-1.5 text-[13px]">
-                        <span style={{ color: "oklch(0.78 0.01 250)" }}>{r.clientName}</span>
+                        <span style={{ color: "#C5C8CC" }}>{r.clientName}</span>
                         <div className="flex items-center gap-4">
                           <span style={{ color: MUT }}>{r.campaign.title}</span>
                           <span style={{ color: MUT }}>{new Date(r.date).toLocaleDateString("es-ES", { day: "2-digit", month: "short" })}</span>

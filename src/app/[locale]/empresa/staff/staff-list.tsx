@@ -32,7 +32,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
 
   if (staff.length === 0) {
     return (
-      <p className="text-[13px]" style={{ color: "oklch(0.62 0.01 250)" }}>
+      <p className="text-[13px]" style={{ color: "#93979E" }}>
         Sin personal registrado aún.
       </p>
     )
@@ -44,18 +44,18 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
         <div key={s.id}>
           <div
             className="flex items-center justify-between p-3 rounded-xl"
-            style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
+            style={{ background: "#26282C", border: "1px solid #34373C" }}
           >
             <div className="flex items-center gap-3">
               <div
                 className="h-9 w-9 rounded-full flex items-center justify-center font-semibold text-[13px] shrink-0"
-                style={{ background: "rgba(43,212,154,0.10)", color: "#2bd49a" }}
+                style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A" }}
               >
                 {s.name.charAt(0)}
               </div>
               <div>
-                <p className="font-medium text-[14px]" style={{ color: "#ffffff" }}>{s.name}</p>
-                <p className="text-[12px]" style={{ color: "oklch(0.62 0.01 250)" }}>{s.email}</p>
+                <p className="font-medium text-[14px]" style={{ color: "#F2F1EF" }}>{s.name}</p>
+                <p className="text-[12px]" style={{ color: "#93979E" }}>{s.email}</p>
               </div>
             </div>
 
@@ -65,13 +65,13 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
                 style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.15)" }}
               >
-                <Lock className="h-3 w-3" style={{ color: "#2bd49a" }} />
-                <span className="font-mono font-bold text-[14px] tracking-widest" style={{ color: "#2bd49a" }}>
+                <Lock className="h-3 w-3" style={{ color: "#E8735A" }} />
+                <span className="font-mono font-bold text-[14px] tracking-widest" style={{ color: "#E8735A" }}>
                   {s.pin ?? "—"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1 text-[12px]" style={{ color: "#2bd49a" }}>
+              <div className="flex items-center gap-1 text-[12px]" style={{ color: "#E8735A" }}>
                 <QrCode className="h-3.5 w-3.5" />
                 Activo
               </div>
@@ -101,7 +101,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
                 <button
                   onClick={() => setConfirmId(null)}
                   className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-opacity hover:opacity-70"
-                  style={{ background: "oklch(0.22 0.015 250)", color: "oklch(0.72 0.01 250)" }}
+                  style={{ background: "#26282C", color: "#AEB2B8" }}
                 >
                   Cancelar
                 </button>
