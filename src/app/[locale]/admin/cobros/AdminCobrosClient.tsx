@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, AlertCircle } from "lucide-react"
+import { CheckCircle, XCircle, Clock, ChevronDown, AlertCircle } from "lucide-react"
 
 const CARD = "oklch(0.19 0.015 250)"
 const BDR  = "oklch(0.30 0.02 250)"
@@ -106,16 +106,21 @@ export function AdminCobrosClient({
                     className="h-8 w-8 rounded-lg flex items-center justify-center"
                     style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${BDR}` }}
                   >
-                    {expanded === p.id
-                      ? <ChevronUp className="h-4 w-4" style={{ color: MUT }} />
-                      : <ChevronDown className="h-4 w-4" style={{ color: MUT }} />}
+                    <ChevronDown
+                      className="h-4 w-4 transition-transform duration-150"
+                      style={{
+                        color: MUT,
+                        transform: expanded === p.id ? "rotate(180deg)" : "rotate(0deg)",
+                        transitionTimingFunction: "var(--ease-out)",
+                      }}
+                    />
                   </button>
                 </div>
               </div>
 
               {/* Expanded reservations */}
               {expanded === p.id && (
-                <div className="border-t px-4 py-3 space-y-2" style={{ borderColor: BDR }}>
+                <div className="border-t px-4 py-3 space-y-2 inc-anim-fade-lift-sm" style={{ borderColor: BDR }}>
                   {p.reservations.map((r) => {
                     const amt = r.chosenIncentiveType === "FIXED"
                       ? (r.campaign.fixedValue ?? r.campaign.incentiveValue)

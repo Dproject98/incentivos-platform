@@ -165,7 +165,7 @@ export default function ScanPage() {
 
         {/* Loading */}
         {state === "loading" && (
-          <div className="flex flex-col items-center gap-4 py-10">
+          <div className="flex flex-col items-center gap-4 py-10 inc-anim-fade-lift">
             <div
               className="h-10 w-10 rounded-full border-2 animate-spin"
               style={{ borderColor: "rgba(43,212,154,0.20)", borderTopColor: ACC }}
@@ -176,7 +176,7 @@ export default function ScanPage() {
 
         {/* Invalid */}
         {state === "invalid" && (
-          <div className="flex flex-col items-center gap-4 py-10 text-center">
+          <div className="flex flex-col items-center gap-4 py-10 text-center inc-anim-fade-lift">
             <div className="h-16 w-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(220,38,38,0.12)", border: "1px solid rgba(220,38,38,0.25)" }}>
               <XCircle className="h-8 w-8" style={{ color: "#dc2626" }} />
@@ -190,7 +190,7 @@ export default function ScanPage() {
 
         {/* Ready: reservation info + Verify button */}
         {state === "ready" && reservation && (
-          <div className="space-y-5">
+          <div className="space-y-5 inc-anim-fade-lift">
             <div className="text-center">
               <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl mb-3"
                 style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}>
@@ -229,7 +229,7 @@ export default function ScanPage() {
 
         {/* PIN entry */}
         {(state === "pin_entry" || state === "confirming") && reservation && (
-          <div className="space-y-5">
+          <div className="space-y-5 inc-anim-fade-lift">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => { setPin(["", "", "", ""]); setPinError(false); setState("ready") }}
@@ -250,7 +250,7 @@ export default function ScanPage() {
               <p className="text-[13px] mt-1" style={{ color: MUT }}>PIN de 4 dígitos asignado al registrarte</p>
             </div>
 
-            <div className="flex items-center justify-center gap-3">
+            <div className={`flex items-center justify-center gap-3${pinError ? " inc-anim-shake" : ""}`}>
               {pin.map((digit, i) => (
                 <input
                   key={i}
@@ -277,7 +277,7 @@ export default function ScanPage() {
             </div>
 
             {pinError && (
-              <p className="text-center text-[13px] font-medium" style={{ color: "#dc2626" }}>
+              <p className="text-center text-[13px] font-medium inc-anim-fade-lift-sm" style={{ color: "#dc2626" }}>
                 Código incorrecto. Inténtalo de nuevo.
               </p>
             )}
@@ -317,11 +317,11 @@ export default function ScanPage() {
         {/* Confirmed */}
         {state === "confirmed" && reservation && (
           <div className="flex flex-col items-center gap-5 py-6 text-center">
-            <div className="h-20 w-20 rounded-full flex items-center justify-center"
+            <div className="h-20 w-20 rounded-full flex items-center justify-center inc-anim-pop-in"
               style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}>
               <CheckCircle className="h-10 w-10" style={{ color: ACC }} />
             </div>
-            <div>
+            <div className="inc-anim-fade-lift" style={{ animationDelay: "120ms", animationFillMode: "backwards" }}>
               <p className="text-[22px] font-bold" style={{ color: "#ffffff", fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
                 ¡Reserva confirmada!
               </p>
@@ -330,8 +330,8 @@ export default function ScanPage() {
                 <p className="text-[12px] mt-1" style={{ color: MUT }}>Validado por <strong style={{ color: "#ffffff" }}>{staffName}</strong></p>
               )}
             </div>
-            <div className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
-              style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.20)", color: ACC }}>
+            <div className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px] inc-anim-fade-lift"
+              style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.20)", color: ACC, animationDelay: "200ms", animationFillMode: "backwards" }}>
               <Shield className="h-4 w-4 shrink-0" />
               Incentivo acreditado automáticamente al captador.
             </div>
@@ -340,7 +340,7 @@ export default function ScanPage() {
 
         {/* Already scanned */}
         {state === "already_scanned" && reservation && (
-          <div className="flex flex-col items-center gap-4 py-6 text-center">
+          <div className="flex flex-col items-center gap-4 py-6 text-center inc-anim-fade-lift">
             <div className="h-16 w-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(251,191,36,0.10)", border: "1px solid rgba(251,191,36,0.25)" }}>
               <Clock className="h-8 w-8" style={{ color: "#fbbf24" }} />

@@ -172,7 +172,7 @@ export default function NuevaCampanaPage() {
 
           {/* Fixed value — shown if FIXED selected */}
           {form.incentiveTypes.includes("FIXED") && (
-            <div>
+            <div className="inc-anim-fade-lift-sm">
               <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
                 Valor fijo (€ por reserva confirmada)
               </label>
@@ -191,7 +191,7 @@ export default function NuevaCampanaPage() {
 
           {/* Percentage value — shown if PERCENTAGE selected */}
           {form.incentiveTypes.includes("PERCENTAGE") && (
-            <div>
+            <div className="inc-anim-fade-lift-sm">
               <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>
                 Porcentaje del ticket (%)
               </label>
@@ -210,7 +210,7 @@ export default function NuevaCampanaPage() {
 
           {/* Bono fields — shown if BONO selected */}
           {form.incentiveTypes.includes("BONO") && (
-            <div className="space-y-4 rounded-xl p-4" style={{ background: "rgba(43,212,154,0.05)", border: "1px solid rgba(43,212,154,0.12)" }}>
+            <div className="space-y-4 rounded-xl p-4 inc-anim-fade-lift-sm" style={{ background: "rgba(43,212,154,0.05)", border: "1px solid rgba(43,212,154,0.12)" }}>
               <p className="text-[11px] uppercase tracking-[0.1em] font-mono" style={{ color: "#2bd49a" }}>Configuración del bono</p>
               <div>
                 <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#ffffff" }}>{t("bonus_description")}</label>
