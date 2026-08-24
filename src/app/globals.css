@@ -92,7 +92,9 @@
   .inc-nav-links    { display: none !important; }
 
   .inc-hero         { padding: 52px 20px 40px !important; }
-  .inc-hero-h1      { font-size: 42px !important; line-height: 1.0 !important; letter-spacing: -0.03em !important; }
+  /* font-size ya es fluido via clamp() en el propio componente; solo
+     recalibramos leading/tracking, que no se interpolan solos con el tamaño */
+  .inc-hero-h1      { line-height: 1.0 !important; letter-spacing: -0.03em !important; }
   .inc-hero-lead    { font-size: 16px !important; }
 
   .inc-marquee-inner { font-size: 18px !important; }

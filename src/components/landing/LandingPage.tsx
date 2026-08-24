@@ -210,7 +210,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
               <span style={{ width: 6, height: 6, borderRadius: 99, background: C.accent, animation: "inc-pulse 2s infinite" }} />
               Captación verificada
             </div>
-            <h1 className="inc-hero-h1" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 84, lineHeight: 0.92, letterSpacing: "-0.045em", margin: "26px 0 0" }}>
+            <h1 className="inc-hero-h1" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: "clamp(42px, 6.2vw, 84px)", lineHeight: 0.92, letterSpacing: "-0.045em", margin: "26px 0 0" }}>
               Paga solo cuando traen un cliente <span style={{ color: C.accent }}>real.</span>
             </h1>
             <p className="inc-hero-lead" style={{ fontSize: 19, lineHeight: 1.55, color: C.muted, margin: "26px 0 0", maxWidth: 480 }}>
@@ -225,35 +225,47 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
             </div>
           </div>
 
-          {/* Floating card */}
+          {/* Floating card — tratamiento "material": cristal traslucido con
+              profundidad, en vez de panel opaco tipo admin. */}
           <div ref={heroCardRef} className="inc-hero-card" style={{ position: "relative", transformStyle: "preserve-3d" }}>
-            <div style={{ position: "absolute", inset: -40, background: "radial-gradient(circle at 60% 40%, oklch(0.70 0.15 35 / 0.18), transparent 70%)", filter: "blur(20px)" }} />
-            <div style={{ position: "relative", background: `linear-gradient(180deg, ${C.s2}, #1C1D20)`, border: "1px solid #383B40", borderRadius: 22, padding: 24, boxShadow: "0 40px 90px -30px rgba(0,0,0,.7)", animation: "inc-float 7s ease-in-out infinite" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-                <span style={{ fontFamily: F.mono, fontSize: 11, color: C.faint, letterSpacing: "0.04em" }}>incentis · vista previa</span>
-                <span style={{ fontFamily: F.mono, fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", color: C.accent, background: "oklch(0.70 0.15 35 / 0.14)", padding: "3px 8px", borderRadius: 5 }}>VISTA PREVIA</span>
+            <div style={{ position: "absolute", inset: -40, background: "radial-gradient(circle at 60% 40%, oklch(0.70 0.15 35 / 0.20), transparent 70%)", filter: "blur(28px)" }} />
+            <div style={{
+              position: "relative",
+              background: "rgba(30, 32, 35, 0.68)",
+              backdropFilter: "blur(28px) saturate(160%)",
+              WebkitBackdropFilter: "blur(28px) saturate(160%)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderTop: "1px solid rgba(255,255,255,0.18)",
+              borderRadius: 26,
+              padding: 26,
+              boxShadow: "0 55px 110px -30px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,0.03)",
+              animation: "inc-float 7s ease-in-out infinite",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
+                <span style={{ width: 6, height: 6, borderRadius: 99, background: C.accent, animation: "inc-pulse 2s infinite", flexShrink: 0 }} />
+                <span style={{ fontFamily: F.mono, fontSize: 11, color: C.faint, letterSpacing: "0.06em" }}>incentis · en vivo</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 11, marginBottom: 13 }}>
-                <div style={{ background: "#1F2124", border: "1px solid #34373C", borderRadius: 13, padding: 16 }}>
-                  <div style={{ fontFamily: F.brand, fontSize: 38, fontWeight: 800, lineHeight: 1 }}>{confirmedThisMonth || 17}</div>
+                <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 15, padding: 16 }}>
+                  <div style={{ fontFamily: F.brand, fontSize: 38, fontWeight: 800, lineHeight: 1, letterSpacing: "-0.02em" }}>{confirmedThisMonth || 17}</div>
                   <div style={{ fontSize: 11, color: "#93979E", marginTop: 4 }}>Conversiones · mes</div>
                 </div>
-                <div style={{ background: C.grad, borderRadius: 13, padding: 16, color: C.ink }}>
-                  <div style={{ fontFamily: F.brand, fontSize: 34, fontWeight: 800, lineHeight: 1 }}>€0</div>
+                <div style={{ background: C.grad, borderRadius: 15, padding: 16, color: C.ink }}>
+                  <div style={{ fontFamily: F.brand, fontSize: 34, fontWeight: 800, lineHeight: 1, letterSpacing: "-0.02em" }}>€0</div>
                   <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4, fontWeight: 600 }}>por adelantado</div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1F2124", border: "1px solid #34373C", borderRadius: 11, padding: "13px 15px", marginBottom: 13 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 13, padding: "13px 15px", marginBottom: 13 }}>
                 <span style={{ fontSize: 12.5, color: C.muted, fontWeight: 500 }}>Pagado esta semana</span>
                 <span style={{ fontFamily: F.brand, fontSize: 17, fontWeight: 800, color: C.accent }}>{paidThisWeek > 0 ? `+${eur(paidThisWeek)}` : "+€174"}</span>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 {[{ id: "A7", name: "Cena para 2", amount: "15€" }, { id: "B3", name: "Sesión spa", amount: "25€" }].map((item, i) => (
                   <div key={item.id}>
-                    {i > 0 && <div style={{ height: 1, background: "#2C2E32" }} />}
+                    {i > 0 && <div style={{ height: 1, background: "rgba(255,255,255,0.06)" }} />}
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 2px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <span style={{ width: 26, height: 26, borderRadius: 7, background: "#292B2F", fontFamily: F.mono, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>{item.id}</span>
+                        <span style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(255,255,255,0.05)", fontFamily: F.mono, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>{item.id}</span>
                         <span style={{ fontSize: 13, fontWeight: 500 }}>{item.name}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
