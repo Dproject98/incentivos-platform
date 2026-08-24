@@ -86,7 +86,7 @@ export default function FacturacionPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="h-8 w-8 rounded-full border-2 animate-spin" style={{ borderColor: "rgba(43,212,154,0.2)", borderTopColor: ACC }} />
+      <div className="h-8 w-8 rounded-full border-2 animate-spin" style={{ borderColor: "rgba(232,115,90,0.2)", borderTopColor: ACC }} />
     </div>
   )
 
@@ -110,7 +110,7 @@ export default function FacturacionPage() {
               {total.toFixed(2)} €
             </p>
           </div>
-          <div className="h-14 w-14 rounded-2xl flex items-center justify-center" style={{ background: total > 0 ? "rgba(251,191,36,0.10)" : "rgba(43,212,154,0.10)", border: `1px solid ${total > 0 ? "rgba(251,191,36,0.25)" : "rgba(43,212,154,0.20)"}` }}>
+          <div className="h-14 w-14 rounded-2xl flex items-center justify-center" style={{ background: total > 0 ? "rgba(217,179,108,0.10)" : "rgba(232,115,90,0.10)", border: `1px solid ${total > 0 ? "rgba(217,179,108,0.25)" : "rgba(232,115,90,0.20)"}` }}>
             <Euro className="h-6 w-6" style={{ color: total > 0 ? "#D9B36C" : ACC }} />
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function FacturacionPage() {
 
       {/* Submitted confirmation */}
       {submitted && (
-        <div className="rounded-2xl p-6 flex items-start gap-4" style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.20)" }}>
+        <div className="rounded-2xl p-6 flex items-start gap-4" style={{ background: "rgba(232,115,90,0.06)", border: "1px solid rgba(232,115,90,0.20)" }}>
           <CheckCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: ACC }} />
           <div>
             <p className="font-semibold text-[14px]" style={{ color: ACC }}>Pago notificado correctamente</p>

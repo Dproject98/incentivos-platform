@@ -41,11 +41,11 @@ export default async function EmpresaStaffPage() {
       {/* Info banner */}
       <div
         className="rounded-2xl p-4 flex items-start gap-3"
-        style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.15)" }}
+        style={{ background: "rgba(232,115,90,0.06)", border: "1px solid rgba(232,115,90,0.15)" }}
       >
         <div
           className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0"
-          style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}
+          style={{ background: "rgba(232,115,90,0.10)", border: "1px solid rgba(232,115,90,0.20)" }}
         >
           <Smartphone className="h-4 w-4" style={{ color: "#E8735A" }} />
         </div>

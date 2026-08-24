@@ -58,8 +58,8 @@ export default async function StaffPage() {
   ).length
 
   const statusStyle: Record<string, { bg: string; color: string; border: string; label: string }> = {
-    PENDING:   { label: "Pendiente",  bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
-    CONFIRMED: { label: "Confirmada", bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
+    PENDING:   { label: "Pendiente",  bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
+    CONFIRMED: { label: "Confirmada", bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
     CANCELLED: { label: "Cancelada",  bg: "rgba(220,38,38,0.12)",   color: "#dc2626", border: "rgba(220,38,38,0.20)" },
     NO_SHOW:   { label: "No show",    bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
   }
@@ -124,7 +124,7 @@ export default async function StaffPage() {
         >
           <div
             className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}
+            style={{ background: "rgba(232,115,90,0.10)", border: "1px solid rgba(232,115,90,0.20)" }}
           >
             <Lock className="h-6 w-6" style={{ color: "#E8735A" }} />
           </div>
@@ -142,7 +142,7 @@ export default async function StaffPage() {
                     <div
                       key={i}
                       className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-[20px]"
-                      style={{ background: "rgba(43,212,154,0.12)", color: "#E8735A" }}
+                      style={{ background: "rgba(232,115,90,0.12)", color: "#E8735A" }}
                     >
                       {digit}
                     </div>
@@ -186,7 +186,7 @@ export default async function StaffPage() {
         >
           <div
             className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.15)" }}
+            style={{ background: "rgba(232,115,90,0.08)", border: "1px solid rgba(232,115,90,0.15)" }}
           >
             <Smartphone className="h-5 w-5" style={{ color: "#E8735A" }} />
           </div>
@@ -226,7 +226,7 @@ export default async function StaffPage() {
                     <div className="flex items-center gap-3">
                       <div
                         className="h-8 w-8 rounded-full flex items-center justify-center font-semibold text-[12px] shrink-0"
-                        style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A" }}
+                        style={{ background: "rgba(232,115,90,0.10)", color: "#E8735A" }}
                       >
                         {r.clientName.charAt(0)}
                       </div>

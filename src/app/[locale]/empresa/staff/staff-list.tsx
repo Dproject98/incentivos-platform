@@ -49,7 +49,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
             <div className="flex items-center gap-3">
               <div
                 className="h-9 w-9 rounded-full flex items-center justify-center font-semibold text-[13px] shrink-0"
-                style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A" }}
+                style={{ background: "rgba(232,115,90,0.10)", color: "#E8735A" }}
               >
                 {s.name.charAt(0)}
               </div>
@@ -63,7 +63,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
               {/* PIN badge */}
               <div
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
-                style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.15)" }}
+                style={{ background: "rgba(232,115,90,0.08)", border: "1px solid rgba(232,115,90,0.15)" }}
               >
                 <Lock className="h-3 w-3" style={{ color: "#E8735A" }} />
                 <span className="font-mono font-bold text-[14px] tracking-widest" style={{ color: "#E8735A" }}>

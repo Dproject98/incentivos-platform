@@ -22,8 +22,8 @@ export default async function ReservasPage() {
   })
 
   const statusConfig: Record<string, { label: string; bg: string; color: string; border: string }> = {
-    PENDING:   { label: t("status_pending"),   bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
-    CONFIRMED: { label: t("status_confirmed"), bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
+    PENDING:   { label: t("status_pending"),   bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
+    CONFIRMED: { label: t("status_confirmed"), bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
     CANCELLED: { label: t("status_cancelled"), bg: "rgba(220,38,38,0.12)",   color: "#dc2626", border: "rgba(220,38,38,0.20)" },
     NO_SHOW:   { label: t("status_no_show"),   bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
   }
@@ -66,7 +66,7 @@ export default async function ReservasPage() {
                 <div className="flex items-center gap-4">
                   <div
                     className="h-11 w-11 rounded-full flex items-center justify-center font-bold text-[13px] shrink-0"
-                    style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A" }}
+                    style={{ background: "rgba(232,115,90,0.10)", color: "#E8735A" }}
                   >
                     {r.clientName.charAt(0)}
                   </div>

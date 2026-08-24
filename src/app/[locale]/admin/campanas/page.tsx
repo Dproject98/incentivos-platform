@@ -6,8 +6,8 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
 const statusStyle: Record<string, { label: string; bg: string; color: string; border: string }> = {
-  ACTIVE: { label: "Activa",     bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
-  PAUSED: { label: "Pausada",    bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
+  ACTIVE: { label: "Activa",     bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
+  PAUSED: { label: "Pausada",    bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
   ENDED:  { label: "Finalizada", bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
 }
 

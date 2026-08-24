@@ -7,8 +7,8 @@ import Link from "next/link"
 import { CampaignActions } from "./campaign-actions"
 
 const statusStyle: Record<string, { bg: string; color: string; border: string; label?: string }> = {
-  ACTIVE: { bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
-  PAUSED: { bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
+  ACTIVE: { bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
+  PAUSED: { bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
   ENDED:  { bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
 }
 

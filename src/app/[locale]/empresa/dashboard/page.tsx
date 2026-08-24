@@ -55,8 +55,8 @@ export default async function EmpresaDashboard() {
   ]
 
   const statusConfig: Record<string, { label: string; bg: string; color: string; border: string }> = {
-    PENDING:   { label: "Pendiente",   bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
-    CONFIRMED: { label: "Confirmada",  bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
+    PENDING:   { label: "Pendiente",   bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
+    CONFIRMED: { label: "Confirmada",  bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
     CANCELLED: { label: "Cancelada",   bg: "rgba(220,38,38,0.12)",   color: "#dc2626", border: "rgba(220,38,38,0.20)" },
     NO_SHOW:   { label: "No presentó", bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
   }
@@ -111,7 +111,7 @@ export default async function EmpresaDashboard() {
         <Link
           href={`/${locale}/empresa/facturacion`}
           className="flex items-center gap-4 rounded-2xl p-4 transition-opacity hover:opacity-90"
-          style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.25)", textDecoration: "none" }}
+          style={{ background: "rgba(217,179,108,0.08)", border: "1px solid rgba(217,179,108,0.25)", textDecoration: "none" }}
         >
           <AlertCircle className="h-5 w-5 shrink-0" style={{ color: "#D9B36C" }} />
           <div className="flex-1 min-w-0">
@@ -178,7 +178,7 @@ export default async function EmpresaDashboard() {
                   <div className="flex items-center gap-3">
                     <div
                       className="h-9 w-9 rounded-full flex items-center justify-center font-semibold text-[13px] shrink-0"
-                      style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A" }}
+                      style={{ background: "rgba(232,115,90,0.10)", color: "#E8735A" }}
                     >
                       {r.clientName.charAt(0)}
                     </div>
@@ -260,7 +260,7 @@ function OnboardingEmpresa({ locale }: { locale: string }) {
       <div className="mb-6">
         <div
           className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono font-semibold mb-3"
-          style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)", color: "#E8735A", letterSpacing: "0.08em" }}
+          style={{ background: "rgba(232,115,90,0.10)", border: "1px solid rgba(232,115,90,0.20)", color: "#E8735A", letterSpacing: "0.08em" }}
         >
           PRIMEROS PASOS
         </div>
@@ -280,15 +280,15 @@ function OnboardingEmpresa({ locale }: { locale: string }) {
             key={step.num}
             className="flex gap-4 p-4 rounded-xl"
             style={{
-              background: step.done ? "rgba(43,212,154,0.04)" : "rgba(255,255,255,0.02)",
-              border: step.done ? "1px solid rgba(43,212,154,0.15)" : "1px solid #2C2E32",
+              background: step.done ? "rgba(232,115,90,0.04)" : "rgba(255,255,255,0.02)",
+              border: step.done ? "1px solid rgba(232,115,90,0.15)" : "1px solid #2C2E32",
             }}
           >
             <div
               className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-[13px] font-bold"
               style={
                 step.done
-                  ? { background: "rgba(43,212,154,0.15)", color: "#E8735A" }
+                  ? { background: "rgba(232,115,90,0.15)", color: "#E8735A" }
                   : { background: "rgba(255,255,255,0.06)", color: "#93979E" }
               }
             >

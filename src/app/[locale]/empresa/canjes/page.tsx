@@ -28,8 +28,8 @@ export default async function EmpresaCanjesPage() {
   const pending = redemptions.filter((r) => r.status === "PENDING").length
 
   const statusStyle: Record<string, { bg: string; color: string; border: string; label: string }> = {
-    PENDING:  { label: "Pendiente",  bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
-    APPROVED: { label: "Aprobado",   bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
+    PENDING:  { label: "Pendiente",  bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
+    APPROVED: { label: "Aprobado",   bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
     REJECTED: { label: "Rechazado",  bg: "rgba(220,38,38,0.12)",   color: "#dc2626", border: "rgba(220,38,38,0.20)" },
   }
 

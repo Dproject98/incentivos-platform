@@ -26,9 +26,9 @@ export default async function CampanasPage() {
   }) as Campaign[]
 
   const incentiveConfig: Record<string, { icon: typeof Euro; color: string; bg: string; border: string; label: string }> = {
-    FIXED:      { icon: Euro,       color: "#E8735A", bg: "rgba(43,212,154,0.10)",  border: "rgba(43,212,154,0.20)",  label: "Fijo" },
-    PERCENTAGE: { icon: TrendingUp, color: "#D9B36C", bg: "rgba(251,191,36,0.10)",  border: "rgba(251,191,36,0.25)",  label: "%" },
-    BONO:       { icon: Gift,       color: "#E8735A", bg: "rgba(43,212,154,0.10)",  border: "rgba(43,212,154,0.20)",  label: "Bono" },
+    FIXED:      { icon: Euro,       color: "#E8735A", bg: "rgba(232,115,90,0.10)",  border: "rgba(232,115,90,0.20)",  label: "Fijo" },
+    PERCENTAGE: { icon: TrendingUp, color: "#D9B36C", bg: "rgba(217,179,108,0.10)",  border: "rgba(217,179,108,0.25)",  label: "%" },
+    BONO:       { icon: Gift,       color: "#E8735A", bg: "rgba(232,115,90,0.10)",  border: "rgba(232,115,90,0.20)",  label: "Bono" },
   }
 
   return (

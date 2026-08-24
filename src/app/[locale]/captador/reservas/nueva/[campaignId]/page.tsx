@@ -120,7 +120,7 @@ export default function NuevaReservaPage() {
       {campaign && (
         <div
           className="rounded-2xl p-4 flex items-center justify-between gap-3"
-          style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.15)" }}
+          style={{ background: "rgba(232,115,90,0.06)", border: "1px solid rgba(232,115,90,0.15)" }}
         >
           <div>
             <p className="font-semibold text-[14px]" style={{ color: "#F2F1EF" }}>{campaign.title}</p>
@@ -128,7 +128,7 @@ export default function NuevaReservaPage() {
           </div>
           <div
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-[13px] font-medium shrink-0"
-            style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A", border: "1px solid rgba(43,212,154,0.20)" }}
+            style={{ background: "rgba(232,115,90,0.10)", color: "#E8735A", border: "1px solid rgba(232,115,90,0.20)" }}
           >
             <IncentiveIcon className="h-4 w-4" />
             {incentiveText}
@@ -163,7 +163,7 @@ export default function NuevaReservaPage() {
                 >
                   <div
                     className="h-9 w-9 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ background: active ? "rgba(43,212,154,0.15)" : "oklch(0.26 0.015 250)" }}
+                    style={{ background: active ? "rgba(232,115,90,0.15)" : "#292B2F" }}
                   >
                     <Icon className="h-4 w-4" style={{ color: active ? "#E8735A" : "#93979E" }} />
                   </div>

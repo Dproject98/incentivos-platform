@@ -32,7 +32,7 @@ export default function Image() {
             width: 700,
             height: 700,
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(43,212,154,0.12) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(232,115,90,0.12) 0%, transparent 70%)",
           }}
         />
 
@@ -51,18 +51,18 @@ export default function Image() {
               height: 72,
               borderRadius: 16,
               background: "#0F1F1A",
-              border: "2px solid rgba(43,212,154,0.25)",
+              border: "2px solid rgba(232,115,90,0.25)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 36,
               fontWeight: 800,
-              color: "#ffffff",
+              color: "#F2F1EF",
               letterSpacing: "-2px",
               position: "relative",
             }}
           >
-            <span style={{ color: "#ffffff" }}>iN</span>
+            <span style={{ color: "#F2F1EF" }}>iN</span>
             <div
               style={{
                 position: "absolute",
@@ -79,7 +79,7 @@ export default function Image() {
             style={{
               fontSize: 54,
               fontWeight: 700,
-              color: "#ffffff",
+              color: "#F2F1EF",
               letterSpacing: "-2.5px",
             }}
           >
@@ -109,8 +109,8 @@ export default function Image() {
             display: "flex",
             alignItems: "center",
             gap: 10,
-            background: "rgba(43,212,154,0.10)",
-            border: "1px solid rgba(43,212,154,0.25)",
+            background: "rgba(232,115,90,0.10)",
+            border: "1px solid rgba(232,115,90,0.25)",
             borderRadius: 999,
             padding: "10px 24px",
           }}
@@ -120,10 +120,10 @@ export default function Image() {
               width: 8,
               height: 8,
               borderRadius: "50%",
-              background: "#2bd49a",
+              background: "#E8735A",
             }}
           />
-          <span style={{ color: "#2bd49a", fontSize: 16, fontWeight: 600, letterSpacing: "0.04em" }}>
+          <span style={{ color: "#E8735A", fontSize: 16, fontWeight: 600, letterSpacing: "0.04em" }}>
             CAMPAÑA · QR · COBRO AUTOMÁTICO
           </span>
         </div>

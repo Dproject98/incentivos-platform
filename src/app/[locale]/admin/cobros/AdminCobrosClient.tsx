@@ -89,7 +89,7 @@ export function AdminCobrosClient({
               <div className="flex items-center justify-between p-4 gap-4">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="h-10 w-10 rounded-full flex items-center justify-center font-bold text-[15px] shrink-0"
-                    style={{ background: "rgba(251,191,36,0.12)", color: "#D9B36C" }}>
+                    style={{ background: "rgba(217,179,108,0.12)", color: "#D9B36C" }}>
                     {p.business.name.charAt(0)}
                   </div>
                   <div className="min-w-0">

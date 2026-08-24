@@ -128,8 +128,8 @@ export default function WalletPage() {
             <button key={key} onClick={() => { setMethod(key); setSelectedBono(null) }}
               className="p-3 rounded-xl text-left transition-all"
               style={{
-                background: method === key ? (key === "stripe" ? "rgba(43,212,154,0.10)" : "rgba(251,191,36,0.10)") : "#26282C",
-                border: method === key ? (key === "stripe" ? "1px solid rgba(43,212,154,0.25)" : "1px solid rgba(251,191,36,0.25)") : "1px solid #34373C",
+                background: method === key ? (key === "stripe" ? "rgba(232,115,90,0.10)" : "rgba(217,179,108,0.10)") : "#26282C",
+                border: method === key ? (key === "stripe" ? "1px solid rgba(232,115,90,0.25)" : "1px solid rgba(217,179,108,0.25)") : "1px solid #34373C",
                 color: method === key ? (key === "stripe" ? "#E8735A" : "#D9B36C") : "#AEB2B8",
               }}>
               <Icon className="h-4 w-4 mb-1.5" style={{ color: method === key ? (key === "stripe" ? "#E8735A" : "#D9B36C") : "#93979E" }} />
@@ -151,7 +151,7 @@ export default function WalletPage() {
                 onBlur={(e) => (e.currentTarget.style.borderColor = "#34373C")} />
             </div>
             {!data.stripeConnected && (
-              <div className="p-3 rounded-xl text-[13px]" style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.20)" }}>
+              <div className="p-3 rounded-xl text-[13px]" style={{ background: "rgba(217,179,108,0.08)", border: "1px solid rgba(217,179,108,0.20)" }}>
                 <p className="font-medium" style={{ color: "#D9B36C" }}>Cuenta bancaria no conectada</p>
                 <button onClick={handleStripeConnect} disabled={connectingStripe}
                   className="mt-2 flex items-center gap-1.5 text-[12px] font-medium hover:opacity-80" style={{ color: "#D9B36C" }}>
@@ -196,8 +196,8 @@ export default function WalletPage() {
                         disabled={!canAfford}
                         className="w-full p-3 rounded-xl text-left transition-all"
                         style={{
-                          background: isSelected ? "rgba(251,191,36,0.10)" : canAfford ? "#26282C" : "#1E2023",
-                          border: isSelected ? "1px solid rgba(251,191,36,0.35)" : "1px solid #34373C",
+                          background: isSelected ? "rgba(217,179,108,0.10)" : canAfford ? "#26282C" : "#1E2023",
+                          border: isSelected ? "1px solid rgba(217,179,108,0.35)" : "1px solid #34373C",
                           opacity: canAfford ? 1 : 0.5,
                         }}>
                         <div className="flex items-start justify-between gap-2">
@@ -230,7 +230,7 @@ export default function WalletPage() {
                 </div>
 
                 {selectedBono && (
-                  <div className="rounded-xl p-3" style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.20)" }}>
+                  <div className="rounded-xl p-3" style={{ background: "rgba(217,179,108,0.08)", border: "1px solid rgba(217,179,108,0.20)" }}>
                     <p className="text-[13px]" style={{ color: "#D9B36C" }}>
                       Se descontarán <strong>{selectedBono.bonusMinValue}€</strong> de tu saldo.
                       La empresa confirmará el canje en breve.
@@ -256,8 +256,8 @@ export default function WalletPage() {
                 <div className="space-y-2">
                   {data.pendingRedemptions.map((r) => {
                     const statusStyle = {
-                      PENDING:  { bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", label: "Pendiente" },
-                      APPROVED: { bg: "rgba(43,212,154,0.10)",  color: "#E8735A", label: "Aprobado"  },
+                      PENDING:  { bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", label: "Pendiente" },
+                      APPROVED: { bg: "rgba(232,115,90,0.10)",  color: "#E8735A", label: "Aprobado"  },
                       REJECTED: { bg: "rgba(220,38,38,0.12)",   color: "#dc2626", label: "Rechazado" },
                     }[r.status] ?? { bg: "#34373C", color: "#AEB2B8", label: r.status }
                     return (
@@ -298,8 +298,8 @@ export default function WalletPage() {
                 <div className="flex items-center gap-3">
                   <div className="h-8 w-8 rounded-full flex items-center justify-center shrink-0"
                     style={{
-                      background: tx.type === "CREDIT" ? "rgba(43,212,154,0.10)" : "rgba(220,38,38,0.12)",
-                      border: tx.type === "CREDIT" ? "1px solid rgba(43,212,154,0.20)" : "1px solid rgba(220,38,38,0.20)",
+                      background: tx.type === "CREDIT" ? "rgba(232,115,90,0.10)" : "rgba(220,38,38,0.12)",
+                      border: tx.type === "CREDIT" ? "1px solid rgba(232,115,90,0.20)" : "1px solid rgba(220,38,38,0.20)",
                     }}>
                     {tx.type === "CREDIT"
                       ? <ArrowDownRight className="h-4 w-4" style={{ color: "#E8735A" }} />

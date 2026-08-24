@@ -75,8 +75,10 @@
 /* ─── Landing responsive ──────────────────────────────────────── */
 /* Tablet */
 @media (max-width: 1024px) {
-  .inc-hero-pin     { height: auto !important; }
-  .inc-hero         { position: static !important; min-height: 0 !important; }
+  /* .inc-hero-pin/.inc-hero ya no necesitan override aqui: su version "cine"
+     (220vh + sticky) la aplica useHeroTilt en LandingPage.tsx via gsap, solo
+     cuando de verdad va a animar algo (desktop + sin reduced-motion) — el
+     valor por defecto en JSX ya es auto/static, una sola fuente de verdad. */
   .inc-hero-grid    { grid-template-columns: 1fr !important; }
   .inc-hero-card    { display: none !important; }
   .inc-niveles-grid { grid-template-columns: 1fr 1fr !important; }

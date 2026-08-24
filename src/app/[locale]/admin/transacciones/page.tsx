@@ -111,8 +111,8 @@ export default async function AdminTransaccionesPage() {
                   <div
                     className="h-6 w-6 rounded-full flex items-center justify-center shrink-0"
                     style={{
-                      background: isCredit ? "rgba(43,212,154,0.10)" : "rgba(220,38,38,0.12)",
-                      border: isCredit ? "1px solid rgba(43,212,154,0.20)" : "1px solid rgba(220,38,38,0.20)",
+                      background: isCredit ? "rgba(232,115,90,0.10)" : "rgba(220,38,38,0.12)",
+                      border: isCredit ? "1px solid rgba(232,115,90,0.20)" : "1px solid rgba(220,38,38,0.20)",
                     }}
                   >
                     {isCredit

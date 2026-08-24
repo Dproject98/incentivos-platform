@@ -14,14 +14,14 @@ const C = {
   s1: "#1E2023",
   s2: "#26282C",
   border: "#34373C",
-  borderStrong: "oklch(0.40 0.06 250)",
+  borderStrong: "#383B40",
   text: "#F2F1EF",
   muted: "#AEB2B8",
   faint: "#868A90",
   accent: "oklch(0.70 0.15 35)",
   accentDeep: "oklch(0.60 0.16 40)",
   accentDeeper: "oklch(0.54 0.15 38)",
-  accentOnLight: "oklch(0.50 0.13 162)",
+  accentOnLight: "oklch(0.60 0.16 40)",
   lightBg: "oklch(0.96 0.008 250)",
   ink: "#16171A",
   grad: "linear-gradient(135deg, oklch(0.70 0.15 35), oklch(0.60 0.16 40))",
@@ -64,9 +64,13 @@ function useReveal(rootRef: React.RefObject<HTMLElement | null>) {
 }
 
 // ─── Hero: profundidad ligada al scroll (estilo Apple: pin + scrub) ───────────
-// Solo desktop (>=1025px, donde vive la tarjeta flotante) y solo si el usuario
-// no pide prefers-reduced-motion. gsap.matchMedia() limpia solo al cambiar de
-// breakpoint o al desmontar — no hace falta gestionarlo a mano.
+// Todo — el pin de 220vh, el sticky del header y el tilt — vive detras de UNA
+// sola condicion (desktop + sin prefers-reduced-motion), aplicada con gsap
+// para que la limpieza de gsap.matchMedia() la deshaga entera de una vez.
+// Antes el pin/sticky se ponian siempre por CSS y solo el tween se gateaba
+// en JS: alguien en desktop con reduced-motion se comia 220vh de scroll
+// muerto sin ningun tilt que lo justificase. Con esto, si no va a animar
+// nada, tampoco reserva ese scroll extra.
 function useHeroTilt(
   pinRef: React.RefObject<HTMLDivElement | null>,
   cardRef: React.RefObject<HTMLDivElement | null>,
@@ -74,26 +78,36 @@ function useHeroTilt(
 ) {
   useEffect(() => {
     const mm = gsap.matchMedia()
+    let rafId = 0
 
     mm.add(
       { desktop: "(min-width: 1025px)", motionOk: "(prefers-reduced-motion: no-preference)" },
       (context) => {
         const { desktop, motionOk } = context.conditions as { desktop: boolean; motionOk: boolean }
         if (!desktop || !motionOk) return
-        if (!pinRef.current || !cardRef.current || !textRef.current) return
+        const header = pinRef.current?.querySelector<HTMLElement>(".inc-hero")
+        if (!pinRef.current || !cardRef.current || !textRef.current || !header) return
 
-        const scrollCfg = { trigger: pinRef.current, start: "top top", end: "bottom top", scrub: true }
-        gsap.to(cardRef.current, { rotateX: -10, rotateY: 8, y: -50, scale: 0.92, ease: "none", scrollTrigger: scrollCfg })
-        gsap.to(textRef.current, { y: -30, opacity: 0.35, ease: "none", scrollTrigger: scrollCfg })
+        gsap.set(pinRef.current, { height: "220vh" })
+        gsap.set(header, { position: "sticky", top: 0 })
+
+        gsap.timeline({
+          scrollTrigger: { trigger: pinRef.current, start: "top top", end: "bottom top", scrub: true },
+        })
+          .to(cardRef.current, { rotateX: -10, rotateY: 8, y: -50, scale: 0.92, ease: "none" }, 0)
+          .to(textRef.current, { y: -30, opacity: 0.35, ease: "none" }, 0)
 
         // Las fuentes de next/font y los stats dinamicos pueden desplazar el
         // layout despues del primer paint — recalcula las medidas del pin.
-        requestAnimationFrame(() => ScrollTrigger.refresh())
+        rafId = requestAnimationFrame(() => ScrollTrigger.refresh())
       }
     )
 
-    return () => mm.revert()
-  }, [pinRef, cardRef, textRef])
+    return () => {
+      cancelAnimationFrame(rafId)
+      mm.revert()
+    }
+  }, [])
 }
 
 // ─── ROI Calculator ───────────────────────────────────────────────────────────
@@ -200,13 +214,17 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
       {/* Contenedor "pin": scroll extra que el header consume quedandose fijo
           (sticky) mientras la tarjeta gana profundidad — estilo Apple product page.
           Se anula en tablet/movil via .inc-hero-pin en globals.css. */}
-      <div ref={heroPinRef} className="inc-hero-pin" style={{ position: "relative", height: "220vh" }}>
-      <header className="inc-hero" style={{ position: "sticky", top: 0, minHeight: "100vh", display: "flex", alignItems: "center", padding: "96px 48px 80px", maxWidth: 1320, margin: "0 auto" }}>
+      {/* height/position por defecto son "sin cine": auto/static. useHeroTilt
+          (más abajo) los sube a 220vh/sticky con gsap SOLO si va a animar algo
+          de verdad (desktop + sin prefers-reduced-motion) — una sola fuente
+          de verdad en vez de CSS y JS gateando cosas distintas por separado. */}
+      <div ref={heroPinRef} className="inc-hero-pin" style={{ position: "relative" }}>
+        <header className="inc-hero" style={{ zIndex: 1, minHeight: "100vh", display: "flex", alignItems: "center", padding: "96px 48px 80px", maxWidth: 1320, margin: "0 auto" }}>
         <div style={{ position: "absolute", top: -80, right: -120, width: 620, height: 620, borderRadius: "50%", background: "radial-gradient(circle, oklch(0.70 0.15 35 / 0.16), transparent 65%)", pointerEvents: "none" }} />
         <div className="inc-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.08fr 0.92fr", gap: 64, alignItems: "center", position: "relative", perspective: 1400, width: "100%" }}>
           {/* Left */}
           <div ref={heroTextRef}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: F.mono, fontSize: 11.5, letterSpacing: "0.14em", color: C.accent, border: `1px solid oklch(0.40 0.06 250)`, padding: "7px 14px", borderRadius: 99, textTransform: "uppercase", fontWeight: 600 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: F.mono, fontSize: 11.5, letterSpacing: "0.14em", color: C.accent, border: `1px solid #383B40`, padding: "7px 14px", borderRadius: 99, textTransform: "uppercase", fontWeight: 600 }}>
               <span style={{ width: 6, height: 6, borderRadius: 99, background: C.accent, animation: "inc-pulse 2s infinite" }} />
               Captación verificada
             </div>
@@ -227,7 +245,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
 
           {/* Floating card — tratamiento "material": cristal traslucido con
               profundidad, en vez de panel opaco tipo admin. */}
-          <div ref={heroCardRef} className="inc-hero-card" style={{ position: "relative", transformStyle: "preserve-3d" }}>
+          <div ref={heroCardRef} className="inc-hero-card" style={{ position: "relative", transformStyle: "preserve-3d", willChange: "transform" }}>
             <div style={{ position: "absolute", inset: -40, background: "radial-gradient(circle at 60% 40%, oklch(0.70 0.15 35 / 0.20), transparent 70%)", filter: "blur(28px)" }} />
             <div style={{
               position: "relative",
@@ -265,7 +283,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
                     {i > 0 && <div style={{ height: 1, background: "rgba(255,255,255,0.06)" }} />}
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 2px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <span style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(255,255,255,0.05)", fontFamily: F.mono, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>{item.id}</span>
+                        <span style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(255,255,255,0.03)", fontFamily: F.mono, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>{item.id}</span>
                         <span style={{ fontSize: 13, fontWeight: 500 }}>{item.name}</span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

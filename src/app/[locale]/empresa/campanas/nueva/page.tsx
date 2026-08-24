@@ -154,8 +154,8 @@ export default function NuevaCampanaPage() {
                     onClick={() => toggleType(value)}
                     className="p-3 rounded-xl text-left transition-all relative"
                     style={{
-                      background: active ? "rgba(43,212,154,0.10)" : "#26282C",
-                      border: active ? "1px solid rgba(43,212,154,0.25)" : "1px solid #34373C",
+                      background: active ? "rgba(232,115,90,0.10)" : "#26282C",
+                      border: active ? "1px solid rgba(232,115,90,0.25)" : "1px solid #34373C",
                       color: active ? "#E8735A" : "#AEB2B8",
                     }}
                   >
@@ -210,7 +210,7 @@ export default function NuevaCampanaPage() {
 
           {/* Bono fields — shown if BONO selected */}
           {form.incentiveTypes.includes("BONO") && (
-            <div className="space-y-4 rounded-xl p-4" style={{ background: "rgba(43,212,154,0.05)", border: "1px solid rgba(43,212,154,0.12)" }}>
+            <div className="space-y-4 rounded-xl p-4" style={{ background: "rgba(232,115,90,0.05)", border: "1px solid rgba(232,115,90,0.12)" }}>
               <p className="text-[11px] uppercase tracking-[0.1em] font-mono" style={{ color: "#E8735A" }}>Configuración del bono</p>
               <div>
                 <label className="block text-[13px] font-medium mb-1.5" style={{ color: "#F2F1EF" }}>{t("bonus_description")}</label>

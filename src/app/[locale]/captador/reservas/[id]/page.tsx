@@ -30,8 +30,8 @@ export default async function ReservaDetailPage({
   const qrDataUrl = await generateQRDataURL(reservation.qrToken)
 
   const statusConfig: Record<string, { label: string; bg: string; color: string; border: string }> = {
-    PENDING:   { label: t("status_pending"),   bg: "rgba(251,191,36,0.10)",  color: "#D9B36C", border: "rgba(251,191,36,0.25)" },
-    CONFIRMED: { label: t("status_confirmed"), bg: "rgba(43,212,154,0.10)",  color: "#E8735A", border: "rgba(43,212,154,0.20)" },
+    PENDING:   { label: t("status_pending"),   bg: "rgba(217,179,108,0.10)",  color: "#D9B36C", border: "rgba(217,179,108,0.25)" },
+    CONFIRMED: { label: t("status_confirmed"), bg: "rgba(232,115,90,0.10)",  color: "#E8735A", border: "rgba(232,115,90,0.20)" },
     CANCELLED: { label: t("status_cancelled"), bg: "rgba(220,38,38,0.12)",   color: "#dc2626", border: "rgba(220,38,38,0.20)" },
     NO_SHOW:   { label: t("status_no_show"),   bg: "#34373C",   color: "#AEB2B8", border: "#34373C" },
   }

@@ -168,7 +168,7 @@ export default function ScanPage() {
           <div className="flex flex-col items-center gap-4 py-10">
             <div
               className="h-10 w-10 rounded-full border-2 animate-spin"
-              style={{ borderColor: "rgba(43,212,154,0.20)", borderTopColor: ACC }}
+              style={{ borderColor: "rgba(232,115,90,0.20)", borderTopColor: ACC }}
             />
             <p className="text-[13px]" style={{ color: MUT }}>Verificando reserva...</p>
           </div>
@@ -193,7 +193,7 @@ export default function ScanPage() {
           <div className="space-y-5">
             <div className="text-center">
               <div className="inline-flex items-center justify-center h-12 w-12 rounded-2xl mb-3"
-                style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}>
+                style={{ background: "rgba(232,115,90,0.10)", border: "1px solid rgba(232,115,90,0.20)" }}>
                 <QrCode className="h-6 w-6" style={{ color: ACC }} />
               </div>
               <p className="text-[10px] uppercase tracking-[0.12em] font-mono" style={{ color: MUT }}>
@@ -205,7 +205,7 @@ export default function ScanPage() {
             <div className="rounded-2xl p-4 space-y-3" style={{ background: INP, border: `1px solid ${BDR}` }}>
               <div className="flex items-center gap-3">
                 <div className="h-11 w-11 rounded-full flex items-center justify-center font-bold text-[16px] shrink-0"
-                  style={{ background: "rgba(43,212,154,0.12)", color: ACC }}>
+                  style={{ background: "rgba(232,115,90,0.12)", color: ACC }}>
                   {reservation.clientName.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -318,7 +318,7 @@ export default function ScanPage() {
         {state === "confirmed" && reservation && (
           <div className="flex flex-col items-center gap-5 py-6 text-center">
             <div className="h-20 w-20 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}>
+              style={{ background: "rgba(232,115,90,0.10)", border: "1px solid rgba(232,115,90,0.20)" }}>
               <CheckCircle className="h-10 w-10" style={{ color: ACC }} />
             </div>
             <div>
@@ -331,7 +331,7 @@ export default function ScanPage() {
               )}
             </div>
             <div className="w-full rounded-xl p-3 flex items-center gap-2 text-[13px]"
-              style={{ background: "rgba(43,212,154,0.08)", border: "1px solid rgba(43,212,154,0.20)", color: ACC }}>
+              style={{ background: "rgba(232,115,90,0.08)", border: "1px solid rgba(232,115,90,0.20)", color: ACC }}>
               <Shield className="h-4 w-4 shrink-0" />
               Incentivo acreditado automáticamente al captador.
             </div>
@@ -342,7 +342,7 @@ export default function ScanPage() {
         {state === "already_scanned" && reservation && (
           <div className="flex flex-col items-center gap-4 py-6 text-center">
             <div className="h-16 w-16 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(251,191,36,0.10)", border: "1px solid rgba(251,191,36,0.25)" }}>
+              style={{ background: "rgba(217,179,108,0.10)", border: "1px solid rgba(217,179,108,0.25)" }}>
               <Clock className="h-8 w-8" style={{ color: "#D9B36C" }} />
             </div>
             <div>

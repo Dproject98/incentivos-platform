@@ -98,11 +98,11 @@ export function AddStaffForm() {
       {newPin && (
         <div
           className="rounded-2xl p-4 flex items-center gap-4"
-          style={{ background: "rgba(43,212,154,0.06)", border: "1px solid rgba(43,212,154,0.20)" }}
+          style={{ background: "rgba(232,115,90,0.06)", border: "1px solid rgba(232,115,90,0.20)" }}
         >
           <div
             className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(43,212,154,0.10)", border: "1px solid rgba(43,212,154,0.20)" }}
+            style={{ background: "rgba(232,115,90,0.10)", border: "1px solid rgba(232,115,90,0.20)" }}
           >
             <Lock className="h-5 w-5" style={{ color: "#E8735A" }} />
           </div>
@@ -116,7 +116,7 @@ export function AddStaffForm() {
                   <div
                     key={i}
                     className="h-9 w-9 rounded-xl flex items-center justify-center font-bold font-mono text-[18px]"
-                    style={{ background: "#26282C", border: "1px solid rgba(43,212,154,0.25)", color: "#E8735A" }}
+                    style={{ background: "#26282C", border: "1px solid rgba(232,115,90,0.25)", color: "#E8735A" }}
                   >
                     {d}
                   </div>
@@ -125,7 +125,7 @@ export function AddStaffForm() {
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1 rounded-lg transition-opacity hover:opacity-70"
-                style={{ background: "rgba(43,212,154,0.10)", color: "#E8735A" }}
+                style={{ background: "rgba(232,115,90,0.10)", color: "#E8735A" }}
               >
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                 {copied ? "Copiado" : "Copiar"}
