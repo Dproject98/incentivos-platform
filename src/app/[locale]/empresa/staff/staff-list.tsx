@@ -90,7 +90,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
           {/* Inline confirm */}
           {confirmId === s.id && (
             <div
-              className="mt-1.5 p-3 rounded-xl flex items-center gap-3"
+              className="mt-1.5 p-3 rounded-xl flex items-center gap-3 inc-anim-fade-lift-sm"
               style={{ background: "rgba(220,38,38,0.12)", border: "1px solid rgba(220,38,38,0.20)" }}
             >
               <AlertTriangle className="h-4 w-4 shrink-0" style={{ color: "#dc2626" }} />

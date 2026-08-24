@@ -37,6 +37,10 @@
     --silver: 0 0% 75%;
     --gold: 51 100% 50%;
     --platinum: 220 13% 90%;
+
+    /* Motion tokens — usar en toda la app, no inventar curvas nuevas */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
 }
 
@@ -70,6 +74,44 @@
 @keyframes inc-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes inc-pulse { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.25); } }
 @keyframes inc-float { 0%,100% { transform:translateY(0) rotate(-2deg); } 50% { transform:translateY(-14px) rotate(-2deg); } }
+
+/* ─── Shared motion: feedback + state entrances ───────────────── */
+/* PIN incorrecto: shake horizontal, se relanza remontando el nodo con `key` */
+@keyframes inc-shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+.inc-anim-shake { animation: inc-shake 240ms var(--ease-out); }
+
+/* Momento de éxito (confirmación de escaneo): pop sutil con leve overshoot */
+@keyframes inc-pop-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.inc-anim-pop-in { animation: inc-pop-in 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Entrada genérica: swaps de estado, subformularios y paneles condicionales */
+@keyframes inc-fade-lift {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.inc-anim-fade-lift { animation: inc-fade-lift 200ms var(--ease-out); }
+.inc-anim-fade-lift-sm { animation: inc-fade-lift 180ms var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Todas son animaciones de entrada al montar (no hay estado "oculto" fuera
+     del keyframe): desactivarlas deja el elemento visible de inmediato en su
+     posición final, que es justo el resultado "sin movimiento" que se busca. */
+  .inc-anim-shake,
+  .inc-anim-pop-in,
+  .inc-anim-fade-lift,
+  .inc-anim-fade-lift-sm {
+    animation: none;
+  }
+}
 
 /* ─── Landing responsive ──────────────────────────────────────── */
 /* Tablet */
