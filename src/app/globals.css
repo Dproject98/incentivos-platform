@@ -75,6 +75,8 @@
 /* ─── Landing responsive ──────────────────────────────────────── */
 /* Tablet */
 @media (max-width: 1024px) {
+  .inc-hero-pin     { height: auto !important; }
+  .inc-hero         { position: static !important; min-height: 0 !important; }
   .inc-hero-grid    { grid-template-columns: 1fr !important; }
   .inc-hero-card    { display: none !important; }
   .inc-niveles-grid { grid-template-columns: 1fr 1fr !important; }

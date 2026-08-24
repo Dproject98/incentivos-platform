@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { IncentisLogo } from "@/components/IncentisLogo"
+
+gsap.registerPlugin(ScrollTrigger)
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const C = {
@@ -57,6 +61,39 @@ function useReveal(rootRef: React.RefObject<HTMLElement | null>) {
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [rootRef])
+}
+
+// ─── Hero: profundidad ligada al scroll (estilo Apple: pin + scrub) ───────────
+// Solo desktop (>=1025px, donde vive la tarjeta flotante) y solo si el usuario
+// no pide prefers-reduced-motion. gsap.matchMedia() limpia solo al cambiar de
+// breakpoint o al desmontar — no hace falta gestionarlo a mano.
+function useHeroTilt(
+  pinRef: React.RefObject<HTMLDivElement | null>,
+  cardRef: React.RefObject<HTMLDivElement | null>,
+  textRef: React.RefObject<HTMLDivElement | null>
+) {
+  useEffect(() => {
+    const mm = gsap.matchMedia()
+
+    mm.add(
+      { desktop: "(min-width: 1025px)", motionOk: "(prefers-reduced-motion: no-preference)" },
+      (context) => {
+        const { desktop, motionOk } = context.conditions as { desktop: boolean; motionOk: boolean }
+        if (!desktop || !motionOk) return
+        if (!pinRef.current || !cardRef.current || !textRef.current) return
+
+        const scrollCfg = { trigger: pinRef.current, start: "top top", end: "bottom top", scrub: true }
+        gsap.to(cardRef.current, { rotateX: -10, rotateY: 8, y: -50, scale: 0.92, ease: "none", scrollTrigger: scrollCfg })
+        gsap.to(textRef.current, { y: -30, opacity: 0.35, ease: "none", scrollTrigger: scrollCfg })
+
+        // Las fuentes de next/font y los stats dinamicos pueden desplazar el
+        // layout despues del primer paint — recalcula las medidas del pin.
+        requestAnimationFrame(() => ScrollTrigger.refresh())
+      }
+    )
+
+    return () => mm.revert()
+  }, [pinRef, cardRef, textRef])
 }
 
 // ─── ROI Calculator ───────────────────────────────────────────────────────────
@@ -125,6 +162,10 @@ interface Props {
 export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props) {
   const rootRef = useRef<HTMLDivElement>(null)
   useReveal(rootRef)
+  const heroPinRef = useRef<HTMLDivElement>(null)
+  const heroCardRef = useRef<HTMLDivElement>(null)
+  const heroTextRef = useRef<HTMLDivElement>(null)
+  useHeroTilt(heroPinRef, heroCardRef, heroTextRef)
   const eur = (n: number) => "€" + Math.round(n).toLocaleString("es-ES")
 
   return (
@@ -156,11 +197,15 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
       </nav>
 
       {/* ── HERO ── */}
-      <header className="inc-hero" style={{ position: "relative", padding: "96px 48px 80px", maxWidth: 1320, margin: "0 auto" }}>
+      {/* Contenedor "pin": scroll extra que el header consume quedandose fijo
+          (sticky) mientras la tarjeta gana profundidad — estilo Apple product page.
+          Se anula en tablet/movil via .inc-hero-pin en globals.css. */}
+      <div ref={heroPinRef} className="inc-hero-pin" style={{ position: "relative", height: "220vh" }}>
+      <header className="inc-hero" style={{ position: "sticky", top: 0, minHeight: "100vh", display: "flex", alignItems: "center", padding: "96px 48px 80px", maxWidth: 1320, margin: "0 auto" }}>
         <div style={{ position: "absolute", top: -80, right: -120, width: 620, height: 620, borderRadius: "50%", background: "radial-gradient(circle, oklch(0.70 0.15 35 / 0.16), transparent 65%)", pointerEvents: "none" }} />
-        <div className="inc-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.08fr 0.92fr", gap: 64, alignItems: "center", position: "relative" }}>
+        <div className="inc-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.08fr 0.92fr", gap: 64, alignItems: "center", position: "relative", perspective: 1400, width: "100%" }}>
           {/* Left */}
-          <div>
+          <div ref={heroTextRef}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontFamily: F.mono, fontSize: 11.5, letterSpacing: "0.14em", color: C.accent, border: `1px solid oklch(0.40 0.06 250)`, padding: "7px 14px", borderRadius: 99, textTransform: "uppercase", fontWeight: 600 }}>
               <span style={{ width: 6, height: 6, borderRadius: 99, background: C.accent, animation: "inc-pulse 2s infinite" }} />
               Captación verificada
@@ -181,7 +226,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           </div>
 
           {/* Floating card */}
-          <div className="inc-hero-card" style={{ position: "relative" }}>
+          <div ref={heroCardRef} className="inc-hero-card" style={{ position: "relative", transformStyle: "preserve-3d" }}>
             <div style={{ position: "absolute", inset: -40, background: "radial-gradient(circle at 60% 40%, oklch(0.70 0.15 35 / 0.18), transparent 70%)", filter: "blur(20px)" }} />
             <div style={{ position: "relative", background: `linear-gradient(180deg, ${C.s2}, #1C1D20)`, border: "1px solid #383B40", borderRadius: 22, padding: 24, boxShadow: "0 40px 90px -30px rgba(0,0,0,.7)", animation: "inc-float 7s ease-in-out infinite" }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
@@ -223,6 +268,7 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           </div>
         </div>
       </header>
+      </div>
 
       {/* ── MARQUEE ── */}
       <div style={{ borderTop: "1px solid #34373C", borderBottom: "1px solid #34373C", padding: "22px 0", overflow: "hidden", whiteSpace: "nowrap" }}>
