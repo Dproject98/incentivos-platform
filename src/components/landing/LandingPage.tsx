@@ -404,39 +404,42 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
       </section>
 
       {/* ── ANTI-FRAUDE + ANONIMATO ── */}
-      <section className="inc-antifraud" style={{ background: C.lightBg, color: C.ink, padding: "120px 48px" }}>
-        <div className="inc-antifraud-grid" style={{ maxWidth: 1320, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
-          <div data-reveal style={{ background: "#fff", border: "1px solid #E4E4E6", borderRadius: 24, padding: 48 }}>
-            <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.14em", color: C.accentOnLight, textTransform: "uppercase", fontWeight: 600 }}>Atribución anti-fraude</div>
-            <h3 className="inc-antifraud-h3" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 42, letterSpacing: "-0.03em", margin: "18px 0 0", lineHeight: 1 }}>Cada conversión, verificada.</h3>
-            <p style={{ fontSize: 16, color: "#5C6066", lineHeight: 1.55, margin: "18px 0 28px" }}>
-              QR de un solo uso por reserva. KYC del captador antes del primer pago. Sistema anti-self-referral automático.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {["QR de un solo uso por reserva", "KYC verificado antes del pago", "Anti-self-referral automático", "Historial inmutable de conversiones"].map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "oklch(0.97 0.006 250)", borderRadius: 11, padding: "13px 16px" }}>
-                  <span style={{ fontSize: 14, fontWeight: 500 }}>{item}</span>
-                  <span style={{ color: C.accentOnLight, fontWeight: 700 }}>✓</span>
-                </div>
-              ))}
-            </div>
+      {/* El contraste claro/oscuro sigue significando algo real (confianza
+          para el negocio vs. anonimato para el captador) — lo que se quita
+          es que cada mitad fuera ademas una "tarjeta" con su propio borde
+          y radio flotando sobre un fondo. Ahora el color de cada mitad ES
+          el fondo de la seccion, sin caja alrededor. */}
+      <section className="inc-antifraud" style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+        <div className="inc-antifraud-half" data-reveal style={{ background: C.lightBg, color: C.ink, padding: "100px 56px" }}>
+          <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.14em", color: C.accentOnLight, textTransform: "uppercase", fontWeight: 600 }}>Atribución anti-fraude</div>
+          <h3 className="inc-antifraud-h3" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 42, letterSpacing: "-0.03em", margin: "18px 0 0", lineHeight: 1 }}>Cada conversión, verificada.</h3>
+          <p style={{ fontSize: 16, color: "#5C6066", lineHeight: 1.55, margin: "18px 0 28px", maxWidth: 420 }}>
+            QR de un solo uso por reserva. KYC del captador antes del primer pago. Sistema anti-self-referral automático.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {["QR de un solo uso por reserva", "KYC verificado antes del pago", "Anti-self-referral automático", "Historial inmutable de conversiones"].map((item, i) => (
+              <div key={item} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0", borderTop: i > 0 ? "1px solid #E4E2DE" : "none" }}>
+                <span style={{ fontSize: 14, fontWeight: 500 }}>{item}</span>
+                <span style={{ color: C.accentOnLight, fontWeight: 700 }}>✓</span>
+              </div>
+            ))}
           </div>
-          <div data-reveal style={{ background: "#16171A", color: C.text, borderRadius: 24, padding: 48, display: "flex", flexDirection: "column" }}>
-            <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.14em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Para captadores</div>
-            <h3 className="inc-antifraud-h3" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 42, letterSpacing: "-0.03em", margin: "18px 0 0", lineHeight: 1 }}>Anonimato total.<br />Cobro real.</h3>
-            <p style={{ fontSize: 16, color: "#AEB2B8", lineHeight: 1.55, margin: "18px 0 28px" }}>
-              El cliente final nunca sabe quién recomendó. Tu empleador no sabe que captas. El pago va a tu cuenta personal.
-            </p>
-            <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 18, background: "#1F2124", border: "1px solid #34373C", borderRadius: 18, padding: 24 }}>
-              <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#292B2F", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 700, color: C.faint, flexShrink: 0 }}>?</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 15, fontWeight: 600 }}>Captador anónimo</div>
-                <div style={{ fontFamily: F.mono, fontSize: 11, color: "#93979E", marginTop: 3 }}>Identidad protegida · KYC interno</div>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                <div style={{ fontFamily: F.mono, fontSize: 11, color: "#93979E" }}>cuenta personal</div>
-                <div style={{ fontFamily: F.brand, fontSize: 24, fontWeight: 800, color: C.accent }}>€15 →</div>
-              </div>
+        </div>
+        <div className="inc-antifraud-half" data-reveal style={{ background: "#16171A", color: C.text, padding: "100px 56px", display: "flex", flexDirection: "column" }}>
+          <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.14em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Para captadores</div>
+          <h3 className="inc-antifraud-h3" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 42, letterSpacing: "-0.03em", margin: "18px 0 0", lineHeight: 1 }}>Anonimato total.<br />Cobro real.</h3>
+          <p style={{ fontSize: 16, color: "#AEB2B8", lineHeight: 1.55, margin: "18px 0 28px", maxWidth: 420 }}>
+            El cliente final nunca sabe quién recomendó. Tu empleador no sabe que captas. El pago va a tu cuenta personal.
+          </p>
+          <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: 18, borderTop: "1px solid #34373C", paddingTop: 24 }}>
+            <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#292B2F", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 700, color: C.faint, flexShrink: 0 }}>?</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 15, fontWeight: 600 }}>Captador anónimo</div>
+              <div style={{ fontFamily: F.mono, fontSize: 11, color: "#93979E", marginTop: 3 }}>Identidad protegida · KYC interno</div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontFamily: F.mono, fontSize: 11, color: "#93979E" }}>cuenta personal</div>
+              <div style={{ fontFamily: F.brand, fontSize: 24, fontWeight: 800, color: C.accent }}>€15 →</div>
             </div>
           </div>
         </div>
@@ -448,58 +451,54 @@ export function LandingPage({ locale, confirmedThisMonth, paidThisWeek }: Props)
           <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Programa de niveles</div>
           <h2 className="inc-niveles-h2" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 60, letterSpacing: "-0.04em", margin: "16px 0 0", lineHeight: 0.96 }}>Cuanto más captas, más ganas.</h2>
         </div>
-        <div className="inc-niveles-grid" data-reveal style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
+        {/* Una sola hoja de especificaciones con divisores internos, en vez
+            de 4 tarjetas de precios sueltas — la caja es el conjunto, no
+            cada nivel por separado. */}
+        <div className="inc-niveles-grid" data-reveal style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", border: `1px solid ${C.border}`, borderRadius: 20, overflow: "hidden" }}>
           {[
-            { name: "Bronze", range: "0–9 conv.", mult: "1×", multColor: C.faint, payout: "payout 72h", bg: C.s1, border: C.border, color: C.text },
-            { name: "Silver", range: "10–29 conv.", mult: "1.25×", multColor: "#C5C8CC", payout: "payout 48h", bg: C.s1, border: C.border, color: C.text },
-            { name: "Gold", range: "30–99 conv.", mult: "1.5×", multColor: C.ink, payout: "payout 24h", bg: C.grad, border: "none", color: C.ink, popular: true },
-            { name: "Platinum", range: "100+ conv.", mult: "2×", multColor: C.text, payout: "payout 12h", bg: C.s1, border: C.borderStrong, color: C.text },
-          ].map((tier) => (
-            <div key={tier.name} style={{ background: tier.bg, border: tier.border !== "none" ? `1px solid ${tier.border}` : undefined, borderRadius: 18, padding: 28, position: "relative", color: tier.color }}>
+            { name: "Bronze", range: "0–9 conv.", mult: "1×", payout: "payout 72h" },
+            { name: "Silver", range: "10–29 conv.", mult: "1.25×", payout: "payout 48h" },
+            { name: "Gold", range: "30–99 conv.", mult: "1.5×", payout: "payout 24h", popular: true },
+            { name: "Platinum", range: "100+ conv.", mult: "2×", payout: "payout 12h" },
+          ].map((tier, i) => (
+            <div key={tier.name} style={{
+              padding: "32px 24px",
+              borderLeft: i > 0 ? `1px solid ${C.border}` : "none",
+              background: tier.popular ? "oklch(0.70 0.15 35 / 0.06)" : "transparent",
+              position: "relative",
+            }}>
               {tier.popular && (
-                <span style={{ position: "absolute", top: 16, right: 16, fontFamily: F.mono, fontSize: 10, fontWeight: 600, background: C.ink, color: C.accent, padding: "4px 9px", borderRadius: 6 }}>POPULAR</span>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: C.grad }} />
               )}
-              <div style={{ fontFamily: F.brand, fontWeight: 700, fontSize: 22 }}>{tier.name}</div>
-              <div style={{ fontSize: 12, color: tier.popular ? undefined : "#93979E", opacity: tier.popular ? 0.65 : 1, marginTop: 4 }}>{tier.range}</div>
-              <div className="inc-niveles-mult" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 52, marginTop: 24, color: tier.multColor }}>{tier.mult}</div>
-              <div style={{ fontFamily: F.mono, fontSize: 11, color: tier.popular ? undefined : "#7C8087", opacity: tier.popular ? 0.7 : 1, marginTop: 8 }}>{tier.payout}</div>
+              <div style={{ fontFamily: F.mono, fontSize: 11, letterSpacing: "0.06em", color: tier.popular ? C.accent : "#93979E", textTransform: "uppercase", fontWeight: 600 }}>{tier.name}</div>
+              <div style={{ fontSize: 12, color: "#7C8087", marginTop: 4 }}>{tier.range}</div>
+              <div className="inc-niveles-mult" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 48, marginTop: 22, letterSpacing: "-0.02em", color: C.text }}>{tier.mult}</div>
+              <div style={{ fontFamily: F.mono, fontSize: 11, color: "#7C8087", marginTop: 8 }}>{tier.payout}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── PROGRAMA FUNDADOR ── */}
-      <section className="inc-founder" style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 48px 120px", textAlign: "center" }}>
-        <div className="inc-founder-card" data-reveal style={{ background: C.s1, border: `1px solid ${C.border}`, borderRadius: 28, padding: "64px 56px" }}>
-          <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Programa fundador</div>
-          <p className="inc-founder-title" style={{ fontFamily: F.brand, fontWeight: 700, fontSize: 40, lineHeight: 1.12, letterSpacing: "-0.02em", margin: "18px auto 0", maxWidth: 720 }}>
-            Estamos en fase de lanzamiento. Sé de los primeros negocios en Incentis.
-          </p>
-          <p style={{ fontSize: 16, color: "#A4A8AE", lineHeight: 1.55, margin: "18px auto 0", maxWidth: 540 }}>
-            Los negocios fundadores entran con onboarding asistido 1:1, comisión reducida de por vida y línea directa con el equipo. Sin permanencia, sin tarjeta.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", marginTop: 34 }}>
-            <Link href={`/${locale}/register/empresa`} style={{ fontSize: 16, fontWeight: 700, color: C.ink, background: C.accent, padding: "16px 30px", borderRadius: 99, textDecoration: "none" }}>Solicitar acceso fundador →</Link>
-          </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginTop: 30, fontFamily: F.mono, fontSize: 12, color: "oklch(0.58 0.01 250)", flexWrap: "wrap" }}>
-            <span>Plazas limitadas</span><span style={{ opacity: 0.4 }}>·</span>
-            <span>Comisión reducida de por vida</span><span style={{ opacity: 0.4 }}>·</span>
-            <span>Onboarding 1:1</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA FINAL ── */}
-      <section className="inc-cta-wrap" style={{ padding: "0 48px 80px" }}>
-        <div className="inc-cta-inner" data-reveal style={{ maxWidth: 1320, margin: "0 auto", background: `linear-gradient(135deg, oklch(0.70 0.15 35), ${C.accentDeeper})`, borderRadius: 32, padding: "96px 64px", textAlign: "center", color: C.ink, position: "relative", overflow: "hidden" }}>
-          <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", fontWeight: 600, opacity: 0.6 }}>Empieza hoy</div>
-          <h2 className="inc-cta-h2" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: 72, lineHeight: 0.94, letterSpacing: "-0.04em", margin: "18px auto 0", maxWidth: 760 }}>
+      {/* ── CIERRE ── */}
+      {/* Antes eran dos secciones distintas (Programa fundador + CTA final)
+          cada una metida en su propia caja redondeada con fondo de color —
+          el patron de "banner" generico. Apple no encierra sus cierres en
+          rectangulos flotantes: el fondo de la seccion ES el color, el texto
+          y los botones van directos encima. Fusionadas en un solo cierre,
+          sin caja, sin repetir el mismo mensaje dos veces. */}
+      <section className="inc-close" style={{ position: "relative", padding: "160px 48px", textAlign: "center", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 900px 500px at 50% 0%, oklch(0.70 0.15 35 / 0.16), transparent 70%)", pointerEvents: "none" }} />
+        <div data-reveal style={{ position: "relative", maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ fontFamily: F.mono, fontSize: 12, letterSpacing: "0.16em", color: C.accent, textTransform: "uppercase", fontWeight: 600 }}>Programa fundador · plazas limitadas</div>
+          <h2 className="inc-close-h2" style={{ fontFamily: F.brand, fontWeight: 800, fontSize: "clamp(38px, 5.2vw, 72px)", lineHeight: 0.96, letterSpacing: "-0.04em", margin: "20px 0 0" }}>
             Paga solo cuando traen un cliente real.
           </h2>
-          <p style={{ fontSize: 18, margin: "20px 0 0", fontWeight: 500, opacity: 0.7 }}>Sin tarjeta · Sin fee mensual · Activo en 10 minutos.</p>
+          <p style={{ fontSize: 18, color: "#A4A8AE", lineHeight: 1.55, margin: "22px auto 0", maxWidth: 520 }}>
+            Los negocios fundadores entran con onboarding asistido 1:1 y comisión reducida de por vida. Sin tarjeta, sin permanencia, activo en 10 minutos.
+          </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 13, marginTop: 40, flexWrap: "wrap" }}>
-            <Link href={`/${locale}/register/empresa`} style={{ fontSize: 16, fontWeight: 700, color: C.text, background: C.ink, padding: "17px 34px", borderRadius: 99, textDecoration: "none" }}>Soy empresa</Link>
-            <Link href={`/${locale}/register/captador`} style={{ fontSize: 16, fontWeight: 700, color: C.ink, background: "#fff", padding: "17px 34px", borderRadius: 99, textDecoration: "none" }}>Quiero captar</Link>
+            <Link href={`/${locale}/register/empresa`} style={{ fontSize: 16, fontWeight: 700, color: C.ink, background: C.accent, padding: "16px 32px", borderRadius: 99, textDecoration: "none" }}>Solicitar acceso fundador →</Link>
+            <Link href={`/${locale}/register/captador`} style={{ fontSize: 16, fontWeight: 600, color: C.text, border: `1px solid ${C.border}`, padding: "16px 32px", borderRadius: 99, textDecoration: "none" }}>Quiero captar</Link>
           </div>
         </div>
       </section>
