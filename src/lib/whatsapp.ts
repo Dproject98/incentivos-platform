@@ -1,4 +1,5 @@
 import twilio from "twilio"
+import { isPlaceholder, devLog } from "./dev-mode"
 
 // Lazy initialization — instantiated at call time, not module load time.
 function getTwilioClient() {
@@ -6,6 +7,10 @@ function getTwilioClient() {
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_AUTH_TOKEN
   )
+}
+
+function twilioConfigured() {
+  return !isPlaceholder(process.env.TWILIO_ACCOUNT_SID) && !isPlaceholder(process.env.TWILIO_AUTH_TOKEN)
 }
 
 interface ReservationWhatsAppData {
@@ -30,6 +35,11 @@ export async function sendReservationWhatsApp(data: ReservationWhatsAppData) {
   const phone = data.clientPhone.startsWith("+")
     ? data.clientPhone
     : `+${data.clientPhone}`
+
+  if (!twilioConfigured()) {
+    devLog("whatsapp", `TWILIO_* es placeholder — no se envia WhatsApp real a ${phone}`, { body })
+    return
+  }
 
   const client = getTwilioClient()
   await client.messages.create({

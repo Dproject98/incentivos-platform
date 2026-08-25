@@ -103,7 +103,7 @@ export function AdminCobrosClient({
                   <span className="text-[18px] font-bold" style={{ color: "#fbbf24" }}>{p.amount.toFixed(2)} €</span>
                   <button
                     onClick={() => setExpanded(expanded === p.id ? null : p.id)}
-                    className="h-8 w-8 rounded-lg flex items-center justify-center"
+                    className="h-8 w-8 rounded-lg flex items-center justify-center active:scale-90"
                     style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${BDR}` }}
                   >
                     {expanded === p.id
@@ -141,7 +141,7 @@ export function AdminCobrosClient({
                 <button
                   onClick={() => handle(p.id, "confirm")}
                   disabled={processing === p.id}
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90 active:scale-[0.98]"
                   style={{ background: ACC, color: INK }}
                 >
                   <CheckCircle className="h-4 w-4" />
@@ -150,7 +150,7 @@ export function AdminCobrosClient({
                 <button
                   onClick={() => handle(p.id, "reject")}
                   disabled={processing === p.id}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[14px] font-medium transition-opacity disabled:opacity-40 hover:opacity-70"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[14px] font-medium transition-opacity disabled:opacity-40 hover:opacity-70 active:scale-[0.98]"
                   style={{ background: "rgba(220,38,38,0.10)", color: "#dc2626", border: "1px solid rgba(220,38,38,0.20)" }}
                 >
                   <XCircle className="h-4 w-4" />
