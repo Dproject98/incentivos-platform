@@ -158,7 +158,7 @@ export default function FacturacionPage() {
                 {key && (
                   <button
                     onClick={() => copy(value, key)}
-                    className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70"
+                    className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70 active:scale-[0.97]"
                     style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${BDR}` }}
                   >
                     {copied === key ? <Check className="h-3.5 w-3.5" style={{ color: ACC }} /> : <Copy className="h-3.5 w-3.5" style={{ color: MUT }} />}
@@ -182,7 +182,7 @@ export default function FacturacionPage() {
               <button
                 onClick={handleNotify}
                 disabled={submitting || !reference.trim()}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90 active:scale-[0.97]"
                 style={{ background: ACC, color: INK, whiteSpace: "nowrap" }}
               >
                 <Send className="h-4 w-4" />

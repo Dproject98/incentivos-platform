@@ -94,7 +94,7 @@ export default function NuevaCampanaPage() {
       <div className="flex items-center gap-3">
         <Link href={`/${locale}/empresa/campanas`}>
           <button
-            className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80"
+            className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80 active:scale-[0.97]"
             style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
           >
             <ArrowLeft className="h-4 w-4" style={{ color: "#ffffff" }} />
@@ -152,7 +152,7 @@ export default function NuevaCampanaPage() {
                     key={value}
                     type="button"
                     onClick={() => toggleType(value)}
-                    className="p-3 rounded-xl text-left transition-all relative"
+                    className="p-3 rounded-xl text-left transition-all relative active:scale-[0.97]"
                     style={{
                       background: active ? "rgba(43,212,154,0.10)" : "oklch(0.22 0.015 250)",
                       border: active ? "1px solid rgba(43,212,154,0.25)" : "1px solid oklch(0.30 0.02 250)",
@@ -291,7 +291,7 @@ export default function NuevaCampanaPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90"
+            className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 active:scale-[0.97]"
             style={{ background: "#2bd49a", color: "#0c0c0a" }}
           >
             {loading ? "Creando..." : t("create")}

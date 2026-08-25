@@ -1,10 +1,15 @@
 import { Resend } from "resend"
 import { generateQRDataURL } from "./qr"
+import { isPlaceholder, devLog } from "./dev-mode"
 
 // Lazy initialization — instantiated at call time, not module load time,
 // so missing env vars don't crash the build during page data collection.
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY)
+}
+
+function resendConfigured() {
+  return !isPlaceholder(process.env.RESEND_API_KEY)
 }
 
 interface ReservationEmailData {
@@ -57,6 +62,11 @@ export async function sendReservationEmail(data: ReservationEmailData) {
     </div>
   `
 
+  if (!resendConfigured()) {
+    devLog("email", `RESEND_API_KEY es placeholder — no se envia email real a ${data.clientEmail}`, { subject, scanUrl })
+    return
+  }
+
   const resend = getResend()
   await resend.emails.send({
     from: "Incentivos Platform <reservas@incentivos.app>",
@@ -99,6 +109,12 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string) {
       </p>
     </div>
   `
+
+  if (!resendConfigured()) {
+    // El enlace es justo lo que hace falta para probar el flujo a mano en local.
+    devLog("email", `RESEND_API_KEY es placeholder — enlace de reseteo para ${email}:`, resetUrl)
+    return
+  }
 
   const resend = getResend()
   await resend.emails.send({

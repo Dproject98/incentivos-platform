@@ -218,7 +218,7 @@ export default function ScanPage() {
 
             <button
               onClick={() => setState("pin_entry")}
-              className="w-full py-3.5 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
+              className="w-full py-3.5 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90 active:scale-[0.98]"
               style={{ background: ACC, color: INK }}
             >
               Verificar reserva
@@ -234,7 +234,7 @@ export default function ScanPage() {
               <button
                 onClick={() => { setPin(["", "", "", ""]); setPinError(false); setState("ready") }}
                 disabled={state === "confirming"}
-                className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
+                className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70 active:scale-90 disabled:opacity-30"
                 style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${BDR}` }}
               >
                 <X className="h-4 w-4" style={{ color: MUT }} />
@@ -291,7 +291,7 @@ export default function ScanPage() {
                 </button>
               ))}
               <button onClick={handleBackspace} disabled={state === "confirming"}
-                className="h-12 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70 disabled:opacity-30"
+                className="h-12 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70 active:scale-95 disabled:opacity-30"
                 style={{ background: INP, border: `1px solid ${BDR}` }}>
                 <span className="text-[18px]" style={{ color: MUT }}>⌫</span>
               </button>
@@ -301,7 +301,7 @@ export default function ScanPage() {
                 0
               </button>
               <button onClick={handleConfirm} disabled={pinValue.length < 4 || state === "confirming"}
-                className="h-12 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-30 hover:opacity-90"
+                className="h-12 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-30 hover:opacity-90 active:scale-95"
                 style={{ background: ACC, color: INK }}>
                 {state === "confirming"
                   ? <span className="flex items-center justify-center">

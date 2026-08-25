@@ -86,7 +86,7 @@ export function AddStaffForm() {
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[14px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[14px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 active:scale-[0.97]"
           style={{ background: "#2bd49a", color: "#0c0c0a" }}
         >
           <UserPlus className="h-4 w-4" />
@@ -124,7 +124,7 @@ export function AddStaffForm() {
               </div>
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1 rounded-lg transition-opacity hover:opacity-70"
+                className="flex items-center gap-1 text-[12px] font-medium px-2.5 py-1 rounded-lg transition-opacity hover:opacity-70 active:scale-[0.97]"
                 style={{ background: "rgba(43,212,154,0.10)", color: "#2bd49a" }}
               >
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}

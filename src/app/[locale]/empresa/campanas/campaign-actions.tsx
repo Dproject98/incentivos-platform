@@ -33,7 +33,7 @@ export function CampaignActions({ campaignId, status }: Props) {
   return (
     <button
       onClick={toggle}
-      className="flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-[13px] font-medium transition-all hover:opacity-80"
+      className="flex items-center justify-center gap-1.5 w-full py-2 rounded-full text-[13px] font-medium transition-all hover:opacity-80 active:scale-[0.97]"
       style={{
         background: status === "ACTIVE" ? "rgba(251,191,36,0.10)" : "rgba(43,212,154,0.10)",
         color: status === "ACTIVE" ? "#fbbf24" : "#2bd49a",

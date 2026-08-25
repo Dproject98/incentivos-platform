@@ -34,7 +34,7 @@ export function ReservationActions({ reservationId, status }: Props) {
     <button
       onClick={handleConfirm}
       disabled={loading}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-40"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-40 active:scale-[0.97]"
       style={{ background: "rgba(43,212,154,0.10)", color: "#2bd49a", border: "1px solid rgba(43,212,154,0.20)" }}
     >
       {loading

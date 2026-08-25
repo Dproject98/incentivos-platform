@@ -78,6 +78,7 @@ export function CookieBanner() {
               <>
                 <button
                   onClick={() => setExpanded(true)}
+                  className="active:scale-[0.97]"
                   style={{
                     background: "none",
                     border: "none",
@@ -101,6 +102,7 @@ export function CookieBanner() {
           <div style={{ display: "flex", gap: 8, marginTop: 14, flexWrap: "wrap" }}>
             <button
               onClick={() => accept("all")}
+              className="active:scale-[0.97]"
               style={{
                 background: "#2bd49a",
                 color: "#0c0c0a",
@@ -117,6 +119,7 @@ export function CookieBanner() {
             </button>
             <button
               onClick={() => accept("essential")}
+              className="active:scale-[0.97]"
               style={{
                 background: "rgba(255,255,255,0.06)",
                 color: "oklch(0.72 0.01 250)",
@@ -138,6 +141,7 @@ export function CookieBanner() {
         <button
           onClick={() => accept("essential")}
           aria-label="Cerrar"
+          className="active:scale-90"
           style={{
             flexShrink: 0,
             background: "rgba(255,255,255,0.05)",

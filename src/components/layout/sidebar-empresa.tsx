@@ -75,7 +75,7 @@ export function SidebarEmpresa() {
         <LanguageSwitcher />
         <button
           onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
-          className="flex items-center gap-2 px-3 py-2 rounded-xl text-[14px] transition-all hover:bg-white/5 w-full text-left"
+          className="flex items-center gap-2 px-3 py-2 rounded-xl text-[14px] transition-all hover:bg-white/5 w-full text-left active:scale-[0.97]"
           style={{ color: "oklch(0.62 0.01 250)" }}
         >
           <LogOut className="h-4 w-4" />

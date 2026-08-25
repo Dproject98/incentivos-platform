@@ -69,7 +69,7 @@ export function SidebarAdmin() {
       <div className="pt-4 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
         <button
           onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
-          className="flex items-center gap-2 px-3 py-2 rounded-xl text-[14px] transition-all w-full text-left hover:bg-white/5"
+          className="flex items-center gap-2 px-3 py-2 rounded-xl text-[14px] transition-all w-full text-left hover:bg-white/5 active:scale-[0.97]"
           style={{ color: "rgba(136,181,162,0.60)" }}
         >
           <LogOut className="h-4 w-4" />
