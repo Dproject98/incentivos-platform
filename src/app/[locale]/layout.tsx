@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter, Space_Grotesk, Inter_Tight, JetBrains_Mono, Bricolage_Grotesque } from "next/font/google"
+import { Inter, Space_Grotesk, Inter_Tight, JetBrains_Mono, Bricolage_Grotesque, Archivo } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
 import { notFound } from "next/navigation"
@@ -13,6 +13,8 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-displ
 const interTight = Inter_Tight({ subsets: ["latin"], variable: "--font-body", weight: ["400", "500", "600"] })
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500", "600"] })
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-brand", weight: ["400", "500", "600", "700", "800"] })
+// Display de la landing: grotesca ancha, para titulares grandes en minuscula.
+const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", weight: ["400", "500", "600", "700", "800"] })
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://incentis.app"
 
@@ -73,7 +75,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${inter.variable} ${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable} ${bricolage.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${spaceGrotesk.variable} ${interTight.variable} ${jetbrainsMono.variable} ${bricolage.variable} ${archivo.variable}`}>
       <body className="antialiased font-sans" style={{ background: "oklch(0.15 0.012 250)" }}>
         <NextIntlClientProvider messages={messages}>
           {children}
