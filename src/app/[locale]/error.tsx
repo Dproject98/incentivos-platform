@@ -39,7 +39,7 @@ export default function Error({
       </p>
       <button
         onClick={reset}
-        className="px-6 py-2.5 rounded-full font-semibold text-[14px] transition-opacity hover:opacity-80"
+        className="px-6 py-2.5 rounded-full font-semibold text-[14px] transition-opacity hover:opacity-80 active:scale-[0.97]"
         style={{ background: "#2bd49a", color: "#0c0c0a" }}
       >
         Reintentar

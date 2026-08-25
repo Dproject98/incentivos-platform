@@ -105,7 +105,7 @@ export default function NuevaReservaPage() {
       <div className="flex items-center gap-3">
         <Link href={`/${locale}/captador/campanas`}>
           <button
-            className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80"
+            className="h-9 w-9 rounded-xl flex items-center justify-center transition-colors hover:opacity-80 active:scale-[0.97]"
             style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
           >
             <ArrowLeft className="h-4 w-4" style={{ color: "#ffffff" }} />
@@ -155,7 +155,7 @@ export default function NuevaReservaPage() {
                   key={type}
                   type="button"
                   onClick={() => setChosenType(type)}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
+                  className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all active:scale-[0.97]"
                   style={{
                     background: active ? "oklch(0.80 0.17 162 / 0.12)" : "oklch(0.22 0.015 250)",
                     border: active ? "1px solid oklch(0.80 0.17 162 / 0.20)" : "1px solid oklch(0.30 0.02 250)",
@@ -286,7 +286,7 @@ export default function NuevaReservaPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-60 hover:opacity-90 flex items-center justify-center gap-2 active:scale-[0.97]"
             style={{ background: "#2bd49a", color: "#0c0c0a" }}
           >
             {loading ? t("submitting") : (

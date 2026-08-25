@@ -89,7 +89,7 @@ export default async function StaffPage() {
           >
             <button
               type="submit"
-              className="h-9 w-9 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70"
+              className="h-9 w-9 rounded-xl flex items-center justify-center transition-opacity hover:opacity-70 active:scale-[0.97]"
               style={{ background: "oklch(0.22 0.015 250)", border: "1px solid oklch(0.30 0.02 250)" }}
             >
               <LogOut className="h-4 w-4" style={{ color: "oklch(0.62 0.01 250)" }} />

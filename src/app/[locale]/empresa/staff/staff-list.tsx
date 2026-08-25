@@ -79,7 +79,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
               {/* Delete button */}
               <button
                 onClick={() => setConfirmId(confirmId === s.id ? null : s.id)}
-                className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70"
+                className="h-8 w-8 rounded-lg flex items-center justify-center transition-opacity hover:opacity-70 active:scale-[0.97]"
                 style={{ background: "rgba(220,38,38,0.12)", border: "1px solid rgba(220,38,38,0.12)" }}
               >
                 <Trash2 className="h-3.5 w-3.5" style={{ color: "#dc2626" }} />
@@ -100,7 +100,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
               <div className="flex gap-2">
                 <button
                   onClick={() => setConfirmId(null)}
-                  className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-opacity hover:opacity-70"
+                  className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-opacity hover:opacity-70 active:scale-[0.97]"
                   style={{ background: "oklch(0.22 0.015 250)", color: "oklch(0.72 0.01 250)" }}
                 >
                   Cancelar
@@ -108,7 +108,7 @@ export function StaffList({ staff }: { staff: StaffMember[] }) {
                 <button
                   onClick={() => handleDelete(s.id)}
                   disabled={deleting === s.id}
-                  className="px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
+                  className="px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-50 active:scale-[0.97]"
                   style={{ background: "#dc2626", color: "#fff" }}
                 >
                   {deleting === s.id ? "Eliminando..." : "Eliminar"}

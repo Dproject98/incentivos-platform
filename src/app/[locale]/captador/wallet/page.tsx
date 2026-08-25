@@ -126,7 +126,7 @@ export default function WalletPage() {
             { key: "bono"   as const, icon: Gift,       label: t("bono"),            sub: "Canjear por experiencia" },
           ].map(({ key, icon: Icon, label, sub }) => (
             <button key={key} onClick={() => { setMethod(key); setSelectedBono(null) }}
-              className="p-3 rounded-xl text-left transition-all"
+              className="p-3 rounded-xl text-left transition-all active:scale-[0.97]"
               style={{
                 background: method === key ? (key === "stripe" ? "rgba(43,212,154,0.10)" : "rgba(251,191,36,0.10)") : "oklch(0.22 0.015 250)",
                 border: method === key ? (key === "stripe" ? "1px solid rgba(43,212,154,0.25)" : "1px solid rgba(251,191,36,0.25)") : "1px solid oklch(0.30 0.02 250)",
@@ -154,7 +154,7 @@ export default function WalletPage() {
               <div className="p-3 rounded-xl text-[13px]" style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.20)" }}>
                 <p className="font-medium" style={{ color: "#fbbf24" }}>Cuenta bancaria no conectada</p>
                 <button onClick={handleStripeConnect} disabled={connectingStripe}
-                  className="mt-2 flex items-center gap-1.5 text-[12px] font-medium hover:opacity-80" style={{ color: "#fbbf24" }}>
+                  className="mt-2 flex items-center gap-1.5 text-[12px] font-medium hover:opacity-80 active:scale-[0.97]" style={{ color: "#fbbf24" }}>
                   <Link2 className="h-3.5 w-3.5" />{t("connect_stripe")}
                 </button>
               </div>
@@ -165,7 +165,7 @@ export default function WalletPage() {
               </div>
             )}
             <button onClick={handleWithdraw} disabled={loading || !amount || parseFloat(amount) <= 0}
-              className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90"
+              className="w-full py-3 rounded-full text-[15px] font-semibold transition-opacity disabled:opacity-40 hover:opacity-90 active:scale-[0.97]"
               style={{ background: "#2bd49a", color: "#0c0c0a" }}>
               {loading ? "Procesando..." : t("withdraw")}
             </button>
@@ -194,7 +194,7 @@ export default function WalletPage() {
                     return (
                       <button key={bono.id} onClick={() => setSelectedBono(isSelected ? null : bono)}
                         disabled={!canAfford}
-                        className="w-full p-3 rounded-xl text-left transition-all"
+                        className="w-full p-3 rounded-xl text-left transition-all active:scale-[0.97]"
                         style={{
                           background: isSelected ? "rgba(251,191,36,0.10)" : canAfford ? "oklch(0.22 0.015 250)" : "oklch(0.19 0.015 250)",
                           border: isSelected ? "1px solid rgba(251,191,36,0.35)" : "1px solid oklch(0.30 0.02 250)",
@@ -239,7 +239,7 @@ export default function WalletPage() {
                 )}
 
                 <button onClick={handleRedeemBono} disabled={!selectedBono || loading}
-                  className="w-full py-3 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity disabled:opacity-40 hover:opacity-90"
+                  className="w-full py-3 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2 transition-opacity disabled:opacity-40 hover:opacity-90 active:scale-[0.97]"
                   style={{ background: "#2bd49a", color: "#0c0c0a" }}>
                   <Gift className="h-4 w-4" />
                   {loading ? "Enviando..." : "Solicitar canje"}
